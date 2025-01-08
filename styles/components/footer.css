@@ -14,7 +14,7 @@ footer p {
 }
 
 footer p a {
-  color: var(--white);
+  color: var(--white) !important;
 }
 
 /* MEDIA QUERIES */
