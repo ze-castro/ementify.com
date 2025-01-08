@@ -21,7 +21,7 @@
   --pink: #f7a8b8;
 
   /* TRANSPARENT BACKGROUND */
-  --transparent-background: rgba(0, 0, 0, 0.5);
+  --transparent-background: rgba(255, 255, 255, 0.8);
 
   /* SHADOWS */
   --shadow-1: rgba(0, 0, 0, 0.1);

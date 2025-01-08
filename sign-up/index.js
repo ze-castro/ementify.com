@@ -1,3 +1,5 @@
+import { renderLoading, unrenderLoading } from '../js/components/loading.js';
+
 document.addEventListener('DOMContentLoaded', function () {
   // Get the signup form element
   const signupForm = document.getElementById('signup-form');
@@ -5,6 +7,9 @@ document.addEventListener('DOMContentLoaded', function () {
   // Add an event listener to handle form submission
   signupForm.addEventListener('submit', async function (event) {
     event.preventDefault();
+
+    // Show loading
+    renderLoading();
 
     // Get form data
     const formData = new FormData(signupForm);
@@ -43,6 +48,8 @@ document.addEventListener('DOMContentLoaded', function () {
       // Handle any network errors
       console.error('Error during signup:', error);
       alert('An error occurred. Please try again.');
+    } finally {
+      unrenderLoading();
     }
   });
 });
