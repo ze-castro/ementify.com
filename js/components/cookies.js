@@ -48,7 +48,7 @@ function renderCookies() {
   `;
 
   // insert cookies
-  document.body.insertAdjacentHTML('beforebegin', cookiesHTML);
+  document.body.insertAdjacentHTML('afterbegin', cookiesHTML);
 
   // onclick of accept cookies button
   const cookiesBtn = document.getElementById('cookies-button');

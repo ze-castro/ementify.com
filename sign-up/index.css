@@ -75,6 +75,10 @@ nav a {
   box-shadow: 0 0.5rem 1rem var(--shadow-2);
 }
 
+#signup form button:disabled {
+  background-color: var(--gray-4);
+}
+
 #signup a {
   margin-top: 0.5rem;
   color: var(--gray-4);

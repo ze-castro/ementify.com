@@ -14,7 +14,7 @@
   bottom: -6rem;
   left: 50%;
   transform: translate(-50%, 0);
-  z-index: 4;
+  z-index: 99;
   font-family: var(--font-1);
   font-size: var(--paragraph);
   transition: var(--slow);
@@ -54,7 +54,7 @@
   }
 
   #cookies button {
-    min-width: 70px;
+    min-width: 80px;
     font-size: 0.8rem;
   }
 }

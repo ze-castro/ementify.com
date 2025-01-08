@@ -1,0 +1,50 @@
+/* POPUP */
+#popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100dvw;
+  height: 100dvh;  
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background-color: var(--transparent-background);
+  z-index: 9999;
+}
+
+#popup p {
+  background-color: var(--white);
+  border-radius: var(--radius-3);
+  padding: 1rem 2rem;
+  box-shadow: 0 1rem 2rem var(--shadow-2);
+  display: grid;
+  place-items: center;
+  transition: var(--steady);
+  font-size: var(--paragraph);
+  font-weight: var(--light);
+  color: var(--black);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --paragraph: 0.8rem;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

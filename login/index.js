@@ -1,12 +1,17 @@
 import { renderLoading, unrenderLoading } from '../js/components/loading.js';
+import { renderPopup, unrenderPopup } from '../js/components/popup.js';
 
 document.addEventListener('DOMContentLoaded', function () {
-  // Get the login form element
+  // Get the login form elements
   const loginForm = document.getElementById('login-form');
+  const loginButton = document.getElementById('login-button');
 
   // Add an event listener to handle form submission
   loginForm.addEventListener('submit', async function (event) {
     event.preventDefault();
+
+    // disable the login button
+    loginButton.disabled = true;
 
     // Show loading
     renderLoading();
@@ -41,14 +46,16 @@ document.addEventListener('DOMContentLoaded', function () {
         alert('Login successful!');
       } else {
         // Handle errors
-        alert(result.message || 'An error occurred during login.');
+        renderPopup(result.message || 'An error occurred during login.');
       }
     } catch (error) {
       // Handle any network errors
       console.error('Error during login:', error);
-      alert('An error occurred. Please try again.');
+      renderPopup('An error occurred. Please try again.');
     } finally {
-      unrenderLoading();
+      unrenderLoading()
+      unrenderPopup(2000);
+      loginButton.disabled = false;
     }
   });
 });

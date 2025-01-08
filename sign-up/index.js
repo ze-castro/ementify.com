@@ -1,12 +1,17 @@
 import { renderLoading, unrenderLoading } from '../js/components/loading.js';
+import { renderPopup, unrenderPopup } from '../js/components/popup.js';
 
 document.addEventListener('DOMContentLoaded', function () {
-  // Get the signup form element
+  // Get the signup form elements
   const signupForm = document.getElementById('signup-form');
+  const signupButton = document.getElementById('signup-button');
 
   // Add an event listener to handle form submission
   signupForm.addEventListener('submit', async function (event) {
     event.preventDefault();
+
+    // disable the signup button
+    signupButton.disabled = true;
 
     // Show loading
     renderLoading();
@@ -42,14 +47,16 @@ document.addEventListener('DOMContentLoaded', function () {
         //window.location.href = '/app';
       } else {
         // Handle errors
-        alert(result.message || 'An error occurred during signup.');
+        renderPopup(result.message || 'An error occurred during signup.');
       }
     } catch (error) {
       // Handle any network errors
       console.error('Error during signup:', error);
-      alert('An error occurred. Please try again.');
+      renderPopup('An error occurred. Please try again.');
     } finally {
       unrenderLoading();
+      unrenderPopup(2000);
+      signupButton.disabled = false
     }
   });
 });

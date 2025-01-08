@@ -25,7 +25,7 @@ function unrenderLoading() {
   loading.style.animation = 'fadeOut 0.3s';
   setTimeout(() => {
     loading.remove();
-  }, 300);
+  }, 280);
 }
 
 export { renderLoading, unrenderLoading };
