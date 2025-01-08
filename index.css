@@ -1,3 +1,16 @@
+/* GLOBAL MEDIA QUERIES */
+@media (width < 768px) {
+  :root {
+    --title: 2.5rem;
+    --subtitle: 1.3rem;
+    --paragraph: 1rem;
+    --microcopy: 0.7rem;
+  }
+  main {
+    padding: 0 1rem;
+  }  
+}
+
 /* NAV */
 nav {
   position: absolute;
@@ -5,7 +18,6 @@ nav {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 1.5rem;
   padding: 1rem;
   z-index: 1;
 }
@@ -18,7 +30,7 @@ nav a {
 #welcome {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -41,7 +53,7 @@ nav a {
 }
 
 #welcome h1 {
-  width: 600px;
+  max-width: 600px;
   color: var(--black);
   font-size: var(--title);
   font-weight: var(--semi-bold);
@@ -108,7 +120,7 @@ nav a {
 /* PRICING */
 #pricing {
   width: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -210,10 +222,23 @@ nav a {
   margin-left: 0.5rem;
 }
 
+@media (width < 768px) {
+  #pricing h1 {
+    margin-top: 0;
+  }
+  .pricing-cards {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .card h3 {
+    font-size: 2.5rem;
+  }
+}
+
 /* FAQ */
 #faq {
   width: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -289,6 +314,18 @@ nav a {
   border-radius: 1rem;
 }
 
+@media (width < 768px) {
+  #faq {
+    margin-top: 4rem;
+  }
+  .box {
+    width: 95%;
+  }
+  .box h2 {
+    font-size: 1.2rem;
+  }
+}
+
 /* CONTACT */
 #contact {
   width: 100%;
@@ -357,6 +394,12 @@ nav a {
   background-color: var(--gray-2);
 }
 
+@media (width < 768px) {
+  #contact {
+    margin-top: 4rem;
+  }
+}
+
 /* DISCLAIMER */
 #disclaimer {
   width: 100%;
@@ -380,301 +423,4 @@ nav a {
 #disclaimer p a {
   color: var(--gray-5);
   text-decoration: underline;
-}
-
-/* MEDIA QUERIES */
-
-@media (width < 1600px) {
-  .swiper-slide {
-    height: 280px;
-  }
-}
-
-@media (width < 1025px) {
-  #welcome h1 {
-    font-size: 3.2rem;
-  }
-  #pricing h1 {
-    font-size: 3.2rem;
-  }
-  #clients h1 {
-    font-size: 3.2rem;
-  }
-  #scheduling h1 {
-    font-size: 3.2rem;
-  }
-  #me h1 {
-    font-size: 3.2rem;
-  }
-  #faq h1 {
-    font-size: 3.2rem;
-  }
-  #contact h1 {
-    font-size: 3.2rem;
-  }
-}
-
-@media (width < 800px) {
-  nav {
-    padding: 0 5%;
-    gap: 5px;
-  }
-  nav h3 {
-    font-size: 1.1rem;
-  }
-  nav p {
-    font-size: 1.1rem;
-  }
-
-  #welcome h1 {
-    width: 95%;
-    font-size: 3rem;
-  }
-  #welcome p {
-    font-size: 1.2rem;
-  }
-  #welcome .links {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  #welcome button {
-    width: 100px;
-    height: 40px;
-    font-size: 1rem;
-  }
-  #welcome .welcome-image {
-    width: 100%;
-    height: 20rem;
-  }
-  #pricing {
-    padding: 0 1rem;
-  }
-  #pricing h1 {
-    width: 95%;
-    font-size: 3rem;
-  }
-  #pricing p {
-    font-size: 1rem;
-  }
-  .card {
-    width: 100%;
-    max-width: 600px;
-    height: auto;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 1rem;
-    position: relative;
-    border: 1px solid var(--gray-1);
-  }
-  .card-left,
-  .card-right {
-    width: 100%;
-    padding: 1.5rem 1rem;
-    z-index: 2;
-  }
-  #simple-website,
-  #online-store,
-  #personalized-software {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 0;
-    z-index: 1;
-  }
-  .card h2 {
-    font-size: 1.5rem;
-  }
-  .card li {
-    padding: 0.5rem 0 1rem 0;
-    font-size: 1rem;
-  }
-  .card h3 {
-    font-size: 1.3rem;
-    font-weight: var(--semi-semi-bold);
-  }
-  .card button {
-    width: 100%;
-    height: 40px;
-    font-size: 1rem;
-    border-radius: 0.5rem;
-  }
-  .card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 1rem;
-    filter: blur(0.3rem);
-    opacity: 0.1;
-  }
-  #clients h1 {
-    width: 95%;
-    font-size: 3rem;
-  }
-  #clients p {
-    font-size: 1rem;
-  }
-  .swiper {
-    padding: 2rem 3rem;
-  }
-  .swiper-slide {
-    width: 100%;
-    height: 300px;
-  }
-  .swiper-slide img {
-    width: 50%;
-  }
-  .swiper-button-prev,
-  .swiper-button-next {
-    width: 2rem !important;
-    height: 2rem !important;
-    top: 50% !important;
-  }
-  .swiper-button-prev::after,
-  .swiper-button-next::after {
-    font-size: 1rem !important;
-  }
-  #scheduling h1 {
-    width: 95%;
-    font-size: 3rem;
-  }
-  #scheduling p {
-    font-size: 1rem;
-  }
-  #scheduling .scheduling-container {
-    margin-top: 2rem;
-  }
-  #scheduling .scheduling-container button {
-    width: 300px;
-    height: 50px;
-    font-size: 1rem;
-  }
-  #scheduling .scheduling-container a {
-    font-size: 1rem;
-  }
-  #me h1 {
-    width: 95%;
-    font-size: 3rem;
-  }
-  #me p {
-    font-size: 1rem;
-  }
-  .me-container {
-    flex-direction: column;
-    gap: 2rem;
-  }
-  .me-image {
-    width: 200px;
-    height: 200px;
-  }
-  .me-description {
-    width: 100%;
-  }
-  .me-description h2 {
-    font-size: 1.5rem;
-  }
-  .me-description p {
-    font-size: 1rem;
-  }
-  .me-description a {
-    font-size: 1rem;
-  }
-  #faq h1 {
-    width: 95%;
-    font-size: 3rem;
-  }
-  #faq p {
-    font-size: 1rem;
-  }
-  .faq-container {
-    max-width: 550px;
-    flex-direction: column;
-  }
-  .box {
-    width: 100%;
-    max-width: 100%;
-    padding: 1rem;
-  }
-  .box-title {
-    font-size: 1.1rem;
-  }
-  .box-description {
-    font-size: 1rem;
-  }
-  #contact h1 {
-    width: 95%;
-    font-size: 3rem;
-  }
-  #contact p {
-    font-size: 1rem;
-  }
-  #contact .contact-box {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  #contact .contact-box p {
-    font-size: 1.8rem;
-    padding: 1rem 1.5rem;
-    border-radius: 0.5rem;
-  }
-  #contact .contact-box p i {
-    font-size: 1.8rem;
-  }
-}
-
-@media (width < 600px) {
-  nav {
-    padding: 0 5%;
-    gap: 5px;
-    height: 40px;
-  }
-  nav h3 {
-    font-size: 1rem;
-  }
-  nav p {
-    font-size: 1rem;
-  }
-  .swiper-slide {
-    height: 250px;
-  }
-  .swiper-slide img {
-    width: 60%;
-  }
-  #contact .contact-box p {
-    font-size: 1.3rem;
-    padding: 0.7rem 1.2rem;
-    border-radius: 0.5rem;
-  }
-  #contact .contact-box p i {
-    font-size: 1.3rem;
-  }
-  #disclaimer p {
-    font-size: 0.8rem;
-  }
-}
-
-@media (width < 420px) {
-  #welcome h1 {
-    font-size: 2.5rem;
-  }
-  #pricing h1 {
-    font-size: 2.5rem;
-  }
-  #clients h1 {
-    font-size: 2.5rem;
-  }
-  #scheduling h1 {
-    font-size: 2.5rem;
-  }
-  #me h1 {
-    font-size: 2.5rem;
-  }
-  #faq h1 {
-    font-size: 2.5rem;
-  }
-  #contact h1 {
-    font-size: 2.5rem;
-  }
 }
