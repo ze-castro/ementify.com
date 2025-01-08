@@ -19,9 +19,9 @@
     <!-- styles -->
     <link rel="stylesheet" href="../styles/font-awesome-4/css/font-awesome.min.css" />
     <link rel="stylesheet" href="../styles/defaults.css" />
-    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="../sign-up/index.css" />
     <!-- scripts -->
-    <script defer src="index.js"></script>
+    <script defer src="../sign-up/index.js"></script>
     <!-- analytics -->
     <script defer src="../js/analytics.js"></script>
   </head>
@@ -33,7 +33,8 @@
       <section id="signup">
         <h1>Sign Up</h1>
         <p>Create an account to start using Ementify.</p>
-        <form name="signup" action="/app" method="POST" netlify>
+        <form id="signup-form" name="signup">
+          <input type="text" name="name" placeholder="Name" required />
           <input type="email" name="email" placeholder="Email" required />
           <input type="password" name="password" placeholder="Password" required />
           <button type="submit">Create Account</button>
