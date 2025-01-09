@@ -41,8 +41,8 @@ document.addEventListener('DOMContentLoaded', function () {
       if (response.ok) {
         renderPopup(result.message || 'Email sent successfully. Check your inbox.');
         setTimeout(() => {
-          window.location.href = '/login';
-        }, 2000);
+          window.location.href = '/';
+        }, 2300);
       } else {
         // Handle errors
         renderPopup(result.message || 'An error occurred recovering the password.');

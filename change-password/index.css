@@ -1,0 +1,80 @@
+/* GLOBAL MEDIA QUERIES */
+@media (width < 768px) {
+  main {
+    padding: 0 1rem;
+  }
+}
+
+/* NAV */
+nav {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  z-index: 1;
+}
+
+nav a {
+  font-weight: var(--light);
+}
+
+/* CHANGE PASSWORD */
+#change-password {
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+#change-password h1 {
+  max-width: 600px;
+  color: var(--black);
+  font-size: var(--title);
+  font-weight: var(--semi-bold);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+#change-password p {
+  max-width: 400px;
+  color: var(--black);
+  font-size: var(--subtitle);
+  font-weight: var(--thin);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+#change-password form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+#change-password form input {
+  width: 300px;
+  height: 40px;
+  background-color: var(--gray-1);
+}
+
+#change-password form button {
+  width: 250px;
+  height: 40px;
+  background-color: var(--green);
+  margin-top: 1rem;
+  color: var(--white);
+  font-size: var(--paragraph);
+  font-weight: var(--semi-bold);
+  border-radius: var(--radius-1);
+  box-shadow: 0 0.5rem 1rem var(--shadow-2);
+}
+
+#change-password form button:disabled {
+  background-color: var(--gray-4);
+}
