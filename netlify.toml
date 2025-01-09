@@ -1,2 +1,10 @@
 [functions]
   directory = "backend/functions"
+  node_bundler = "esbuild"
+  external_node_modules = ["mongodb", "bcrypt"]
+
+[build]
+  command = "npm run build"
+
+[functions."*"]
+  format = "esm"
