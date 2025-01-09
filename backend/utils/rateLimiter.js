@@ -1,6 +1,6 @@
 const rateLimits = {};
 
-const runRateLimiter = (options) => {
+const rateLimiter = (options) => {
   const { windowMs, maxRequests } = options;
 
   return (ip) => {
@@ -31,4 +31,4 @@ const runRateLimiter = (options) => {
   };
 };
 
-export default runRateLimiter;
+module.exports = rateLimiter;
