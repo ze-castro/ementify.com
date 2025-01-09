@@ -35,17 +35,11 @@
 }
 
 /* MEDIA QUERIES */
-@media (width < 800px) {
+@media (width < 768px) {
   #cookies {
     width: 90%;
     height: auto;
     padding: 1rem 1.5rem 1rem 2rem;
-    gap: 1.5rem;
-  }
-}
-
-@media (width < 600px) {
-  #cookies {
     gap: 1rem;
   }
 

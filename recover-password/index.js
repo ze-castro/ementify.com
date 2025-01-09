@@ -2,34 +2,32 @@ import { renderLoading, unrenderLoading } from '../js/components/loading.js';
 import { renderPopup, unrenderPopup } from '../js/components/popup.js';
 
 document.addEventListener('DOMContentLoaded', function () {
-  // Get the login form elements
-  const loginForm = document.getElementById('login-form');
-  const loginButton = document.getElementById('login-button');
+  // Get the recover-password form elements
+  const recoverPasswordForm = document.getElementById('recover-password-form');
+  const recoverPasswordButton = document.getElementById('recover-password-button');
 
   // Add an event listener to handle form submission
-  loginForm.addEventListener('submit', async function (event) {
+  recoverPasswordForm.addEventListener('submit', async function (event) {
     event.preventDefault();
 
-    // disable the login button
-    loginButton.disabled = true;
+    // disable the recover-password button
+    recoverPasswordButton.disabled = true;
 
     // Show loading
     renderLoading();
 
     // Get form data
-    const formData = new FormData(loginForm);
+    const formData = new FormData(recoverPasswordForm);
     const email = formData.get('email');
-    const password = formData.get('password');
 
     // Create a payload for the API request
     const payload = {
       email,
-      password,
     };
 
     try {
-      // Send POST request to the login serverless function
-      const response = await fetch('/.netlify/functions/login', {
+      // Send POST request to the recover-password serverless function
+      const response = await fetch('/.netlify/functions/recover-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -41,21 +39,22 @@ document.addEventListener('DOMContentLoaded', function () {
       const result = await response.json();
 
       if (response.ok) {
-        //localStorage.setItem('token', result.token);
-        //window.location.href = '/app';
-        renderPopup('Login successful!');
+        renderPopup(result.message || 'Email sent successfully. Check your inbox.');
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 2000);
       } else {
         // Handle errors
-        renderPopup(result.message || 'An error occurred during login 🤷‍♂️');
+        renderPopup(result.message || 'An error occurred recovering the password.');
       }
     } catch (error) {
       // Handle any network errors
-      console.error('Error during login:', error);
+      console.error('Error recovering the password:', error);
       renderPopup('An error occurred. Please try again.');
     } finally {
-      unrenderLoading()
+      unrenderLoading();
       unrenderPopup(2000);
-      loginButton.disabled = false;
+      recoverPasswordButton.disabled = false;
     }
   });
 });

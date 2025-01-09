@@ -43,11 +43,12 @@ document.addEventListener('DOMContentLoaded', function () {
       const result = await response.json();
 
       if (response.ok) {
-        alert('Account created successfully!');
+        //localStorage.setItem('token', result.token);
         //window.location.href = '/app';
+        renderPopup('Signup successful!');
       } else {
         // Handle errors
-        renderPopup(result.message || 'An error occurred during signup.');
+        renderPopup(result.message || 'An error occurred during signup 🤷‍♂️');
       }
     } catch (error) {
       // Handle any network errors

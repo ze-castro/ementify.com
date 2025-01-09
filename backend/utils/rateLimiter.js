@@ -27,7 +27,7 @@ const rateLimiter = (options) => {
     }
 
     // Deny if limit exceeded
-    return { allowed: false };
+    return { allowed: false, message: 'Rate limit exceeded. Try again later.' };
   };
 };
 
