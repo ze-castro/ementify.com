@@ -416,6 +416,7 @@ nav a {
 }
 
 #disclaimer p {
+  text-align: justify;
   font-size: var(--microcopy);
   font-weight: var(--light);
   color: var(--gray-5);

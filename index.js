@@ -32,6 +32,28 @@ window.addEventListener('scroll', () => {
   }
 });
 
+// start button click redirects to pricing
+const startButton = document.getElementById('start-button');
+startButton.addEventListener('click', () => {
+  const pricing = document.getElementById('pricing');
+  pricing.scrollIntoView({ behavior: 'smooth' });
+});
+
+// PRICING
+// onclick of the pricing buttons
+const freeButton = document.getElementById('free-button');
+const proButton = document.getElementById('pro-button');
+
+// redirect to sign up page
+freeButton.addEventListener('click', () => {
+  window.location.href = '/sign-up';
+});
+
+// redirect to subscribe page
+proButton.addEventListener('click', () => {
+  window.location.href = '/subscribe';
+});
+
 // FAQ
 // onclick of the faq boxes
 document
@@ -70,3 +92,10 @@ function toggleDescription(box) {
     }
   });
 }
+
+// CONTACT
+// onclick of the contact box
+const contactEmail = document.getElementById('contact-email');
+contactEmail.addEventListener('click', () => {
+  window.location.href = 'mailto:info@ementify.com';
+});

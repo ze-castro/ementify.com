@@ -77,7 +77,7 @@ export async function handler(event, context) {
     // Update the user's password
     const updatedPassword = await usersCollection.updateOne(
       { email },
-      { $set: { password: hashedPassword } }
+      { $set: { password: hashedPassword, passwordResetToken: null } }
     );
     if (updatedPassword.modifiedCount === 0) {
       return {
