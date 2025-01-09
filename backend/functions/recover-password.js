@@ -5,8 +5,8 @@ import dotenv from 'dotenv';
 if (process.env.NODE_ENV == 'dev') {
   dotenv.config();
 }
-import rateLimiter from '../utils/rateLimiter.js';
-import recoverPasswordEmail from '../utils/emails.js';
+import runRateLimiter from '../utils/rateLimiter';
+import recoverPasswordEmail from '../utils/emails';
 
 // MongoDB URI and JWT Secret from environment variables
 const uri = process.env.MONGO_DB;
@@ -14,7 +14,7 @@ const client = new MongoClient(uri);
 const jwtSecret = process.env.JWT_SECRET;
 
 // Rate limiter
-const limiter = rateLimiter({
+const limiter = runRateLimiter({
   windowMs: 1 * 60 * 1000,
   maxRequests: 10,
 });
