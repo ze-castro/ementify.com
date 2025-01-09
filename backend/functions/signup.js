@@ -1,8 +1,8 @@
-const { MongoClient } = require('mongodb');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+import { MongoClient } from 'mongodb';
+import { hash } from 'bcrypt';
+import { sign } from 'jsonwebtoken';
 require('dotenv').config();
-const rateLimiter = require('../utils/rateLimiter');
+import rateLimiter from '../utils/rateLimiter';
 
 // MongoDB URI and JWT Secret from environment variables
 const uri = process.env.MONGO_DB;
@@ -15,7 +15,7 @@ const limiter = rateLimiter({
   maxRequests: 10,
 });
 
-exports.handler = async (event, context) => {
+export async function handler(event, context) {
   // Apply rate limiting
   const ip = event.headers['x-forwarded-for'] || event.headers['client-ip'] || 'unknown';
   if (!limiter(ip)) {
@@ -48,7 +48,7 @@ exports.handler = async (event, context) => {
     }
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await hash(password, 10);
 
     // Save the user to the database
     const newUser = {
@@ -60,7 +60,7 @@ exports.handler = async (event, context) => {
     await usersCollection.insertOne(newUser);
 
     // Generate a JWT token
-    const token = jwt.sign({ email: newUser.email, name: newUser.name }, jwtSecret, {
+    const token = sign({ email: newUser.email, name: newUser.name }, jwtSecret, {
       expiresIn: '30d',
     });
 
@@ -77,4 +77,4 @@ exports.handler = async (event, context) => {
   } finally {
     await client.close();
   }
-};
+}
