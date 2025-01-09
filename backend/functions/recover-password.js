@@ -1,7 +1,9 @@
 import { MongoClient } from 'mongodb';
 import { sign } from 'jsonwebtoken';
 import { createTransport } from 'nodemailer';
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'prod') {
+  require('dotenv').config();
+}
 import rateLimiter from '../utils/rateLimiter.js';
 import recoverPasswordEmail from '../utils/emails.js';
 

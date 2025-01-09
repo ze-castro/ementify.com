@@ -1,7 +1,9 @@
 import { MongoClient } from 'mongodb';
 import { compare } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'prod') {
+  require('dotenv').config();
+}
 import rateLimiter from '../utils/rateLimiter';
 
 // MongoDB URI and JWT Secret from environment variables
