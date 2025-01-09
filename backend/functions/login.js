@@ -1,8 +1,9 @@
 import { MongoClient } from 'mongodb';
 import { compare } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
+import dotenv from 'dotenv';
 if (process.env.NODE_ENV !== 'prod') {
-  require('dotenv').config();
+  dotenv.config();
 }
 import rateLimiter from '../utils/rateLimiter';
 
