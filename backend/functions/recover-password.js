@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 import { sign } from 'jsonwebtoken';
 import { createTransport } from 'nodemailer';
 import dotenv from 'dotenv';
-if (process.env.NODE_ENV !== 'prod') {
+if (process.env.NODE_ENV == 'dev') {
   dotenv.config();
 }
 import rateLimiter from '../utils/rateLimiter.js';

@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 import { hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import dotenv from 'dotenv';
-if (process.env.NODE_ENV !== 'prod') {
+if (process.env.NODE_ENV == 'dev') {
   dotenv.config();
 }
 import rateLimiter from '../utils/rateLimiter';
