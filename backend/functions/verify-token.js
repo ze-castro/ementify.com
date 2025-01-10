@@ -1,6 +1,5 @@
 import { MongoClient } from 'mongodb';
-import { compare } from 'bcrypt';
-import { sign } from 'jsonwebtoken';
+import { verify } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 if (process.env.NODE_ENV == 'dev') {
   dotenv.config();
@@ -34,44 +33,45 @@ export async function handler(event, context) {
   }
 
   try {
-    const { email, password } = JSON.parse(event.body);
+    const { token } = JSON.parse(event.body);
 
     // Connect to MongoDB
     await client.connect();
     const database = client.db('ementify');
     const usersCollection = database.collection('users');
 
+    // Decode the token and get the user's email
+    const decodedToken = verify(token, jwtSecret);
+    const email = decodedToken.email;
+
     // Check if the user exists
     const user = await usersCollection.findOne({ email });
     if (!user) {
       return {
         statusCode: 401,
-        body: JSON.stringify({ message: 'Error finding your account.' }),
+        body: JSON.stringify({ message: '⚠️ Something went wrong. Please log in again.' }),
       };
     }
 
-    // Check password
-    const passwordMatch = await compare(password, user.password);
-    if (!passwordMatch) {
+    // Check is token is expired
+    const tokenExpired = decodedToken.exp;
+    if (Date.now() > tokenExpired * 1000) {
       return {
         statusCode: 401,
-        body: JSON.stringify({ message: 'Invalid email or password. Please try again!' }),
+        body: JSON.stringify({ message: '🕒 The token has expired. Please log in again.' }),
       };
     }
 
-    // Generate JWT token
-    const token = sign({ email: user.email, name: user.name }, jwtSecret, { expiresIn: '30d' });
-
-    // Respond with success and token
+    // Return a successful response
     return {
       statusCode: 200,
-      body: JSON.stringify({ token }),
+      body: JSON.stringify({ message: '✅ Token verified.' }),
     };
   } catch (error) {
-    console.error('Error during login:', error);
+    console.error('Error getting the user data:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: 'An error occurred during login.' }),
+      body: JSON.stringify({ message: '⚠️ An error occurred getting the user data. Please log in again.' }),
     };
   } finally {
     await client.close();

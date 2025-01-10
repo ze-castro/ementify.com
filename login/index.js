@@ -41,9 +41,8 @@ document.addEventListener('DOMContentLoaded', function () {
       const result = await response.json();
 
       if (response.ok) {
-        //localStorage.setItem('token', result.token);
-        //window.location.href = '/app';
-        renderPopup('Login successful!');
+        localStorage.setItem('token', result.token);
+        window.location.href = '/app';
       } else {
         // Handle errors
         renderPopup(result.message || 'An error occurred during login 🤷‍♂️');

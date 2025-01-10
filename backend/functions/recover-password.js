@@ -93,16 +93,16 @@ export async function handler(event, context) {
       };
     } catch (error) {
       console.error('Error sending email:', error);
-
       return {
         statusCode: 500,
-        body: JSON.stringify({ error: 'Failed to send email', details: error.message }),
+        body: JSON.stringify({ error: 'Failed to send email' }),
       };
     }
   } catch (error) {
+    console.error('Error recovering password:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: error.message || 'An error occurred during login.' }),
+      body: JSON.stringify({ message: 'An error occurred during login.' }),
     };
   } finally {
     await client.close();

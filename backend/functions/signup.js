@@ -73,6 +73,7 @@ export async function handler(event, context) {
       body: JSON.stringify({ token }),
     };
   } catch (error) {
+    console.error('An error occurred during signup:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ message: 'An error occurred during signup.' }),

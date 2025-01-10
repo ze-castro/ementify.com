@@ -95,9 +95,10 @@ export async function handler(event, context) {
       body: JSON.stringify({ message: 'Password updated successfully.' }),
     };
   } catch (error) {
+    console.error('An error occurred during password update:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: error.message || 'An error occurred during login.' }),
+      body: JSON.stringify({ message: 'An error occurred during login.' }),
     };
   } finally {
     await client.close();

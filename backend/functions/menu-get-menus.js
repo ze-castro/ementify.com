@@ -1,6 +1,5 @@
 import { MongoClient } from 'mongodb';
-import { compare } from 'bcrypt';
-import { sign } from 'jsonwebtoken';
+import { verify } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 if (process.env.NODE_ENV == 'dev') {
   dotenv.config();
@@ -34,44 +33,38 @@ export async function handler(event, context) {
   }
 
   try {
-    const { email, password } = JSON.parse(event.body);
+    const { token } = JSON.parse(event.body);
 
     // Connect to MongoDB
     await client.connect();
     const database = client.db('ementify');
-    const usersCollection = database.collection('users');
+    const menusCollection = database.collection('menus');
 
-    // Check if the user exists
-    const user = await usersCollection.findOne({ email });
-    if (!user) {
+    // Decode the token and get the user's id
+    const decodedToken = verify(token, jwtSecret);
+    const id = decodedToken._id;
+
+    // Find all the menus with id
+    const menus = await menusCollection.find({ id }).toArray();
+    if (!menus) {
       return {
-        statusCode: 401,
-        body: JSON.stringify({ message: 'Error finding your account.' }),
+        statusCode: 404,
+        body: JSON.stringify({ message: '⚠️ Something went wrong getting the menus.' }),
       };
     }
 
-    // Check password
-    const passwordMatch = await compare(password, user.password);
-    if (!passwordMatch) {
-      return {
-        statusCode: 401,
-        body: JSON.stringify({ message: 'Invalid email or password. Please try again!' }),
-      };
-    }
-
-    // Generate JWT token
-    const token = sign({ email: user.email, name: user.name }, jwtSecret, { expiresIn: '30d' });
-
-    // Respond with success and token
+    // Return the menus
     return {
       statusCode: 200,
-      body: JSON.stringify({ token }),
+      body: JSON.stringify({ menus }),
     };
   } catch (error) {
-    console.error('Error during login:', error);
+    console.error('Error getting the menus:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: 'An error occurred during login.' }),
+      body: JSON.stringify({
+        message: '⚠️ An error occurred getting the menus. Please log in again.',
+      }),
     };
   } finally {
     await client.close();

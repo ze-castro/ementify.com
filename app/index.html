@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- keywords -->
+    <meta
+      name="keywords"
+      content="digital menu, menus, menu, alternative, paper, alternative to paper, cafe, cafes, café, cafés, bar, bars, restaurant, restaurants, best menu for cafe, best menu for bar, best menu for restaurant, menu, best menu, best menu for cafe, best menu for bar, best menu for restaurant, menu, best menu"
+    />
+    <!-- title and description -->
+    <title>Ementify - Free Digital Menu</title>
+    <meta name="description" content="Digital menu for cafés, restaurants, and bars." />
+    <!-- apple icon -->
+    <link rel="apple-touch-icon" href="assets/icon.webp" />
+    <!-- favicon -->
+    <link rel="icon" href="assets/logo.webp" type="image/webp" />
+    <!-- styles -->
+    <link rel="stylesheet" href="styles/font-awesome-4/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="styles/defaults.css" />
+    <link rel="stylesheet" href="styles/components/loading.css" />
+    <link rel="stylesheet" href="styles/components/popup.css" />
+    <link rel="stylesheet" href="/app/index.css" />
+    <!-- scripts -->
+    <script type="module" src="/app/index.js"></script>
+    <!-- analytics -->
+    <script defer src="js/analytics.js"></script>
+  </head>
+  <body>
+    <nav>
+      <a href="/app/settings">
+        Settings
+        <i class="fa fa-cog"></i>
+      </a>
+      <a href="/app/profile">
+        Profile
+        <i class="fa fa-user"></i>
+      </a>
+      <a href="/">
+        Logout
+        <i class="fa fa-sign-out"></i>
+      </a>
+    </nav>
+    <main>
+      <section id="app">
+        <h1>My menus</h1>
+        <p id="menus-help">
+          Click on a menu to edit it. Click on the trash icon to
+          delete it.
+        </p>
+        <div id="menus-list">
+          <form id="add-menu-form" class="menu" name="add-menu">
+            <button type="submit">
+              <i class="fa fa-plus-square-o"></i>
+            </button>
+            <input type="text" name="name" placeholder="Menu name" required />
+          </form>
+          <div class="menu">
+            <button>
+              <i class="fa fa-bars"></i>
+            </button>
+            <p>Example Menu</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
