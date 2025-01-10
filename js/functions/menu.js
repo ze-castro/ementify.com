@@ -1,8 +1,8 @@
 import { renderPopup, unrenderPopup } from '/js/components/popup.js';
 import { renderLoading, unrenderLoading } from '/js/components/loading.js';
 
-// Verify the token
-async function verifyToken(token) {
+// Get menus
+async function getMenus(token) {
   // Popup trigger
   var popupTrigger = false;
 
@@ -15,8 +15,8 @@ async function verifyToken(token) {
   };
 
   try {
-    // Send POST request to the verify-token serverless function
-    const response = await fetch('/.netlify/functions/verify-token', {
+    // Send GET request to the get-menus serverless function
+    const response = await fetch('/.netlify/functions/menu-get-menus', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,21 +27,21 @@ async function verifyToken(token) {
     // Handle the response
     const result = await response.json();
 
-    if (!response.ok) {
+    if (response.ok) {
+      return result.menus;
+    } else {
       // Handle errors
       popupTrigger = true;
-      renderPopup(result.message || '⚠️ Something went wrong. Please log in again.');
-      // Delete the token
-      localStorage.removeItem('token');
-      // Redirect to login page
+      renderPopup(result.message || '⚠️ Something went wrong. Please try again.');
+      // Refresh the page
       setTimeout(() => {
-        window.location.href = '/login';
+        window.location.reload();
       }, 2300);
     }
   } catch (error) {
     // Handle any network errors
     popupTrigger = true;
-    console.error('Error validating the token:', error);
+    console.error('Error fetching menus:', error);
     renderPopup("⚠️ We're having internal problems. Please try again later.");
     // Go to the home page
     setTimeout(() => {
@@ -53,4 +53,4 @@ async function verifyToken(token) {
   }
 }
 
-export { verifyToken };
+export { getMenus };

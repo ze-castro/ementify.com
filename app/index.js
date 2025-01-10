@@ -1,6 +1,6 @@
-import { renderLoading, unrenderLoading } from '/js/components/loading.js';
 import { renderPopup, unrenderPopup } from '/js/components/popup.js';
 import { verifyToken } from '/js/functions/user.js';
+import { getMenus } from '/js/functions/menu.js';
 
 // Variables
 var menus = null;
@@ -10,14 +10,11 @@ var error = false;
 
 // On load
 document.addEventListener('DOMContentLoaded', async function () {
-  // Show loading
-  renderLoading();
-
   // Check if the token is stored in the local storage
   const token = localStorage.getItem('token');
   if (!token) {
-    unrenderLoading();
     renderPopup('⚠️ You are not logged in. Redirecting to login page.');
+    unrenderPopup(2000);
     setTimeout(() => {
       window.location.href = '/login';
     }, 2300);
@@ -63,53 +60,5 @@ function renderMenus(menus) {
       // Append the menu card to the menus list
       menusList.appendChild(menuCard);
     });
-  }
-}
-
-// Get menus
-async function getMenus(token, errorTrigger) {
-  // Create a payload for the API request
-  const payload = {
-    token,
-  };
-
-  try {
-    // Send GET request to the get-menus serverless function
-    const response = await fetch('/.netlify/functions/menu-get-menus', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
-
-    // Handle the response
-    const result = await response.json();
-
-    if (response.ok) {
-      console.log('Menus:', result.menus);
-      return result.menus;
-    } else {
-      // Handle errors
-      errorTrigger = true;
-      renderPopup(result.message || '⚠️ Something went wrong. Please try again.');
-      // Refresh the page
-      setTimeout(() => {
-        window.location.reload();
-      }, 2300);
-    }
-  } catch (error) {
-    // Handle any network errors
-    console.error('Error fetching menus:', error);
-    renderPopup('⚠️ We\'re having internal problems. Please try again later.');
-    // Go to the home page
-    setTimeout(() => {
-      window.location.href = '/';
-    }, 2300);
-  } finally {
-    unrenderLoading();
-    if (errorTrigger) {
-      unrenderPopup(2000);
-    }
   }
 }
