@@ -30,25 +30,19 @@
   <body>
     <nav>
       <a href="/app/settings">
-        Settings
         <i class="fa fa-cog"></i>
       </a>
       <a href="/app/profile">
-        Profile
         <i class="fa fa-user"></i>
       </a>
       <a href="/">
-        Logout
         <i class="fa fa-sign-out"></i>
       </a>
     </nav>
     <main>
       <section id="app">
         <h1>My menus</h1>
-        <p id="menus-help">
-          Click on a menu to edit it. Click on the trash icon to
-          delete it.
-        </p>
+        <p>Click on <i class="fa fa-plus-square-o"></i> to create a new menu or click on <i class="fa fa-bars"></i> to edit one.</p>
         <div id="menus-list">
           <form id="add-menu-form" class="menu" name="add-menu">
             <button type="submit">
@@ -56,12 +50,6 @@
             </button>
             <input type="text" name="name" placeholder="Menu name" required />
           </form>
-          <div class="menu">
-            <button>
-              <i class="fa fa-bars"></i>
-            </button>
-            <p>Example Menu</p>
-          </div>
         </div>
       </section>
     </main>

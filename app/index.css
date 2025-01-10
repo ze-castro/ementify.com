@@ -2,7 +2,7 @@
 @media (width < 768px) {
   :root {
     --title: 2.5rem;
-    --subtitle: 1.3rem;
+    --subtitle: 1.2rem;
     --paragraph: 1rem;
     --microcopy: 0.7rem;
   }
@@ -24,10 +24,25 @@ nav {
 }
 
 nav a {
-  font-weight: var(--light);
+  padding: 0.5rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  transition: var(--steady);
+}
+
+nav a:hover {
+  transform: scale(1.1);
+  text-decoration: none;
+}
+
+nav a i {
+  font-size: 1.5rem !important;
+}
+
+@media (width < 768px) {
+  nav {
+    gap: 0.5rem;
+  }
 }
 
 /* APP */
@@ -49,6 +64,22 @@ nav a {
   font-size: var(--subtitle);
   font-weight: var(--thin);
   margin-bottom: 1rem;
+}
+
+#app > p i {
+  margin: 0 0.2rem;
+}
+
+@media (width < 768px) {
+  #app {
+    padding: 0;
+  }
+  #app h1 {
+    margin-top: 0.5rem;
+  }
+  #app > p {
+    margin-bottom: 0.5rem;
+  }
 }
 
 #menus-list {
@@ -81,7 +112,7 @@ nav a {
   text-align: center;
   background-color: var(--green);
   border-radius: var(--radius-1);
-  font-size: var(--subtitle);
+  font-size: var(--paragraph);
   font-weight: var(--thin);
   color: var(--white);
 }
@@ -113,4 +144,22 @@ nav a {
 
 #add-menu-form:focus-within {
   background-color: var(--light-green);
+}
+
+@media (width < 768px) {
+  #menus-list {
+    gap: 1.5rem;
+    padding: 1rem 0 2rem 0;
+  }
+  .menu {
+    width: 150px;
+    height: 150px;
+    box-shadow: 0 0.5rem 1rem var(--shadow-1);
+  }
+  .menu button i {
+    font-size: 2rem;
+  }
+  #add-menu-form input {
+    width: 100%;
+  }
 }

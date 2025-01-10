@@ -39,13 +39,23 @@ export async function handler(event, context) {
     await client.connect();
     const database = client.db('ementify');
     const menusCollection = database.collection('menus');
+    const usersCollection = database.collection('users');
 
     // Decode the token and get the user's id
     const decodedToken = verify(token, jwtSecret);
-    const id = decodedToken._id;
-
+    const email = decodedToken.email;
+    
+    // Get the user's id
+    const user = await usersCollection.findOne({ email });
+    if (!user) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: '⚠️ Something went wrong getting the menu owner.' }),
+      };
+    }
+    
     // Find all the menus with id
-    const menus = await menusCollection.find({ id }).toArray();
+    const menus = await menusCollection.find({ user: user._id }).toArray();
     if (!menus) {
       return {
         statusCode: 404,
@@ -63,7 +73,7 @@ export async function handler(event, context) {
     return {
       statusCode: 500,
       body: JSON.stringify({
-        message: '⚠️ An error occurred getting the menus. Please log in again.',
+        message: '⚠️ An error occurred getting the menus.',
       }),
     };
   } finally {

@@ -50,7 +50,11 @@ document.addEventListener('DOMContentLoaded', function () {
     } catch (error) {
       // Handle any network errors
       console.error('Error recovering the password:', error);
-      renderPopup('An error occurred. Please try again.');
+      renderPopup("⚠️ We're having internal problems. Please try again later.");
+      // Go to the home page
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 2300);
     } finally {
       unrenderLoading();
       unrenderPopup(2000);

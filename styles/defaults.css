@@ -111,8 +111,11 @@ button:active {
 a,
 a:visited {
   text-decoration: none;
-  color: var(--black);
   cursor: pointer;
+}
+
+a {
+  color: var(--black);
 }
 
 a:hover {

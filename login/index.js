@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (response.ok) {
         localStorage.setItem('token', result.token);
-        window.location.href = '/app' + result.token;
+        window.location.href = '/app';
       } else {
         // Handle errors
         renderPopup(result.message || 'An error occurred during login 🤷‍♂️');
@@ -50,9 +50,13 @@ document.addEventListener('DOMContentLoaded', function () {
     } catch (error) {
       // Handle any network errors
       console.error('Error during login:', error);
-      renderPopup('An error occurred. Please try again.');
+      renderPopup("⚠️ We're having internal problems. Please try again later.");
+      // Go to the home page
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 2300);
     } finally {
-      unrenderLoading()
+      unrenderLoading();
       unrenderPopup(2000);
       loginButton.disabled = false;
     }
