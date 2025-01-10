@@ -21,36 +21,25 @@
     <link rel="stylesheet" href="/styles/defaults.css" />
     <link rel="stylesheet" href="/styles/components/loading.css" />
     <link rel="stylesheet" href="/styles/components/popup.css" />
-    <link rel="stylesheet" href="/app/index.css" />
+    <link rel="stylesheet" href="/app/menu/index.css" />
     <!-- scripts -->
-    <script type="module" src="/app/index.js"></script>
+    <script type="module" src="/app/menu/index.js"></script>
     <!-- analytics -->
     <script defer src="/js/analytics.js"></script>
   </head>
   <body>
     <nav>
-      <a href="/app/settings">
+      <a href="/app/menu/settings">
         <i class="fa fa-cog"></i>
-      </a>
-      <a href="/app/profile">
-        <i class="fa fa-user"></i>
-      </a>
-      <a href="/">
-        <i class="fa fa-sign-out"></i>
       </a>
     </nav>
     <main>
-      <section id="app">
-        <h1>My menus</h1>
-        <p>Click on <i class="fa fa-plus-square-o"></i> to create a new menu or click on <i class="fa fa-bars"></i> to edit one.</p>
-        <div id="menus-list">
-          <form id="add-menu-form" class="menu" name="add-menu">
-            <button type="submit">
-              <i class="fa fa-plus-square-o"></i>
-            </button>
-            <input type="text" name="title" placeholder="Menu name" required />
-          </form>
-        </div>
+      <section id="menu">
+        <input id="menu-title" type="text"></input>
+        <p id="menu-description">
+          Click on the menu items to see more information.
+        </p>
+        <code id="menu-code"></code>
       </section>
     </main>
   </body>

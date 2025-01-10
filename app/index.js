@@ -1,39 +1,26 @@
-import { renderPopup } from '/js/components/popup.js';
+import { isTokenInLocalStorage } from '/js/utils/isTokenInLocalStorage.js';
 import { verifyToken } from '/js/functions/user.js';
-import { getMenus } from '/js/functions/menu.js';
+import { getMenus, createMenu } from '/js/functions/menu.js';
 
 // Variables
 var menus = null;
 
-// Error handling
-var error = false;
+// Get the token from the local storage
+const token = localStorage.getItem('token');
 
 // On load
 document.addEventListener('DOMContentLoaded', async function () {
   // Check if the token is stored in the local storage
-  const token = localStorage.getItem('token');
-  if (!token) {
-    renderPopup('⚠️ You are not logged in. Redirecting to login page.');
-    
-    setTimeout(() => {
-      window.location.href = '/login';
-    }, 2300);
-    return;
-  }
+  await isTokenInLocalStorage(token);
 
   // Verify the token
-  await verifyToken(token, error);
+  await verifyToken(token);
 
   // Get menus
-  menus = await getMenus(token, error);
+  menus = await getMenus(token);
 
   // Render the menus
-  renderMenus(menus);
-});
-
-// Render the menus
-const menusList = document.getElementById('menus-list');
-function renderMenus(menus) {
+  const menusList = document.getElementById('menus-list');
   if (menus || menus.length > 0) {
     menus.forEach((menu) => {
       // Create a menu card
@@ -61,4 +48,19 @@ function renderMenus(menus) {
       menusList.appendChild(menuCard);
     });
   }
-}
+});
+
+
+// On Add Menu button click
+const addMenuForm = document.getElementById('add-menu-form');
+addMenuForm.addEventListener('submit', async function (event) {
+  // Prevent the default form submission
+  event.preventDefault();
+
+  // Get the form data
+  const form = new FormData(addMenuForm);
+  const title = form.get('title');
+
+  // Create a new menu
+  await createMenu(token, title);
+});
