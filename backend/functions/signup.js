@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 if (process.env.NODE_ENV == 'dev') {
   dotenv.config();
 }
-import rateLimiter from '../utils/rateLimiter';
+import rateLimiter from '/utils/rateLimiter';
 
 // MongoDB URI and JWT Secret from environment variables
 const uri = process.env.MONGO_DB;

@@ -1,5 +1,5 @@
-import { renderLoading, unrenderLoading } from '../js/components/loading.js';
-import { renderPopup, unrenderPopup } from '../js/components/popup.js';
+import { renderLoading, unrenderLoading } from '/js/components/loading.js';
+import { renderPopup, unrenderPopup } from '/js/components/popup.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   // Get the login form elements
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (response.ok) {
         localStorage.setItem('token', result.token);
-        window.location.href = '/app';
+        window.location.href = '/app' + result.token;
       } else {
         // Handle errors
         renderPopup(result.message || 'An error occurred during login 🤷‍♂️');

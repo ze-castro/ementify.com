@@ -1,5 +1,5 @@
-import { renderLoading, unrenderLoading } from '../js/components/loading.js';
-import { renderPopup, unrenderPopup } from '../js/components/popup.js';
+import { renderLoading, unrenderLoading } from '/js/components/loading.js';
+import { renderPopup, unrenderPopup } from '/js/components/popup.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   // Get the signup form elements
