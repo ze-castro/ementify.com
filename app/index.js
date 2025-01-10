@@ -1,4 +1,4 @@
-import { renderPopup, unrenderPopup } from '/js/components/popup.js';
+import { renderPopup } from '/js/components/popup.js';
 import { verifyToken } from '/js/functions/user.js';
 import { getMenus } from '/js/functions/menu.js';
 
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   const token = localStorage.getItem('token');
   if (!token) {
     renderPopup('⚠️ You are not logged in. Redirecting to login page.');
-    unrenderPopup(2000);
+    
     setTimeout(() => {
       window.location.href = '/login';
     }, 2300);

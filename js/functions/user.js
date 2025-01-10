@@ -1,11 +1,8 @@
-import { renderPopup, unrenderPopup } from '/js/components/popup.js';
+import { renderPopup } from '/js/components/popup.js';
 import { renderLoading, unrenderLoading } from '/js/components/loading.js';
 
 // Verify the token
 async function verifyToken(token) {
-  // Popup trigger
-  var popupTrigger = false;
-
   // Render the loading animation
   renderLoading();
 
@@ -29,7 +26,6 @@ async function verifyToken(token) {
 
     if (!response.ok) {
       // Handle errors
-      popupTrigger = true;
       renderPopup(result.message || '⚠️ Something went wrong. Please log in again.');
       // Delete the token
       localStorage.removeItem('token');
@@ -40,7 +36,6 @@ async function verifyToken(token) {
     }
   } catch (error) {
     // Handle any network errors
-    popupTrigger = true;
     console.error('Error validating the token:', error);
     renderPopup("⚠️ We're having internal problems. Please try again later.");
     // Go to the home page
@@ -49,7 +44,6 @@ async function verifyToken(token) {
     }, 2300);
   } finally {
     unrenderLoading();
-    if (popupTrigger) unrenderPopup(2000);
   }
 }
 

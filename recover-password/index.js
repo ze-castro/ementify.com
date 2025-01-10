@@ -1,5 +1,5 @@
 import { renderLoading, unrenderLoading } from '/js/components/loading.js';
-import { renderPopup, unrenderPopup } from '/js/components/popup.js';
+import { renderPopup } from '/js/components/popup.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   // Get the recover-password form elements
@@ -57,7 +57,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }, 2300);
     } finally {
       unrenderLoading();
-      unrenderPopup(2000);
       recoverPasswordButton.disabled = false;
     }
   });

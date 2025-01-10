@@ -1,5 +1,5 @@
 // render popup
-function renderPopup(text) {
+function renderPopup(text, time = 2000) {
   const popupHTML = `
     <div id="popup">
       <p>${text}</p>
@@ -14,6 +14,9 @@ function renderPopup(text) {
 
   // animate popup
   popup.style.animation = 'fadeIn 0.3s';
+
+  // unrender popup after time
+  unrenderPopup(time);
 }
 
 // unrender popup
@@ -31,4 +34,4 @@ function unrenderPopup(time) {
   }, time);
 }
 
-export { renderPopup, unrenderPopup };
+export { renderPopup };

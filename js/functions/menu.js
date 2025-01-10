@@ -1,11 +1,8 @@
-import { renderPopup, unrenderPopup } from '/js/components/popup.js';
+import { renderPopup } from '/js/components/popup.js';
 import { renderLoading, unrenderLoading } from '/js/components/loading.js';
 
 // Get menus
 async function getMenus(token) {
-  // Popup trigger
-  var popupTrigger = false;
-
   // Render the loading animation
   renderLoading();
 
@@ -31,7 +28,6 @@ async function getMenus(token) {
       return result.menus;
     } else {
       // Handle errors
-      popupTrigger = true;
       renderPopup(result.message || '⚠️ Something went wrong. Please try again.');
       // Refresh the page
       setTimeout(() => {
@@ -40,7 +36,6 @@ async function getMenus(token) {
     }
   } catch (error) {
     // Handle any network errors
-    popupTrigger = true;
     console.error('Error fetching menus:', error);
     renderPopup("⚠️ We're having internal problems. Please try again later.");
     // Go to the home page
@@ -49,7 +44,6 @@ async function getMenus(token) {
     }, 2300);
   } finally {
     unrenderLoading();
-    if (popupTrigger) unrenderPopup(2000);
   }
 }
 

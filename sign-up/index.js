@@ -1,5 +1,5 @@
 import { renderLoading, unrenderLoading } from '/js/components/loading.js';
-import { renderPopup, unrenderPopup } from '/js/components/popup.js';
+import { renderPopup } from '/js/components/popup.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   // Get the signup form elements
@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }, 2300);
     } finally {
       unrenderLoading();
-      unrenderPopup(2000);
       signupButton.disabled = false;
     }
   });
