@@ -8,7 +8,7 @@
   }
   main {
     padding: 0 1rem;
-  }  
+  }
 }
 
 /* NAV */
@@ -181,18 +181,6 @@ nav a {
   margin-bottom: 2rem;
 }
 
-.card h5 {
-  font-size: var(--subtitle);
-  font-weight: var(--thin);
-  color: var(--gray-5);
-  margin-bottom: 2rem;
-}
-
-.card h5 b {
-  font-weight: var(--semi-bold);
-  color: var(--green);
-}
-
 .card ul {
   display: flex;
   flex-direction: column;
@@ -206,6 +194,34 @@ nav a {
   font-size: var(--paragraph);
   font-weight: var(--regular);
   color: var(--gray);
+}
+
+.card-prices {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
+
+.card-prices h5 {
+  font-size: var(--subtitle);
+  font-weight: var(--thin);
+  color: var(--gray-5);
+}
+
+.card-prices h5 b {
+  font-weight: var(--semi-bold);
+  color: var(--green);
+}
+
+.card-prices h6 {
+  text-decoration: line-through;
+  font-size: var(--paragraph);
+  font-weight: var(--thin);
+  color: var(--gray-2);
+}
+
+.card-prices h6 b {
+  font-weight: var(--semi-bold);
 }
 
 .card button {
