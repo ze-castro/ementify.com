@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="/styles/defaults.css" />
     <link rel="stylesheet" href="/styles/components/loading.css" />
     <link rel="stylesheet" href="/styles/components/popup.css" />
+    <link rel="stylesheet" href="/styles/components/confirm.css" />
     <link rel="stylesheet" href="/app/menu/index.css" />
     <!-- scripts -->
     <script type="module" src="/app/menu/index.js"></script>
@@ -35,12 +36,12 @@
     </nav>
     <main>
       <section id="menu">
-        <input id="menu-title" class="changable-title" type="text" placeholder="Menu" />
+        <input id="menu-title" type="text" placeholder="Menu" />
         <p>Add a new category by selecting "Create a new category" and creating an item.</p>
         <div id="menu-categories">
           <form id="menu-category-form" name="menu-category-form">
             <select id="menu-category-select" required>
-              <option value="" disabled selected>Choose the category</option>
+              <option value="" selected>Select a category</option>
               <option value="new">Create a new category</option>
             </select>
             <input

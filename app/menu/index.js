@@ -1,6 +1,7 @@
 import { isTokenInLocalStorage } from '/js/utils/isTokenInLocalStorage.js';
 import { verifyToken } from '/js/functions/user.js';
 import { getMenu, updateMenu } from '/js/functions/menu.js';
+import { renderConfirm } from '/js/components/confirm.js';
 
 // Variables
 var menu = null;
@@ -141,20 +142,10 @@ async function populateCategorySelect() {
   const menuCategorySelect = document.getElementById('menu-category-select');
   const categories = menu.categories;
 
-  // Delete the current options
-  menuCategorySelect.innerHTML = '';
-
-  // Create the default option
-  const defaultOption = document.createElement('option');
-  defaultOption.value = '';
-  defaultOption.text = 'Select a category';
-  menuCategorySelect.add(defaultOption);
-
-  // Create the new category option
-  const newOption = document.createElement('option');
-  newOption.value = 'new';
-  newOption.text = 'Create a new category';
-  menuCategorySelect.add(newOption);
+  // Delete the current options except the first 2 (default and new)
+  for (let i = menuCategorySelect.options.length - 1; i >= 2; i--) {
+    menuCategorySelect.remove(i);
+  }
 
   // Loop through the categories
   for (const category of categories) {
@@ -212,6 +203,7 @@ async function populateMenu(menu) {
         category.name = menuCategoryTitle.value;
         // Update the menu
         await updateMenu(token, menu);
+        await populateCategorySelect();
       }
     });
 
@@ -238,6 +230,12 @@ async function populateMenu(menu) {
 
     // Add event listener to the delete button
     categoryDelete.addEventListener('click', async function () {
+      // Ask for confirmation
+      const confirm = await renderConfirm('Are you sure you want to delete this category?')
+      if (!confirm) {
+        return;
+      }
+
       // Delete the category
       menu.categories = menu.categories.filter((c) => c !== category);
 

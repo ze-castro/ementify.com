@@ -60,6 +60,8 @@ nav a i {
   max-width: 600px;
   padding: 0.5rem 1rem 0.5rem 0 !important;
   margin-bottom: 1rem;
+  border-radius: 0;
+  border: 0;
 }
 
 .changable-title {

@@ -77,9 +77,9 @@ async function getMenu(token, menuId) {
       // Handle errors
       renderPopup(result.message || '⚠️ Something went wrong. Please try again.');
       // Refresh the page
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 2300);
+      setTimeout(() => {
+        window.location.reload();
+      }, 2300);
     }
   } catch (error) {
     // Handle any network errors
@@ -120,11 +120,11 @@ async function createMenu(token, title) {
 
     if (response.ok) {
       // Show a success message
-      renderPopup(result.message || '✅ Menu created successfully.');
+      renderPopup(result.message || '✅ Menu created successfully.', 1000);
       // Redirect to the new menu
       setTimeout(() => {
         window.location.href = `/app/menu?id=${result.id}`;
-      }, 2300);
+      }, 1300);
     } else {
       // Handle errors
       renderPopup(result.message || '⚠️ Something went wrong. Please try again.');
@@ -171,7 +171,7 @@ async function updateMenu(token, menu) {
 
     if (response.ok) {
       // Show a success message
-      renderPopup(result.message || '✅ Menu updated successfully.');
+      renderPopup(result.message || '✅ Menu updated successfully.', 1000);
       return result;
     } else {
       // Handle errors
