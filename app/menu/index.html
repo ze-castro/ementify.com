@@ -30,16 +30,59 @@
   <body>
     <nav>
       <a href="/app/menu/settings">
-        <i class="fa fa-cog"></i>
+        <i class="fa fa-bars"></i>
       </a>
     </nav>
     <main>
       <section id="menu">
-        <input id="menu-title" type="text"></input>
-        <p id="menu-description">
-          Click on the menu items to see more information.
-        </p>
-        <code id="menu-code"></code>
+        <input id="menu-title" class="changable-title" type="text" placeholder="Menu" />
+        <p>Add a new category by selecting "Create a new category" and creating an item.</p>
+        <div id="menu-categories">
+          <form id="menu-category-form" name="menu-category-form">
+            <select id="menu-category-select" required>
+              <option value="" disabled selected>Choose the category</option>
+              <option value="new">Create a new category</option>
+            </select>
+            <input
+              type="text"
+              id="menu-category-title-new"
+              class="changable-title hide"
+              placeholder="Category"
+            />
+            <div class="menu-category-items">
+              <div class="menu-category-item">
+                <input
+                  id="item-title"
+                  name="item-title"
+                  class="changable-title"
+                  type="text"
+                  placeholder="Item"
+                  required
+                />
+                <input
+                  id="item-description"
+                  name="item-description"
+                  class="changable-title"
+                  type="text"
+                  placeholder="Description"
+                  required
+                />
+                <input
+                  id="item-price"
+                  name="item-price"
+                  class="changable-title"
+                  type="number"
+                  placeholder="0.0"
+                  required
+                />
+                <button id="menu-category-item-add" type="submit">
+                  <i class="fa fa-plus"></i>
+                  Add item
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
       </section>
     </main>
   </body>

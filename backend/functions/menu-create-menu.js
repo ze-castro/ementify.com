@@ -139,11 +139,11 @@ export async function handler(event, context) {
       body: JSON.stringify({ message: '🍔 Menu created successfully.', id: menu.insertedId }),
     };
   } catch (error) {
-    console.error('Error getting the menus:', error);
+    console.error('Error creating the menu:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({
-        message: '⚠️ An error occurred getting the menus.',
+        message: '⚠️ An error occurred creating the menu.',
       }),
     };
   } finally {

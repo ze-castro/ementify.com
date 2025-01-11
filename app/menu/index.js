@@ -1,6 +1,6 @@
 import { isTokenInLocalStorage } from '/js/utils/isTokenInLocalStorage.js';
 import { verifyToken } from '/js/functions/user.js';
-import { getMenu } from '/js/functions/menu.js';
+import { getMenu, updateMenu } from '/js/functions/menu.js';
 
 // Variables
 var menu = null;
@@ -24,17 +24,356 @@ document.addEventListener('DOMContentLoaded', async function () {
   menu = await getMenu(token, menuId);
 
   // Render the menu
-  console.log(menu);
+  await populateCategorySelect();
   await populateMenu(menu);
-});
 
-// Populate the menu
-async function populateMenu(menu) {
+  //// EVENT LISTENERS ////
   // Get the menu title element
   const menuTitle = document.getElementById('menu-title');
   menuTitle.value = menu.title;
 
-  // TODO: just for now, place the menu object into the code element
-  const menuCode = document.getElementById('menu-code');
-  menuCode.innerText = JSON.stringify(menu, null, 2);
+  // Add event listener to the title input when the user leaves the input
+  menuTitle.addEventListener('blur', async function () {
+    // Check if the title is empty and set it to the previous value
+    if (menuTitle.value === '') {
+      menuTitle.value = menu.title;
+      return;
+    }
+    // Check if the title is the same as the previous value
+    if (menuTitle.value !== menu.title) {
+      // Update the menu title
+      menu.title = menuTitle.value;
+      // Update the menu
+      await updateMenu(token, menu);
+    }
+  });
+
+  // Add event listener to the category select
+  const menuCategorySelect = document.getElementById('menu-category-select');
+  const menuCategoryTitleNew = document.getElementById('menu-category-title-new');
+  menuCategorySelect.addEventListener('change', function () {
+    if (menuCategorySelect.value === 'new') {
+      menuCategoryTitleNew.classList.remove('hide');
+    } else {
+      menuCategoryTitleNew.classList.add('hide');
+    }
+  });
+
+  // Add event listener to the add item button
+  const menuCategoryForm = document.getElementById('menu-category-form');
+  menuCategoryForm.addEventListener('submit', async function (event) {
+    // Prevent the form from submitting and refreshing the page
+    event.preventDefault();
+
+    // Get the category select
+    const menuCategoryTitleNew = document.getElementById('menu-category-title-new');
+
+    // Get the category name
+    const categoryName =
+      menuCategorySelect.value === 'new' ? menuCategoryTitleNew.value : menuCategorySelect.value;
+
+    // Get the category
+    const category = menu.categories.find((c) => c.name === categoryName);
+
+    // Form data
+    const formData = new FormData(menuCategoryForm);
+    const itemTitle = formData.get('item-title');
+    const itemDescription = formData.get('item-description');
+    const itemPrice = formData.get('item-price');
+
+    // Create the item
+    const item = {
+      title: itemTitle,
+      description: itemDescription,
+      price: itemPrice,
+    };
+
+    // Add the item to the category
+    if (!category) {
+      // Create a new category
+      const newCategory = {
+        name: categoryName,
+        items: [item],
+      };
+      menu.categories.push(newCategory);
+    } else {
+      category.items.push(item);
+    }
+
+    // Update the menu
+    const menuResponse = await updateMenu(token, menu);
+    if (menuResponse) {
+      // Repopulate the menu
+      await populateCategorySelect();
+      await repopulateMenu(menu);
+    }
+
+    // Reset the form
+    menuCategoryForm.reset();
+  });
+});
+
+//// FUNCTIONS ////
+// Repopulate the menu
+async function repopulateMenu(menu) {
+  await depopulateMenu();
+  await populateMenu(menu);
+}
+
+// Delete every element in the menu
+async function depopulateMenu() {
+  // Get the menu categories element
+  const menuCategories = document.getElementById('menu-categories');
+
+  // Loop through the children and remove them
+  let child = menuCategories.firstChild;
+  while (child) {
+    const nextSibling = child.nextSibling;
+    if (child.id !== 'menu-category-form') {
+      menuCategories.removeChild(child);
+    }
+    child = nextSibling;
+  }
+}
+
+// Populate the category select
+async function populateCategorySelect() {
+  const menuCategorySelect = document.getElementById('menu-category-select');
+  const categories = menu.categories;
+
+  // Delete the current options
+  menuCategorySelect.innerHTML = '';
+
+  // Create the default option
+  const defaultOption = document.createElement('option');
+  defaultOption.value = '';
+  defaultOption.text = 'Select a category';
+  menuCategorySelect.add(defaultOption);
+
+  // Create the new category option
+  const newOption = document.createElement('option');
+  newOption.value = 'new';
+  newOption.text = 'Create a new category';
+  menuCategorySelect.add(newOption);
+
+  // Loop through the categories
+  for (const category of categories) {
+    const option = document.createElement('option');
+    option.value = category.name;
+    option.text = category.name;
+    menuCategorySelect.add(option);
+  }
+}
+
+// Populate the menu
+async function populateMenu(menu) {
+  // Get the menu categories element
+  const menuCategories = document.getElementById('menu-categories');
+
+  // Loop through the categories
+  for (const category of menu.categories) {
+    // Create the category element
+    const menuCategory = document.createElement('div');
+    menuCategory.className = 'menu-category';
+
+    // Create the category title box element
+    const menuCategoryTitleBox = document.createElement('div');
+    menuCategoryTitleBox.className = 'menu-category-title-box';
+
+    // Create the category title element
+    const menuCategoryTitle = document.createElement('input');
+    menuCategoryTitle.className = 'menu-category-title changable-title';
+    menuCategoryTitle.type = 'text';
+    menuCategoryTitle.placeholder = 'Category';
+    menuCategoryTitle.value = category.name;
+
+    // Category open button
+    const menuCategoryOpen = document.createElement('button');
+    menuCategoryOpen.className = 'menu-category-open';
+    menuCategoryOpen.innerHTML = '<i class="fa fa-angle-left"></i>';
+
+    // Append the elements to the category title box element
+    menuCategoryTitleBox.appendChild(menuCategoryTitle);
+    menuCategoryTitleBox.appendChild(menuCategoryOpen);
+
+    // Append the category title box element to the category element
+    menuCategory.appendChild(menuCategoryTitleBox);
+
+    // Add event listener to the title input
+    menuCategoryTitle.addEventListener('blur', async function () {
+      // Check if the title is empty and set it to the previous value
+      if (menuCategoryTitle.value === '') {
+        menuCategoryTitle.value = category.name;
+        return;
+      }
+      // Check if the title is the same as the previous value
+      if (menuCategoryTitle.value !== category.name) {
+        // Update the category title
+        category.name = menuCategoryTitle.value;
+        // Update the menu
+        await updateMenu(token, menu);
+      }
+    });
+
+    // Add event listener to the open button
+    menuCategoryOpen.addEventListener('click', function () {
+      // Toggle the items
+      menuCategoryItems.classList.toggle('hide');
+      // Change the icon
+      if (menuCategoryItems.classList.contains('hide')) {
+        menuCategoryOpen.innerHTML = '<i class="fa fa-angle-left"></i>';
+      } else {
+        menuCategoryOpen.innerHTML = '<i class="fa fa-angle-down"></i>';
+      }
+    });
+
+    // Create the category items element
+    const menuCategoryItems = document.createElement('div');
+    menuCategoryItems.className = 'menu-category-items hide';
+
+    // Create the category delete button
+    const categoryDelete = document.createElement('button');
+    categoryDelete.className = 'menu-category-delete';
+    categoryDelete.innerHTML = '<i class="fa fa-trash"></i> Delete Category';
+
+    // Add event listener to the delete button
+    categoryDelete.addEventListener('click', async function () {
+      // Delete the category
+      menu.categories = menu.categories.filter((c) => c !== category);
+
+      // Update category select
+      await populateCategorySelect();
+
+      // Update the menu
+      await updateMenu(token, menu);
+
+      // Repopulate the menu
+      await repopulateMenu(menu);
+    });
+
+    // Create a divider element
+    const divider = document.createElement('div');
+    divider.className = 'divider';
+
+    // Append the divider to the categories element
+    menuCategories.appendChild(divider);
+
+    // Loop through the items
+    for (const item of category.items) {
+      // Create the item element
+      const menuCategoryItem = document.createElement('div');
+      menuCategoryItem.className = 'menu-category-item';
+
+      // Create the item title element
+      const itemTitle = document.createElement('input');
+      itemTitle.className = 'item-title changable-title';
+      itemTitle.type = 'text';
+      itemTitle.placeholder = 'Item';
+      itemTitle.value = item.title;
+
+      // Create the item description element
+      const itemDescription = document.createElement('input');
+      itemDescription.className = 'item-description changable-title';
+      itemDescription.type = 'text';
+      itemDescription.placeholder = 'Description';
+      itemDescription.value = item.description;
+
+      // Create the item price element
+      const itemPrice = document.createElement('input');
+      itemPrice.className = 'item-price changable-title';
+      itemPrice.type = 'number';
+      itemPrice.placeholder = '0.0';
+      itemPrice.value = item.price;
+
+      // Create the item delete button
+      const itemDelete = document.createElement('button');
+      itemDelete.className = 'item-delete';
+      itemDelete.innerHTML = '<i class="fa fa-trash"></i> Remove Item';
+
+      // Append the elements to the item element
+      menuCategoryItem.appendChild(itemTitle);
+      menuCategoryItem.appendChild(itemDescription);
+      menuCategoryItem.appendChild(itemPrice);
+      menuCategoryItem.appendChild(itemDelete);
+
+      // Append the item element to the items element
+      menuCategoryItems.appendChild(menuCategoryItem);
+
+      // Create a divider element
+      const divider = document.createElement('div');
+      divider.className = 'divider-dark';
+
+      // Append the divider after the categories items element
+      menuCategoryItems.appendChild(divider);
+
+      // Add event listener to the title input
+      itemTitle.addEventListener('blur', async function () {
+        // Check if the title is empty and set it to the previous value
+        if (itemTitle.value === '') {
+          itemTitle.value = item.title;
+          return;
+        }
+        // Check if the title is the same as the previous value
+        if (itemTitle.value !== item.title) {
+          // Update the item title
+          item.title = itemTitle.value;
+          // Update the menu
+          await updateMenu(token, menu);
+        }
+      });
+
+      // Add event listener to the description input
+      itemDescription.addEventListener('blur', async function () {
+        // Check if the description is empty and set it to the previous value
+        if (itemDescription.value === '') {
+          itemDescription.value = item.description;
+          return;
+        }
+        // Check if the description is the same as the previous value
+        if (itemDescription.value !== item.description) {
+          // Update the item description
+          item.description = itemDescription.value;
+          // Update the menu
+          await updateMenu(token, menu);
+        }
+      });
+
+      // Add event listener to the price input
+      itemPrice.addEventListener('blur', async function () {
+        // Check if the price is empty and set it to the previous value
+        if (itemPrice.value === '') {
+          itemPrice.value = item.price;
+          return;
+        }
+        // Check if the price is the same as the previous value
+        if (itemPrice.value !== item.price) {
+          // Update the item price
+          item.price = itemPrice.value;
+          // Update the menu
+          await updateMenu(token, menu);
+        }
+      });
+
+      // Add event listener to the delete button
+      itemDelete.addEventListener('click', async function () {
+        // Delete the item
+        category.items = category.items.filter((i) => i !== item);
+
+        // Update the menu
+        await updateMenu(token, menu);
+
+        // Repopulate the menu
+        await repopulateMenu(menu);
+      });
+    }
+
+    // Append the items element to the category element
+    menuCategory.appendChild(menuCategoryItems);
+
+    // Append the category to the categories element
+    menuCategories.appendChild(menuCategory);
+
+    // Append the delete button to the category element
+    menuCategory.appendChild(categoryDelete);
+  }
 }

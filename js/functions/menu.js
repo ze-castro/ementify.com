@@ -124,7 +124,7 @@ async function createMenu(token, title) {
       // Redirect to the new menu
       setTimeout(() => {
         window.location.href = `/app/menu?id=${result.id}`;
-      }, 2300);      
+      }, 2300);
     } else {
       // Handle errors
       renderPopup(result.message || '⚠️ Something went wrong. Please try again.');
@@ -146,4 +146,52 @@ async function createMenu(token, title) {
   }
 }
 
-export { getMenus, getMenu, createMenu };
+async function updateMenu(token, menu) {
+  // Render the loading animation
+  renderLoading();
+
+  // Create a payload for the API request
+  const payload = {
+    token,
+    menu,
+  };
+
+  try {
+    // Send POST request to the update-menu serverless function
+    const response = await fetch('/.netlify/functions/menu-update-menu', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    // Handle the response
+    const result = await response.json();
+
+    if (response.ok) {
+      // Show a success message
+      renderPopup(result.message || '✅ Menu updated successfully.');
+      return result;
+    } else {
+      // Handle errors
+      renderPopup(result.message || '⚠️ Something went wrong. Please try again.');
+      // Refresh the page
+      setTimeout(() => {
+        window.location.reload();
+      }, 2300);
+    }
+  } catch (error) {
+    // Handle any network errors
+    console.error('Error updating a menu:', error);
+    renderPopup("⚠️ We're having internal problems. Please try again later.");
+    // Go to the home page
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 2300);
+  } finally {
+    unrenderLoading();
+  }
+}
+
+export { getMenus, getMenu, createMenu, updateMenu };
