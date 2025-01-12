@@ -126,12 +126,14 @@ async function createMenu(token, title) {
         window.location.href = `/app/menu?id=${result.id}`;
       }, 1300);
     } else {
+      if (response.status !== 403) {
+        // Refresh the page
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 2300);
+      }
       // Handle errors
       renderPopup(result.message || '⚠️ Something went wrong. Please try again.');
-      // Refresh the page
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 2300);
     }
   } catch (error) {
     // Handle any network errors
