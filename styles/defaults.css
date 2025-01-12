@@ -41,6 +41,7 @@
   --subtitle: 1.3rem;
   --paragraph: 1rem;
   --microcopy: 0.9rem;
+  --icons: 1.5rem;
 
   /* FONT WEIGHTS */
   --thin: 200;
@@ -109,6 +110,10 @@ button:hover {
 
 button:active {
   transform: scale(1);
+}
+
+button:disabled {
+  background-color: var(--gray-4) !important;
 }
 
 /* LINK */

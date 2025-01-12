@@ -1,0 +1,83 @@
+/* MODAL */
+#modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100dvw;
+  height: 100dvh;  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--transparent-background-5);
+  z-index: 9999;
+}
+
+#modal-box {
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  background-color: var(--white);
+  border-radius: var(--radius-3);
+  padding: 2rem;
+  box-shadow: 0 1rem 2rem var(--shadow-2);
+  transition: var(--steady);
+}
+
+#modal-box p {
+  font-size: var(--paragraph);
+  font-weight: var(--light);
+  color: var(--black);
+  text-align: center;
+}
+
+#modal-box img {
+  width: 200px;
+  height: 200px;
+  user-select: none;
+  pointer-events: none;
+}
+
+#modal-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+#modal-buttons button {
+  padding: 0.5rem 1.5rem;
+  border-radius: var(--radius-2);
+  background-color: var(--green);
+  font-size: var(--paragraph);
+  font-weight: var(--semi-bold);
+  color: var(--white);
+  cursor: pointer;
+  transition: var(--steady);
+}
+
+@media (width < 768px) {
+  :root {
+    --paragraph: 0.8rem;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

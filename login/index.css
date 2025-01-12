@@ -75,10 +75,6 @@ nav a {
   box-shadow: 0 0.5rem 1rem var(--shadow-2);
 }
 
-#login form button:disabled {
-  background-color: var(--gray-4);
-}
-
 #login a {
   margin-top: 0.5rem;
   color: var(--gray-4);

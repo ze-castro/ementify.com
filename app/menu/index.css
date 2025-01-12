@@ -28,15 +28,28 @@ nav a {
   align-items: center;
   transition: var(--steady);
   z-index: 1;
+  font-weight: var(--light);
 }
 
 nav a:hover {
-  transform: scale(1.1);
+  transform: scale(1.03);
   text-decoration: none;
 }
 
 nav a i {
-  font-size: 1.5rem !important;
+  font-size: var(--icons) !important;
+}
+
+nav button {
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  transition: var(--steady);
+  z-index: 1;
+  background-color: transparent;
+  border-radius: 0;
+  color: var(--black);
+  font-size: var(--icons);
 }
 
 @media (width < 768px) {
@@ -82,7 +95,7 @@ nav a i {
     padding: 0;
   }
   #menu > input {
-    max-width: calc(100% - 3rem);
+    max-width: calc(100% - 7.5rem);
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
   }
@@ -98,7 +111,8 @@ nav a i {
   margin-bottom: 1rem;
 }
 
-.menu-category, #menu-category-form {
+.menu-category,
+#menu-category-form {
   position: relative;
   width: 100%;
   display: flex;

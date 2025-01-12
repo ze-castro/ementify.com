@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="/styles/components/loading.css" />
     <link rel="stylesheet" href="/styles/components/popup.css" />
     <link rel="stylesheet" href="/styles/components/confirm.css" />
+    <link rel="stylesheet" href="/styles/components/modal.css" />
     <link rel="stylesheet" href="/app/menu/index.css" />
     <!-- scripts -->
     <script type="module" src="/app/menu/index.js"></script>
@@ -30,9 +31,15 @@
   </head>
   <body>
     <nav>
-      <a href="/app/menu/settings">
-        <i class="fa fa-bars"></i>
+      <a href="/app">
+        <i class="fa fa-home"></i>
       </a>
+      <button id="view-button">
+        <i class="fa fa-external-link"></i>
+      </button>
+      <button id="qr-code-button">
+        <i class="fa fa-qrcode"></i>
+      </button>
     </nav>
     <main>
       <section id="menu">

@@ -2,6 +2,7 @@ import { isTokenInLocalStorage } from '/js/utils/isTokenInLocalStorage.js';
 import { verifyToken } from '/js/functions/user.js';
 import { getMenu, updateMenu } from '/js/functions/menu.js';
 import { renderConfirm } from '/js/components/confirm.js';
+import { renderModal } from '/js/components/modal.js';
 
 // Variables
 var menu = null;
@@ -9,14 +10,14 @@ var menu = null;
 // Get the token from the local storage
 const token = localStorage.getItem('token');
 
+// Get the menu ID from the URL
+const urlParams = new URLSearchParams(window.location.search);
+const menuId = urlParams.get('id');
+
 // On load
 document.addEventListener('DOMContentLoaded', async function () {
   // Check if the token is stored in the local storage
   await isTokenInLocalStorage(token);
-
-  // Get the menu ID from the URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const menuId = urlParams.get('id');
 
   // Verify the token
   await verifyToken(token);
@@ -29,6 +30,24 @@ document.addEventListener('DOMContentLoaded', async function () {
   await populateMenu(menu);
 
   //// EVENT LISTENERS ////
+  // Add event listener to the view button
+  const viewButton = document.getElementById('view-button');
+  viewButton.addEventListener('click', async function () {
+    window.location.href = '/menu/view?id=' + menuId;
+  });
+
+  // Add event listener to the QR code button
+  const qrButton = document.getElementById('qr-code-button');
+  qrButton.addEventListener('click', async function () {
+    // Get the QR code
+    const qrCode =
+      'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.ementify.com/menu/view?id=' +
+      menuId;
+
+    // Render the modal
+    await renderModal('Scan the QR code to view the menu or download it.', 'Download', qrCode);
+  });
+
   // Get the menu title element
   const menuTitle = document.getElementById('menu-title');
   menuTitle.value = menu.title;
@@ -231,7 +250,7 @@ async function populateMenu(menu) {
     // Add event listener to the delete button
     categoryDelete.addEventListener('click', async function () {
       // Ask for confirmation
-      const confirm = await renderConfirm('Are you sure you want to delete this category?')
+      const confirm = await renderConfirm('Are you sure you want to delete this category?');
       if (!confirm) {
         return;
       }
