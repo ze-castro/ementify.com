@@ -13,9 +13,6 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Check if the token is stored in the local storage
   await isTokenInLocalStorage(token);
 
-  // Verify the token
-  await verifyToken(token);
-
   // Get menus
   menus = await getMenus(token);
 
@@ -48,6 +45,15 @@ document.addEventListener('DOMContentLoaded', async function () {
       menusList.appendChild(menuCard);
     });
   }
+});
+
+// Add event listener to the sign out button
+const signOutButton = document.querySelector('.fa-sign-out');
+signOutButton.addEventListener('click', async function () {
+  // Remove the token from the local storage
+  localStorage.removeItem('token');
+  // Redirect to the home page
+  window.location.href = '/';
 });
 
 

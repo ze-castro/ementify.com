@@ -122,6 +122,10 @@ async function updateUser(token, userData) {
     if (!response.ok) {
       // Handle errors
       renderPopup(result.message || '⚠️ Something went wrong. Please try again.');
+      // Refresh the page
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 2300);
     } else {
       renderPopup(result.message || '✅ Your profile was updated successfully.');
     }
@@ -160,6 +164,10 @@ async function deleteUser(token) {
     if (!response.ok) {
       // Handle errors
       renderPopup(result.message || '⚠️ Something went wrong. Please try again.');
+      // Refresh the page
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 2300);
     } else {
       renderPopup("😢 We're sorry to see you go. Your account has been deleted.");
       // Delete the token

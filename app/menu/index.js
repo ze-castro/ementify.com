@@ -19,9 +19,6 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Check if the token is stored in the local storage
   await isTokenInLocalStorage(token);
 
-  // Verify the token
-  await verifyToken(token);
-
   // Get menu
   menu = await getMenu(token, menuId);
 

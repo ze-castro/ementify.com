@@ -31,7 +31,7 @@ async function getMenus(token) {
       renderPopup(result.message || '⚠️ Something went wrong. Please try again.');
       // Refresh the page
       setTimeout(() => {
-        window.location.reload();
+        window.location.href = '/';
       }, 2300);
     }
   } catch (error) {
@@ -78,7 +78,7 @@ async function getMenu(token, menuId) {
       renderPopup(result.message || '⚠️ Something went wrong. Please try again.');
       // Refresh the page
       setTimeout(() => {
-        window.location.reload();
+        window.location.href = '/';
       }, 2300);
     }
   } catch (error) {
@@ -130,7 +130,7 @@ async function createMenu(token, title) {
       renderPopup(result.message || '⚠️ Something went wrong. Please try again.');
       // Refresh the page
       setTimeout(() => {
-        window.location.reload();
+        window.location.href = '/';
       }, 2300);
     }
   } catch (error) {
@@ -178,7 +178,7 @@ async function updateMenu(token, menu) {
       renderPopup(result.message || '⚠️ Something went wrong. Please try again.');
       // Refresh the page
       setTimeout(() => {
-        window.location.reload();
+        window.location.href = '/';
       }, 2300);
     }
   } catch (error) {
