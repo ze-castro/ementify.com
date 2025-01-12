@@ -1,8 +1,4 @@
 # Ementify
-
-## ⚠️ Disclaimer
-This project is still in development and not ready for production use.
-
 <img src="/assets/icon.png" alt="Ementify Logo" width="150" height="150">
 
 ## Description
@@ -23,6 +19,9 @@ Ementify is a project that aims to help the food businesses to elevate their cus
 5. Netlify Blobs
 6. MongoDB
 7. Stripe
+
+## ⚠️ Disclaimer
+This project is still in development and not ready for production use.
 
 ## License
 This project cannot be used for commercial purposes.

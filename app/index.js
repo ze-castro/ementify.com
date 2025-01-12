@@ -1,5 +1,4 @@
 import { isTokenInLocalStorage } from '/js/utils/isTokenInLocalStorage.js';
-import { verifyToken } from '/js/functions/user.js';
 import { getMenus, createMenu } from '/js/functions/menu.js';
 
 // Variables

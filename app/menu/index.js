@@ -1,5 +1,4 @@
 import { isTokenInLocalStorage } from '/js/utils/isTokenInLocalStorage.js';
-import { verifyToken } from '/js/functions/user.js';
 import { getMenu, updateMenu } from '/js/functions/menu.js';
 import { renderConfirm } from '/js/components/confirm.js';
 import { renderModal } from '/js/components/modal.js';
@@ -30,7 +29,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Add event listener to the view button
   const viewButton = document.getElementById('view-button');
   viewButton.addEventListener('click', async function () {
-    window.location.href = '/menu/view?id=' + menuId;
+    window.location.href = '/view?id=' + menuId;
   });
 
   // Add event listener to the QR code button
@@ -38,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   qrButton.addEventListener('click', async function () {
     // Get the QR code
     const qrCode =
-      'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.ementify.com/menu/view?id=' +
+      'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.ementify.com/view?id=' +
       menuId;
 
     // Render the modal
