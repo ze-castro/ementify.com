@@ -85,7 +85,6 @@ export async function handler(event, context) {
     // Send an email to the user with the password reset link
     try {
       const info = await transporter.sendMail(mailOptions);
-      console.log('Email sent:', info.response);
 
       return {
         statusCode: 200,

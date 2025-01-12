@@ -37,7 +37,6 @@ export async function handler(event, context) {
     await client.connect();
     const database = client.db('ementify');
     const menusCollection = database.collection('menus');
-    console.log('Connected to MongoDB', menusCollection);
 
     // Transform the menuId to an ObjectId
     const menu_id = new ObjectId(menuId);

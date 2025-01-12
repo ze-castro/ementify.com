@@ -57,7 +57,6 @@ export async function handler(event, context) {
     // Create an ObjectId from the menu id
     const objectMenuId = new ObjectId(menuId);
     const objectUserId = new ObjectId(user._id);
-    console.log(objectMenuId, objectUserId);
 
     // Update the menu
     const menuResponse = await menusCollection.deleteOne({

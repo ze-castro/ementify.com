@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('%cCookies Disclaimer:', 'font-weight: bold; font-size: 1rem;');
   console.log('');
   console.log('%cAnalytics', 'font-weight: bold; font-size: 0.8rem;');
-  console.log('We do not use any analytics software to track visitors of our website.');
+  console.log('We use Mixpanel to track user interactions with our website and app.');
   console.log('');
   console.log('%cLocal Storage', 'font-weight: bold; font-size: 0.8rem;');
   console.log(
