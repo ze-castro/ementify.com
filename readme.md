@@ -21,7 +21,7 @@ Ementify is a project that aims to help the food businesses to elevate their cus
 7. Stripe
 
 ## ⚠️ Disclaimer
-This project is still in development and not ready for production use.
+This project is online at [ementify.com](https://ementify.com). The paid features are disabled for now.
 
 ## License
 This project cannot be used for commercial purposes.
