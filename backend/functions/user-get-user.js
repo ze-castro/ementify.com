@@ -1,6 +1,5 @@
-import { MongoClient } from 'mongodb';
-import { compare } from 'bcrypt';
-import { sign } from 'jsonwebtoken';
+import { MongoClient, ObjectId } from 'mongodb';
+import { verify } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 if (process.env.NODE_ENV == 'dev') {
   dotenv.config();
@@ -34,44 +33,44 @@ export async function handler(event, context) {
   }
 
   try {
-    const { email, password } = JSON.parse(event.body);
+    const { token } = JSON.parse(event.body);
 
     // Connect to MongoDB
     await client.connect();
     const database = client.db('ementify');
     const usersCollection = database.collection('users');
 
-    // Check if the user exists
+    // Decode the token and get the user's id
+    const decodedToken = verify(token, jwtSecret);
+    const email = decodedToken.email;
+
+    // Get the user's id
     const user = await usersCollection.findOne({ email });
     if (!user) {
       return {
-        statusCode: 401,
-        body: JSON.stringify({ message: 'Invalid email or password. Please try again!' }),
+        statusCode: 404,
+        body: JSON.stringify({ message: '⚠️ Something went wrong getting the user.' }),
       };
     }
 
-    // Check password
-    const passwordMatch = await compare(password, user.password);
-    if (!passwordMatch) {
-      return {
-        statusCode: 401,
-        body: JSON.stringify({ message: 'Invalid email or password. Please try again!' }),
-      };
-    }
-
-    // Generate JWT token
-    const token = sign({ email: user.email, name: user.name }, jwtSecret, { expiresIn: '30d' });
-
-    // Respond with success and token
+    // Remove the id, password and passwordResetToken
+    delete user._id;
+    delete user.password;
+    delete user.passwordResetToken;
+    
+    // Return the user
     return {
       statusCode: 200,
-      body: JSON.stringify({ token }),
+      body: JSON.stringify(user),
     };
+
   } catch (error) {
-    console.error('Error during login:', error);
+    console.error('Error getting the user:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: 'An error occurred during login.' }),
+      body: JSON.stringify({
+        message: '⚠️ An error occurred getting the user.',
+      }),
     };
   } finally {
     await client.close();

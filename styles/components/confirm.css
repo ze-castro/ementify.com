@@ -16,6 +16,7 @@
 }
 
 #confirm-box {
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,6 +32,7 @@
   font-size: var(--paragraph);
   font-weight: var(--light);
   color: var(--black);
+  text-align: center;
 }
 
 #confirm-buttons {
@@ -55,6 +57,9 @@
 @media (width < 768px) {
   :root {
     --paragraph: 0.8rem;
+  }
+  #confirm-box {
+    max-width: 100%;
   }
 }
 

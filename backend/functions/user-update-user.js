@@ -1,6 +1,5 @@
-import { MongoClient } from 'mongodb';
-import { compare } from 'bcrypt';
-import { sign } from 'jsonwebtoken';
+import { MongoClient, ObjectId } from 'mongodb';
+import { verify } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 if (process.env.NODE_ENV == 'dev') {
   dotenv.config();
@@ -34,44 +33,47 @@ export async function handler(event, context) {
   }
 
   try {
-    const { email, password } = JSON.parse(event.body);
+    const { token, userData } = JSON.parse(event.body);
 
     // Connect to MongoDB
     await client.connect();
     const database = client.db('ementify');
     const usersCollection = database.collection('users');
 
-    // Check if the user exists
+    // Decode the token and get the user's id
+    const decodedToken = verify(token, jwtSecret);
+    const email = decodedToken.email;
+
+    // Get the user
     const user = await usersCollection.findOne({ email });
     if (!user) {
       return {
-        statusCode: 401,
-        body: JSON.stringify({ message: 'Invalid email or password. Please try again!' }),
+        statusCode: 404,
+        body: JSON.stringify({ message: '⚠️ Something went wrong getting the user.' }),
       };
     }
 
-    // Check password
-    const passwordMatch = await compare(password, user.password);
-    if (!passwordMatch) {
+    // Update the user
+    const result = await usersCollection.updateOne({ _id: user._id }, { $set: { ...userData } });
+    if (result.modifiedCount === 0) {
       return {
-        statusCode: 401,
-        body: JSON.stringify({ message: 'Invalid email or password. Please try again!' }),
+        statusCode: 404,
+        body: JSON.stringify({ message: '⚠️ Something went wrong updating the user.' }),
       };
     }
 
-    // Generate JWT token
-    const token = sign({ email: user.email, name: user.name }, jwtSecret, { expiresIn: '30d' });
-
-    // Respond with success and token
+    // Return a success message
     return {
       statusCode: 200,
-      body: JSON.stringify({ token }),
+      body: JSON.stringify({ message: '✅ Your profile was updated successfully.' }),
     };
   } catch (error) {
-    console.error('Error during login:', error);
+    console.error('Error updating the user:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: 'An error occurred during login.' }),
+      body: JSON.stringify({
+        message: '⚠️ An error occurred while updating the user.',
+      }),
     };
   } finally {
     await client.close();

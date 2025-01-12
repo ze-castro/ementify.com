@@ -17,8 +17,10 @@
   border-radius: var(--radius-3);
   padding: 1rem 2rem;
   box-shadow: 0 1rem 2rem var(--shadow-2);
+  max-width: 500px;
   display: grid;
   place-items: center;
+  text-align: center;
   transition: var(--steady);
   font-size: var(--paragraph);
   font-weight: var(--light);
@@ -28,6 +30,9 @@
 @media (width < 768px) {
   :root {
     --paragraph: 0.8rem;
+  }
+  #popup p {
+    max-width: 100%;
   }
 }
 

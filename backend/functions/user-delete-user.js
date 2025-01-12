@@ -1,6 +1,5 @@
-import { MongoClient } from 'mongodb';
-import { compare } from 'bcrypt';
-import { sign } from 'jsonwebtoken';
+import { MongoClient, ObjectId } from 'mongodb';
+import { verify } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 if (process.env.NODE_ENV == 'dev') {
   dotenv.config();
@@ -34,44 +33,58 @@ export async function handler(event, context) {
   }
 
   try {
-    const { email, password } = JSON.parse(event.body);
+    const { token } = JSON.parse(event.body);
 
     // Connect to MongoDB
     await client.connect();
     const database = client.db('ementify');
     const usersCollection = database.collection('users');
+    const menusCollection = database.collection('menus');
 
-    // Check if the user exists
+    // Decode the token and get the user's id
+    const decodedToken = verify(token, jwtSecret);
+    const email = decodedToken.email;
+
+    // Get the user
     const user = await usersCollection.findOne({ email });
     if (!user) {
       return {
-        statusCode: 401,
-        body: JSON.stringify({ message: 'Invalid email or password. Please try again!' }),
+        statusCode: 404,
+        body: JSON.stringify({ message: '⚠️ Something went wrong getting the user.' }),
       };
     }
 
-    // Check password
-    const passwordMatch = await compare(password, user.password);
-    if (!passwordMatch) {
+    // Delete the user menus
+    const resultMenus = await menusCollection.deleteMany({ user: user._id });
+    if (resultMenus.deletedCount === 0) {
       return {
-        statusCode: 401,
-        body: JSON.stringify({ message: 'Invalid email or password. Please try again!' }),
+        statusCode: 404,
+        body: JSON.stringify({ message: '⚠️ Menus not found.' }),
       };
     }
 
-    // Generate JWT token
-    const token = sign({ email: user.email, name: user.name }, jwtSecret, { expiresIn: '30d' });
+    // Delete the user
+    const result = await usersCollection.deleteOne({ _id: user._id });
+    if (result.deletedCount === 0) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: '⚠️ User not found.' }),
+      };
+    }
 
-    // Respond with success and token
     return {
       statusCode: 200,
-      body: JSON.stringify({ token }),
+      body: JSON.stringify({
+        message: "😢 We're sorry to see you go. Your account has been deleted.",
+      }),
     };
   } catch (error) {
-    console.error('Error during login:', error);
+    console.error('Error deleting the user:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: 'An error occurred during login.' }),
+      body: JSON.stringify({
+        message: '⚠️ An error occurred while deleting the user.',
+      }),
     };
   } finally {
     await client.close();
