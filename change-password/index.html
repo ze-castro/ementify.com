@@ -36,8 +36,22 @@
         <h1>Change Password</h1>
         <p>To change your password, please enter your new password and confirm it.</p>
         <form id="change-password-form" name="change-password">
-          <input type="password" name="password" placeholder="Password" required />
-          <input type="password" name="confirm-password" placeholder="Confirm Password" required />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"
+            title="Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character."
+            required
+          />
+          <input
+            type="password"
+            name="confirm-password"
+            placeholder="Confirm Password"
+            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"
+            title="Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character."
+            required
+          />
           <button id="change-password-button" type="submit">Confirm</button>
         </form>
       </section>
