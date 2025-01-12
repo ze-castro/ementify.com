@@ -54,6 +54,15 @@ export async function handler(event, context) {
       };
     }
 
+    // Count how many menus the user has
+    const count = await menusCollection.countDocuments({ user: user._id });
+    if (count >= 1) {
+      return {
+        statusCode: 403,
+        body: JSON.stringify({ message: '🤷‍♂️ Upgrade your plan to create more menus.' }),
+      };
+    }
+
     // Create a new menu
     const newMenu = {
       title,
@@ -62,6 +71,46 @@ export async function handler(event, context) {
         {
           name: 'Appetizer',
           items: [
+            {
+              title: 'Bruschetta',
+              description: 'Grilled bread topped with tomato, garlic, and olive oil.',
+              price: 5.0,
+            },
+            {
+              title: 'Spring Rolls',
+              description: 'Crispy rolls filled with vegetables and served with dipping sauce.',
+              price: 6.5,
+            },
+            {
+              title: 'Bruschetta',
+              description: 'Grilled bread topped with tomato, garlic, and olive oil.',
+              price: 5.0,
+            },
+            {
+              title: 'Spring Rolls',
+              description: 'Crispy rolls filled with vegetables and served with dipping sauce.',
+              price: 6.5,
+            },
+            {
+              title: 'Bruschetta',
+              description: 'Grilled bread topped with tomato, garlic, and olive oil.',
+              price: 5.0,
+            },
+            {
+              title: 'Spring Rolls',
+              description: 'Crispy rolls filled with vegetables and served with dipping sauce.',
+              price: 6.5,
+            },
+            {
+              title: 'Bruschetta',
+              description: 'Grilled bread topped with tomato, garlic, and olive oil.',
+              price: 5.0,
+            },
+            {
+              title: 'Spring Rolls',
+              description: 'Crispy rolls filled with vegetables and served with dipping sauce.',
+              price: 6.5,
+            },
             {
               title: 'Bruschetta',
               description: 'Grilled bread topped with tomato, garlic, and olive oil.',
@@ -117,6 +166,147 @@ export async function handler(event, context) {
               title: 'Red Wine',
               description: 'A glass of premium red wine from the finest vineyards.',
               price: 10.0,
+            },
+          ],
+        },
+        {
+          name: 'Soup',
+          items: [
+            {
+              title: 'Tomato Basil Soup',
+              description: 'Creamy tomato soup with fresh basil and a touch of cream.',
+              price: 4.5,
+            },
+            {
+              title: 'Minestrone',
+              description: 'Hearty Italian vegetable soup with beans and pasta.',
+              price: 6.0,
+            },
+            {
+              title: 'Clam Chowder',
+              description: 'Rich and creamy soup with clams and potatoes.',
+              price: 7.5,
+            },
+          ],
+        },
+        {
+          name: 'Salads',
+          items: [
+            {
+              title: 'Caesar Salad',
+              description: 'Classic Caesar salad with romaine lettuce, croutons, and Parmesan.',
+              price: 8.0,
+            },
+            {
+              title: 'Greek Salad',
+              description: 'Fresh salad with tomatoes, cucumbers, olives, and feta cheese.',
+              price: 9.0,
+            },
+            {
+              title: 'Caprese Salad',
+              description: 'Sliced tomatoes and mozzarella, drizzled with balsamic glaze.',
+              price: 10.0,
+            },
+            {
+              title: 'Chicken Salad',
+              description:
+                'Grilled chicken on a bed of mixed greens with a honey mustard dressing.',
+              price: 11.0,
+            },
+          ],
+        },
+        {
+          name: 'Pasta',
+          items: [
+            {
+              title: 'Spaghetti Carbonara',
+              description: 'Classic pasta with pancetta, egg, and Parmesan cheese.',
+              price: 12.0,
+            },
+            {
+              title: 'Penne Arrabbiata',
+              description: 'Pasta in a spicy tomato sauce with garlic and chili.',
+              price: 10.5,
+            },
+            {
+              title: 'Lasagna',
+              description: 'Layered pasta with meat sauce, ricotta, and melted mozzarella.',
+              price: 14.0,
+            },
+          ],
+        },
+        {
+          name: 'Burgers',
+          items: [
+            {
+              title: 'Classic Cheeseburger',
+              description: 'Beef patty with cheese, lettuce, tomato, and pickles.',
+              price: 9.5,
+            },
+            {
+              title: 'Bacon Burger',
+              description: 'Beef burger topped with crispy bacon and cheddar cheese.',
+              price: 11.0,
+            },
+            {
+              title: 'Veggie Burger',
+              description: 'Grilled vegetable patty with avocado and spicy mayo.',
+              price: 8.5,
+            },
+            {
+              title: 'Mushroom Swiss Burger',
+              description: 'Juicy burger topped with sautéed mushrooms and Swiss cheese.',
+              price: 12.0,
+            },
+          ],
+        },
+        {
+          name: 'Seafood',
+          items: [
+            {
+              title: 'Shrimp Scampi',
+              description: 'Garlic butter shrimp served over linguine pasta.',
+              price: 17.0,
+            },
+            {
+              title: 'Lobster Tail',
+              description: 'Grilled lobster tail served with melted butter.',
+              price: 25.0,
+            },
+            {
+              title: 'Seafood Paella',
+              description: 'Traditional Spanish rice dish with shrimp, clams, and mussels.',
+              price: 22.0,
+            },
+            {
+              title: 'Fish and Chips',
+              description: 'Beer-battered fish fillets with fries and tartar sauce.',
+              price: 14.0,
+            },
+          ],
+        },
+        {
+          name: 'Sides',
+          items: [
+            {
+              title: 'French Fries',
+              description: 'Crispy golden fries seasoned to perfection.',
+              price: 3.0,
+            },
+            {
+              title: 'Mashed Potatoes',
+              description: 'Creamy mashed potatoes with butter and herbs.',
+              price: 4.0,
+            },
+            {
+              title: 'Steamed Vegetables',
+              description: 'Fresh seasonal vegetables, lightly steamed.',
+              price: 4.5,
+            },
+            {
+              title: 'Garlic Bread',
+              description: 'Toasted bread with garlic butter and parsley.',
+              price: 3.5,
             },
           ],
         },

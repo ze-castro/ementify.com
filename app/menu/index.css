@@ -111,6 +111,18 @@ nav button {
   margin-bottom: 1rem;
 }
 
+#delete-menu-button {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 0.7rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-4);
+  background-color: var(--red);
+  font-weight: var(--semi-bold);
+}
+
 .menu-category,
 #menu-category-form {
   position: relative;

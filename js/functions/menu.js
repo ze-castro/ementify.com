@@ -174,12 +174,14 @@ async function updateMenu(token, menu) {
       renderPopup(result.message || '✅ Menu updated successfully.', 1000);
       return result;
     } else {
+      if (response.status !== 403) {
+        // Refresh the page
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 2300);
+      }
       // Handle errors
       renderPopup(result.message || '⚠️ Something went wrong. Please try again.');
-      // Refresh the page
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 2300);
     }
   } catch (error) {
     // Handle any network errors
@@ -194,4 +196,56 @@ async function updateMenu(token, menu) {
   }
 }
 
-export { getMenus, getMenu, createMenu, updateMenu };
+// Delete a menu
+async function deleteMenu(token, menuId) {
+  // Render the loading animation
+  renderLoading();
+
+  // Create a payload for the API request
+  const payload = {
+    token,
+    menuId,
+  };
+
+  try {
+    // Send POST request to the delete-menu serverless function
+    const response = await fetch('/.netlify/functions/menu-delete-menu', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    // Handle the response
+    const result = await response.json();
+
+    if (response.ok) {
+      // Show a success message
+      renderPopup(result.message || '✅ Menu deleted successfully.');
+      // Redirect to the home page
+      setTimeout(() => {
+        window.location.href = '/app';
+      }, 2300);
+    } else {
+      // Handle errors
+      renderPopup(result.message || '⚠️ Something went wrong. Please try again.');
+      // Refresh the page
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 2300);
+    }
+  } catch (error) {
+    // Handle any network errors
+    console.error('Error deleting a menu:', error);
+    renderPopup("⚠️ We're having internal problems. Please try again later.");
+    // Go to the home page
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 2300);
+  } finally {
+    unrenderLoading();
+  }
+}
+
+export { getMenus, getMenu, createMenu, updateMenu, deleteMenu };

@@ -1,5 +1,5 @@
 import { isTokenInLocalStorage } from '/js/utils/isTokenInLocalStorage.js';
-import { getMenu, updateMenu } from '/js/functions/menu.js';
+import { getMenu, updateMenu, deleteMenu } from '/js/functions/menu.js';
 import { renderConfirm } from '/js/components/confirm.js';
 import { renderModal } from '/js/components/modal.js';
 
@@ -42,6 +42,19 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Render the modal
     await renderModal('Scan the QR code to view the menu or download it.', 'Download', qrCode);
+  });
+
+  // Add event listener to the delete button
+  const deleteMenuButton = document.getElementById('delete-menu-button');
+  deleteMenuButton.addEventListener('click', async function () {
+    // Ask for confirmation
+    const confirm = await renderConfirm('Are you sure you want to delete this menu?');
+    if (!confirm) {
+      return;
+    }
+
+    // Delete the menu
+    await deleteMenu(token, menuId);
   });
 
   // Get the menu title element

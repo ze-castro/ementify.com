@@ -33,7 +33,7 @@ export async function handler(event, context) {
   }
 
   try {
-    const { token, menu } = JSON.parse(event.body);
+    const { token, menuId } = JSON.parse(event.body);
 
     // Connect to MongoDB
     await client.connect();
@@ -54,51 +54,17 @@ export async function handler(event, context) {
       };
     }
 
-    // Check if user is a paid user
-    // if (!user.paid) {
-    //   return {
-    //     statusCode: 403,
-    //     body: JSON.stringify({ message: '⚠️ You need to be a paid user.' }),
-    //   };
-    // }
-
-    // Count the number of categories
-    const categoriesCount = menu.categories.length;
-    if (categoriesCount > 10) {
-      return {
-        statusCode: 403,
-        body: JSON.stringify({ message: '🤷‍♂️ Upgrade your plan to add more categories.' }),
-      };
-    }
-
-    // Count the number of items in each category
-    for (const category of menu.categories) {
-      const itemsCount = category.items.length;
-      if (itemsCount > 10) {
-        return {
-          statusCode: 403,
-          body: JSON.stringify({
-            message: '🤷‍♂️ Upgrade your plan to add more items.',
-          }),
-        };
-      }
-    }
-
     // Create an ObjectId from the menu id
-    const objectMenuId = new ObjectId(menu._id);
+    const objectMenuId = new ObjectId(menuId);
     const objectUserId = new ObjectId(user._id);
+    console.log(objectMenuId, objectUserId);
 
     // Update the menu
-    const menuResponse = await menusCollection.updateOne(
-      { _id: objectMenuId, user: objectUserId },
-      {
-        $set: {
-          title: menu.title,
-          categories: menu.categories,
-        },
-      }
-    );
-    if (menuResponse.modifiedCount === 0) {
+    const menuResponse = await menusCollection.deleteOne({
+      _id: objectMenuId,
+      user: objectUserId,
+    });
+    if (menuResponse.deletedCount === 0) {
       return {
         statusCode: 404,
         body: JSON.stringify({ message: '⚠️ Menu not found.' }),
@@ -108,14 +74,14 @@ export async function handler(event, context) {
     // Return success response
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: '✅ Menu updated successfully.' }),
+      body: JSON.stringify({ message: '✅ Menu deleted successfully.' }),
     };
   } catch (error) {
-    console.error('Error updating the menu:', error);
+    console.error('Error deleting the menu:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({
-        message: '⚠️ An error occurred while updating the menu.',
+        message: '⚠️ An error occurred while deleting the menu.',
       }),
     };
   } finally {
