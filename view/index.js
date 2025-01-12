@@ -69,6 +69,10 @@ function toggleCategory(index, items) {
       container.innerHTML = '';
     }
   });
+
+  // Scroll to the selected category
+  const categoryButton = document.querySelector(`.category[data-index="${index}"]`);
+  categoryButton.scrollIntoView({ behavior: 'smooth' });
 }
 
 // Populate items under the selected category
