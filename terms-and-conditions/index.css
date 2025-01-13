@@ -1,3 +1,10 @@
+/* GLOBAL MEDIA QUERIES */
+:root {
+  --title: 2rem;
+  --subtitle: 1.2rem;
+  --paragraph: 1rem;
+}
+
 nav {
   display: flex;
   align-items: center;
@@ -12,7 +19,7 @@ nav a {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: var(--subtitle);
+  font-size: var(--paragraph);
   font-weight: var(--light);
 }
 
@@ -26,13 +33,13 @@ section {
 
 section h1 {
   font-size: var(--title);
-  font-weight: var(--bold);
+  font-weight: var(--semi-bold);
   color: var(--black);
 }
 
 section h2 {
   font-size: var(--subtitle);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--semi-bold);
   color: var(--black);
   margin-top: 1rem;
 }
@@ -45,60 +52,12 @@ section p {
 }
 
 /* MEDIA QUERIES */
-@media (width < 1000px) {
-  nav {
-    padding: 0 5rem;
-  }
-
-  section {
-    padding: 2rem 5rem;
-  }
-
-  section h1 {
-    font-size: 3rem;
-  }
-}
-
-@media (width < 800px) {
-  nav {
-    padding: 0 2rem;
-  }
-
-  section {
-    padding: 2rem 2rem;
-  }
-
-  section h1 {
-    font-size: 2rem;
-  }
-
-  section h2 {
-    font-size: 1.2rem;
-  }
-
-  section p {
-    font-size: 1rem;
-  }
-}
-
-@media (width < 600px) {
+@media (max-width: 768px) {
   nav {
     padding: 0 1rem;
   }
 
   section {
-    padding: 1rem;
-  }
-
-  section h1 {
-    font-size: 1.5rem;
-  }
-
-  section h2 {
-    font-size: 1rem;
-  }
-
-  section p {
-    font-size: 0.9rem;
+    padding: 2rem 1rem;
   }
 }

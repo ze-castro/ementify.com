@@ -121,7 +121,7 @@ nav a {
 /* PRICING */
 #pricing {
   width: 100%;
-  min-height: 100dvh;
+  min-height: 80dvh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -252,14 +252,21 @@ nav a {
   }
 }
 
+@media (height > 800px) {
+  #pricing {
+    min-height: 70dvh;
+  }
+}
+
 /* FAQ */
 #faq {
   width: 100%;
-  min-height: 100dvh;
+  min-height: 80dvh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  margin-top: 4rem;
 }
 
 #faq h1 {
@@ -332,14 +339,17 @@ nav a {
 }
 
 @media (width < 768px) {
-  #faq {
-    margin-top: 4rem;
-  }
   .box {
     width: 95%;
   }
   .box h2 {
     font-size: 1.2rem;
+  }
+}
+
+@media (height > 800px) {
+  #faq {
+    min-height: 70dvh;
   }
 }
 
@@ -351,6 +361,7 @@ nav a {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  margin-top: 4rem;
 }
 
 #contact h1 {
@@ -411,12 +422,6 @@ nav a {
   background-color: var(--gray-2);
 }
 
-@media (width < 768px) {
-  #contact {
-    margin-top: 4rem;
-  }
-}
-
 /* DISCLAIMER */
 #disclaimer {
   width: 100%;
@@ -441,4 +446,10 @@ nav a {
 #disclaimer p a {
   color: var(--gray-5);
   text-decoration: underline;
+}
+
+@media (height > 800px) {
+  #disclaimer {
+    margin-top: 4rem;
+  }
 }

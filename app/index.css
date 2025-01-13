@@ -149,7 +149,7 @@ nav a i {
 @media (width < 768px) {
   #menus-list {
     gap: 1.5rem;
-    padding: 1rem 0 2rem 0;
+    padding: 1rem 0 4rem 0;
   }
   .menu {
     width: 150px;

@@ -82,6 +82,7 @@ footer p a {
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.5rem;
+  background-color: var(--green);
   font-size: var(--subtitle);
   font-weight: var(--semi-bold);
   user-select: none;
