@@ -43,8 +43,17 @@ document.getElementById('name').addEventListener('blur', async function () {
   await updateUser(token, user);
 });
 
+// Update password
+document.getElementById('change-password-button').addEventListener('click', async function () {
+  // Save email to local storage
+  localStorage.setItem('email', user.email);
+
+  // Redirect to the recover password page
+  window.location.href = '/recover-password';
+});
+
 // Delete user
-document.getElementById('delete').addEventListener('click', async function () {
+document.getElementById('delete-button').addEventListener('click', async function () {
   // Confirm the action
   const isConfirmed = await renderConfirm(
     'Are you sure you want to delete your account? This action cannot be undone.'

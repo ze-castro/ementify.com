@@ -2,6 +2,13 @@ import { renderLoading, unrenderLoading } from '/js/components/loading.js';
 import { renderPopup } from '/js/components/popup.js';
 
 document.addEventListener('DOMContentLoaded', function () {
+  // Search for email in local storage
+  const email = localStorage.getItem('email');
+  if (email) {
+    // Fill the email input with the email from local storage
+    document.getElementById('recover-email').value = email;
+  }
+
   // Get the recover-password form elements
   const recoverPasswordForm = document.getElementById('recover-password-form');
   const recoverPasswordButton = document.getElementById('recover-password-button');
@@ -58,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
     } finally {
       unrenderLoading();
       recoverPasswordButton.disabled = false;
+      localStorage.removeItem('email');
     }
   });
 });

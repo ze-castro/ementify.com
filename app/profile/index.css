@@ -101,26 +101,6 @@ nav a {
   width: 300px;
 }
 
-.profile-info-item a {
-  width: 100%;
-  display: grid;
-  place-items: center;
-  padding: 0.8rem;
-  border-radius: var(--radius-2);
-  background-color: var(--green);
-  box-shadow: 0 0.5rem 1.5rem var(--shadow-2);
-  color: var(--white);
-  font-weight: var(--semi-bold);
-  font-size: var(--paragraph);
-  transition: var(--steady);
-}
-
-.profile-info-item a:hover {
-  text-decoration: none;
-  transform: scale(1.03);
-  box-shadow: 0 1rem 2rem var(--shadow-2);
-}
-
 .profile-info-item button {
   width: 100%;
   padding: 0.8rem;
@@ -132,6 +112,10 @@ nav a {
 
 .profile-info-item button:hover {
   box-shadow: 0 1rem 2rem var(--shadow-2);
+}
+
+#change-password-button {
+  background-color: var(--green) !important;
 }
 
 @media (width < 768px) {
