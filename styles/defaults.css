@@ -147,7 +147,7 @@ textarea {
   resize: none;
   outline: none;
   border: 1px solid var(--gray-1);
-  border-radius: var(--radius-4);
+  border-radius: var(--radius-3);
   padding: 0.5rem 1rem;
   font-family: var(--font);
   font-weight: var(--light);
@@ -158,13 +158,14 @@ textarea {
 select {
   outline: none;
   border: 1px solid var(--gray-1);
-  border-radius: var(--radius-4);
+  border-radius: var(--radius-1);
   padding: 0.5rem 1rem;
   color: var(--black);
   font-family: var(--font);
   font-weight: var(--light);
   font-size: var(--paragraph);
   transition: var(--fast);
+  appearance: none;
 }
 
 /* LISTS */
