@@ -11,6 +11,11 @@
   }
 }
 
+/* MAIN */
+main {
+  min-height: 100dvh;
+}
+
 /* NAV */
 nav {
   position: absolute;

@@ -135,7 +135,7 @@ nav a i {
 
 .menu:not(#add-menu-form):has(button:hover) {
   transform: scale(1.03);
-  box-shadow: 0 1.5rem 2.5rem var(--shadow-1);
+  box-shadow: 0 1.5rem 2rem var(--shadow-1);
 }
 
 #add-menu-form button i {
