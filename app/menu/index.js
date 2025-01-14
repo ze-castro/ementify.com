@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   // Get menu
   menu = await getMenu(token, menuId);
-  const originalMenu = JSON.parse(JSON.stringify(menu));
+  let originalMenu = JSON.parse(JSON.stringify(menu));
 
   // Render the menu
   await populateCategorySelect();
@@ -81,9 +81,10 @@ document.addEventListener('DOMContentLoaded', async function () {
       // Make the categories draggable
       makeDraggable();
     } else {
-      if (originalMenu !== menu) {
-        // Update the menu
+      // Update the menu if the order of the categories has changed
+      if (JSON.stringify(menu) !== JSON.stringify(originalMenu)) {
         await updateMenu(token, menu);
+        originalMenu = JSON.parse(JSON.stringify(menu));
       }
       // Repopulate the menu
       await repopulateMenu(menu);
