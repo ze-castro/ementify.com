@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   const deleteMenuButton = document.getElementById('delete-menu-button');
   deleteMenuButton.addEventListener('click', async function () {
     // Ask for confirmation
-    const confirm = await renderConfirm('Are you sure you want to delete this menu?');
+    const confirm = await renderConfirm('This menu will be deleted permanently. Are you sure?');
     if (!confirm) {
       return;
     }
@@ -259,7 +259,9 @@ async function populateMenu(menu) {
     // Add event listener to the delete button
     categoryDelete.addEventListener('click', async function () {
       // Ask for confirmation
-      const confirm = await renderConfirm('Are you sure you want to delete this category?');
+      const confirm = await renderConfirm(
+        'You will lose all the items in this category. Are you sure?'
+      );
       if (!confirm) {
         return;
       }
@@ -315,6 +317,24 @@ async function populateMenu(menu) {
       const itemDelete = document.createElement('button');
       itemDelete.className = 'item-delete';
       itemDelete.innerHTML = '<i class="fa fa-trash"></i> Remove Item';
+
+      // Add event listener to item delete button
+      itemDelete.addEventListener('click', async function () {
+        // Ask for confirmation
+        const confirm = await renderConfirm('Are you sure you want to delete this item?');
+        if (!confirm) {
+          return;
+        }
+
+        // Delete the item
+        category.items = category.items.filter((i) => i !== item);
+
+        // Update the menu
+        await updateMenu(token, menu);
+
+        // Repopulate the menu
+        await repopulateMenu(menu);
+      });
 
       // Append the elements to the item element
       menuCategoryItem.appendChild(itemTitle);
@@ -378,18 +398,6 @@ async function populateMenu(menu) {
           // Update the menu
           await updateMenu(token, menu);
         }
-      });
-
-      // Add event listener to the delete button
-      itemDelete.addEventListener('click', async function () {
-        // Delete the item
-        category.items = category.items.filter((i) => i !== item);
-
-        // Update the menu
-        await updateMenu(token, menu);
-
-        // Repopulate the menu
-        await repopulateMenu(menu);
       });
     }
 
