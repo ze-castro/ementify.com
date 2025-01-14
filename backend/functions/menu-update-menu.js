@@ -79,17 +79,19 @@ export async function handler(event, context) {
     const existingMenu = await menusCollection.findOne({ _id: objectMenuId, user: objectUserId });
 
     // Compare which category has different items count
-    for (const category of menu.categories) {
-      const existingCategory = existingMenu.categories.find((c) => c._id === category._id);
-      if (existingCategory.items.length !== category.items.length) {
-        const itemsCount = category.items.length;
-        if (itemsCount > 10) {
-          return {
-            statusCode: 403,
-            body: JSON.stringify({
-              message: '🤷‍♂️ Upgrade your plan to add more items.',
-            }),
-          };
+    if (existingMenu.categories.length > 0) {
+      for (const category of menu.categories) {
+        const existingCategory = existingMenu.categories.find((c) => c._id === category._id);
+        if (existingCategory.items.length !== category.items.length) {
+          const itemsCount = category.items.length;
+          if (itemsCount > 10) {
+            return {
+              statusCode: 403,
+              body: JSON.stringify({
+                message: '🤷‍♂️ Upgrade your plan to add more items.',
+              }),
+            };
+          }
         }
       }
     }
