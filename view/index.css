@@ -104,6 +104,8 @@ footer p a {
   padding: 1rem 1.5rem;
   border-radius: var(--radius-4);
   background-color: var(--gray-1);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .item > h2 {
