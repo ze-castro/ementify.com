@@ -90,12 +90,12 @@ export async function handler(event, context) {
     }
 
     // Generate JWT token
-    token = sign({ email: user.email, name: user.name }, jwtSecret, { expiresIn: '30d' });
+    const newToken = sign({ email: user.email, name: user.name }, jwtSecret, { expiresIn: '30d' });
 
     // Return a success message
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: 'Password updated successfully.', token }),
+      body: JSON.stringify({ message: 'Password updated successfully.', token: newToken }),
     };
   } catch (error) {
     console.error('An error occurred during password update:', error);

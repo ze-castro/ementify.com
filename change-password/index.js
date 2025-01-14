@@ -62,9 +62,9 @@ document.addEventListener('DOMContentLoaded', function () {
       } else {
         // Handle errors
         renderPopup(result.message || 'An error occurred updating the password.');
-        setTimeout(() => {
-          window.location.href = '/recover-password';
-        }, 2300);
+        // setTimeout(() => {
+        //   window.location.href = '/recover-password';
+        // }, 2300);
       }
     } catch (error) {
       // Handle any network errors
