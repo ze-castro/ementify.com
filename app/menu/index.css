@@ -124,7 +124,15 @@ main {
   margin-bottom: 1rem;
 }
 
-#delete-menu-button {
+#menu-top-buttons {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+#delete-menu-button,
+#move-menu-button {
   width: fit-content;
   display: flex;
   align-items: center;
@@ -132,12 +140,20 @@ main {
   gap: 0.7rem;
   padding: 0.5rem 1rem;
   border-radius: var(--radius-1);
-  background-color: var(--red);
   font-weight: var(--semi-bold);
   box-shadow: 0 0.3rem 0.5rem var(--shadow-2);
 }
 
-#delete-menu-button:hover {
+#delete-menu-button {
+  background-color: var(--red);
+}
+
+#move-menu-button {
+  background-color: var(--black);
+}
+
+#delete-menu-button:hover,
+#move-menu-button:hover {
   box-shadow: 0 0.5rem 0.5rem var(--shadow-2);
 }
 
@@ -155,7 +171,11 @@ main {
 }
 
 .menu-category {
-  border-radius: var(--radius-2) var(--radius-3)  var(--radius-2) var(--radius-2);
+  border-radius: var(--radius-2) var(--radius-3) var(--radius-2) var(--radius-2);
+}
+
+.menu-category.dragging {
+  opacity: 0.5;
 }
 
 #menu-category-select {
@@ -188,11 +208,19 @@ main {
   font-size: var(--subtitle);
 }
 
-.menu-category-open {
+.menu-category-open,
+.menu-category-move {
   padding: 0 0.5rem 0 1rem;
   background-color: transparent;
   color: var(--gray-4);
-  font-size: 2rem;
+}
+
+.menu-category-open {
+  font-size: 1.5rem;
+}
+
+.menu-category-move {
+  font-size: 1rem;
 }
 
 .divider {

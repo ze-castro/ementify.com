@@ -5,11 +5,12 @@
 Ementify is a project that aims to help the food businesses to elevate their customer experience by providing a platform to show their menu digitally.
 
 ## Features
-1. Add and edit menu items
-2. Add and edit menu categories
-3. Add and edit images to menu items
-4. Generate QR code for each menu
-5. Share a link to the menu
+1. Add and edit items
+2. Add and edit categories
+3. Change the order of categories
+4. Add and edit images to items
+5. Generate QR code for each menu
+6. Share a link to the menu
 
 ## Tech Stack
 1. Plain HTML

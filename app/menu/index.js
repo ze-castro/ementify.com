@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   // Get menu
   menu = await getMenu(token, menuId);
+  const originalMenu = JSON.parse(JSON.stringify(menu));
 
   // Render the menu
   await populateCategorySelect();
@@ -43,6 +44,232 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Render the modal
     await renderModal('Scan the QR code to view the menu or download it.', 'Download', qrCode);
   });
+
+  // Add event listener to the move category button
+  let moveCategoryBool = false;
+  const moveCategoryButton = document.getElementById('move-menu-button');
+  moveCategoryButton.addEventListener('click', async function () {
+    // Toggle the move category appearance
+    if (moveCategoryBool) {
+      moveCategoryButton.innerHTML = '<i class="fa fa-arrows"></i> Move Categories';
+    } else {
+      moveCategoryButton.innerHTML = '<i class="fa fa-save"></i> Save Changes';
+    }
+    moveCategoryBool = !moveCategoryBool;
+
+    // Get all menu categories
+    const categories = document.getElementsByClassName('menu-category');
+
+    if (moveCategoryBool) {
+      // Remove menu-category-open
+      for (const category of categories) {
+        const menuCategoryOpen = category.getElementsByClassName('menu-category-open')[0];
+        menuCategoryOpen.remove();
+      }
+
+      // Add move category buttons
+      for (const category of categories) {
+        // Create the move category button
+        const moveCategoryButton = document.createElement('button');
+        moveCategoryButton.className = 'menu-category-move';
+        moveCategoryButton.innerHTML = '<i class="fa fa-arrows"></i>';
+        const menuCategoryTitleBox = category.getElementsByClassName('menu-category-title-box')[0];
+        menuCategoryTitleBox.appendChild(moveCategoryButton);
+        category.draggable = true;
+      }
+
+      // Make the categories draggable
+      makeDraggable();
+    } else {
+      if (originalMenu !== menu) {
+        // Update the menu
+        await updateMenu(token, menu);
+      }
+      // Repopulate the menu
+      await repopulateMenu(menu);
+    }
+  });
+
+  // Make the categories draggable
+  function makeDraggable() {
+    let draggedElement = null;
+    let initialY = 0;
+    let ghostElement = null;
+    const categories = document.querySelectorAll('.menu-category');
+    const container = document.getElementById('menu-categories');
+    categories.forEach((category) => {
+      // Start dragging
+      category.addEventListener('dragstart', (e) => {
+        draggedElement = category;
+        category.classList.add('dragging');
+      });
+
+      // End dragging
+      category.addEventListener('dragend', () => {
+        category.classList.remove('dragging');
+        draggedElement = null;
+
+        // Update the menu
+        const newCategories = [];
+        const menuCategories = document.getElementsByClassName('menu-category');
+        for (const category of menuCategories) {
+          const categoryName = category.getElementsByClassName('menu-category-title')[0].value;
+          const categoryItems = category.getElementsByClassName('menu-category-item');
+          const items = [];
+          for (const item of categoryItems) {
+            const itemTitle = item.getElementsByClassName('item-title')[0].value;
+            const itemDescription = item.getElementsByClassName('item-description')[0].value;
+            const itemPrice = item.getElementsByClassName('item-price')[0].value;
+            items.push({
+              title: itemTitle,
+              description: itemDescription,
+              price: itemPrice,
+            });
+          }
+          newCategories.push({
+            name: categoryName,
+            items: items,
+          });
+        }
+
+        menu.categories = newCategories;
+      });
+
+      // Handle touch start
+      category.addEventListener('touchstart', (e) => {
+        const touch = e.touches[0];
+        draggedElement = category;
+        initialY = touch.clientY;
+
+        // Create a ghost element
+        ghostElement = category.cloneNode(true);
+        ghostElement.classList.add('ghost');
+        ghostElement.style.position = 'absolute';
+        ghostElement.style.pointerEvents = 'none';
+        ghostElement.style.opacity = '0.8';
+        ghostElement.style.zIndex = '1000';
+        ghostElement.style.width = `${category.offsetWidth}px`;
+
+        // Position ghost at the initial touch location
+        document.body.appendChild(ghostElement);
+        updateGhostPosition(ghostElement, touch.clientX, touch.clientY);
+
+        category.classList.add('dragging');
+      });
+
+      // Handle touch move
+      category.addEventListener('touchmove', (e) => {
+        if (!draggedElement) return;
+
+        const touch = e.touches[0];
+        const currentY = touch.clientY;
+
+        // Update ghost element position
+        updateGhostPosition(ghostElement, touch.clientX, currentY);
+
+        const afterElement = getDragAfterElement(container, currentY);
+        if (afterElement) {
+          container.insertBefore(draggedElement, afterElement);
+        } else {
+          container.appendChild(draggedElement);
+        }
+
+        initialY = currentY;
+      });
+
+      // Handle touch end
+      category.addEventListener('touchend', () => {
+        if (!draggedElement) return;
+
+        draggedElement.classList.remove('dragging');
+        draggedElement = null;
+
+        // Remove the ghost element
+        if (ghostElement) {
+          ghostElement.remove();
+          ghostElement = null;
+        }
+
+        // Update the menu structure
+        const newCategories = [];
+        const menuCategories = document.getElementsByClassName('menu-category');
+        for (const category of menuCategories) {
+          const categoryName = category.getElementsByClassName('menu-category-title')[0].value;
+          const categoryItems = category.getElementsByClassName('menu-category-item');
+          const items = [];
+          for (const item of categoryItems) {
+            const itemTitle = item.getElementsByClassName('item-title')[0].value;
+            const itemDescription = item.getElementsByClassName('item-description')[0].value;
+            const itemPrice = item.getElementsByClassName('item-price')[0].value;
+            items.push({
+              title: itemTitle,
+              description: itemDescription,
+              price: itemPrice,
+            });
+          }
+          newCategories.push({
+            name: categoryName,
+            items: items,
+          });
+        }
+
+        menu.categories = newCategories;
+      });
+    });
+
+    // Handle dragging over the container
+    container.addEventListener('dragover', (e) => {
+      e.preventDefault();
+
+      if (!draggedElement) return;
+
+      const afterElement = getDragAfterElement(container, e.clientY);
+      if (afterElement) {
+        container.insertBefore(draggedElement, afterElement);
+      } else {
+        container.appendChild(draggedElement);
+      }
+    });
+
+    // Prevent scrolling while dragging
+    container.addEventListener('touchmove', (e) => {
+      if (draggedElement) {
+        e.preventDefault();
+      }
+    });
+  }
+
+  // Get the closest element
+  function getDragAfterElement(container, y) {
+    const draggableElements = [...container.querySelectorAll('.menu-category:not(.dragging)')];
+
+    return (
+      draggableElements.reduce(
+        (closest, child) => {
+          const box = child.getBoundingClientRect();
+          const offset = y - box.top - box.height / 2;
+          if (offset < 0 && offset > closest.offset) {
+            return { offset, element: child };
+          } else {
+            return closest;
+          }
+        },
+        { offset: Number.NEGATIVE_INFINITY }
+      ).element || null
+    );
+  }
+
+  // Helper function to update ghost element position
+  function updateGhostPosition(ghostElement, x, y) {
+    if (ghostElement) {
+      const rect = ghostElement.getBoundingClientRect();
+      const offsetX = rect.width / 2; // Half the width of the ghost element
+      const offsetY = rect.height / 2; // Half the height of the ghost element
+
+      ghostElement.style.left = `${x - offsetX}px`; // Center horizontally
+      ghostElement.style.top = `${y - offsetY}px`; // Center vertically
+    }
+  }
 
   // Add event listener to the delete button
   const deleteMenuButton = document.getElementById('delete-menu-button');
@@ -158,7 +385,7 @@ async function depopulateMenu() {
   let child = menuCategories.firstChild;
   while (child) {
     const nextSibling = child.nextSibling;
-    if (child.id !== 'menu-category-form' && child.id !== 'delete-menu-button') {
+    if (child.id !== 'menu-category-form' && child.id !== 'menu-top-buttons') {
       menuCategories.removeChild(child);
     }
     child = nextSibling;
