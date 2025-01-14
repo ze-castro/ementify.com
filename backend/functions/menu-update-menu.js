@@ -71,22 +71,28 @@ export async function handler(event, context) {
       };
     }
 
-    // Count the number of items in each category
-    for (const category of menu.categories) {
-      const itemsCount = category.items.length;
-      if (itemsCount > 10) {
-        return {
-          statusCode: 403,
-          body: JSON.stringify({
-            message: '🤷‍♂️ Upgrade your plan to add more items.',
-          }),
-        };
-      }
-    }
-
     // Create an ObjectId from the menu id
     const objectMenuId = new ObjectId(menu._id);
     const objectUserId = new ObjectId(user._id);
+
+    // Get menu by id and user
+    const existingMenu = await menusCollection.findOne({ _id: objectMenuId, user: objectUserId });
+
+    // Compare which category has different items count
+    for (const category of menu.categories) {
+      const existingCategory = existingMenu.categories.find((c) => c._id === category._id);
+      if (existingCategory.items.length !== category.items.length) {
+        const itemsCount = category.items.length;
+        if (itemsCount > 10) {
+          return {
+            statusCode: 403,
+            body: JSON.stringify({
+              message: '🤷‍♂️ Upgrade your plan to add more items.',
+            }),
+          };
+        }
+      }
+    }
 
     // Update the menu
     const menuResponse = await menusCollection.updateOne(
