@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
 import { hash } from 'bcrypt';
-import { verify } from 'jsonwebtoken';
+import { verify, sign } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 if (process.env.NODE_ENV == 'dev') {
   dotenv.config();
@@ -89,10 +89,13 @@ export async function handler(event, context) {
       };
     }
 
+    // Generate JWT token
+    token = sign({ email: user.email, name: user.name }, jwtSecret, { expiresIn: '30d' });
+
     // Return a success message
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: 'Password updated successfully.' }),
+      body: JSON.stringify({ message: 'Password updated successfully.', token }),
     };
   } catch (error) {
     console.error('An error occurred during password update:', error);
