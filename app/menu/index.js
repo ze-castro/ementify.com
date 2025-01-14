@@ -158,7 +158,7 @@ async function depopulateMenu() {
   let child = menuCategories.firstChild;
   while (child) {
     const nextSibling = child.nextSibling;
-    if (child.id !== 'menu-category-form') {
+    if (child.id !== 'menu-category-form' && child.id !== 'delete-menu-button') {
       menuCategories.removeChild(child);
     }
     child = nextSibling;
