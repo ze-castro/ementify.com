@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Add event listener to the view button
   const viewButton = document.getElementById('view-button');
   viewButton.addEventListener('click', async function () {
-    window.location.href = '/view?id=' + menuId;
+    window.open('/view?id=' + menuId, '_blank', 'noopener');
   });
 
   // Add event listener to the QR code button
