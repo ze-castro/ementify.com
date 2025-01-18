@@ -124,6 +124,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
         if (originalMenuColor !== menu.color) {
           await updateMenu(token, menu);
+          originalMenu = JSON.parse(JSON.stringify(menu));
           await populateCategorySelect();
         }
         resolve(unrenderColors(0));
@@ -420,6 +421,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       menu.title = menuTitle.value;
       // Update the menu
       await updateMenu(token, menu);
+      originalMenu = JSON.parse(JSON.stringify(menu));
     }
   });
 
@@ -481,6 +483,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       // Repopulate the menu
       await populateCategorySelect();
       await repopulateMenu(menu);
+      originalMenu = JSON.parse(JSON.stringify(menu));
     }
 
     // Reset the form
@@ -580,6 +583,7 @@ async function populateMenu(menu) {
         category.name = menuCategoryTitle.value;
         // Update the menu
         await updateMenu(token, menu);
+        originalMenu = JSON.parse(JSON.stringify(menu));
         await populateCategorySelect();
       }
     });
@@ -623,6 +627,7 @@ async function populateMenu(menu) {
 
       // Update the menu
       await updateMenu(token, menu);
+      originalMenu = JSON.parse(JSON.stringify(menu));
 
       // Repopulate the menu
       await repopulateMenu(menu);
@@ -680,6 +685,7 @@ async function populateMenu(menu) {
 
         // Update the menu
         await updateMenu(token, menu);
+        originalMenu = JSON.parse(JSON.stringify(menu));
 
         // Repopulate the menu
         await repopulateMenu(menu);
@@ -714,6 +720,7 @@ async function populateMenu(menu) {
           item.title = itemTitle.value;
           // Update the menu
           await updateMenu(token, menu);
+          originalMenu = JSON.parse(JSON.stringify(menu));
         }
       });
 
@@ -730,6 +737,7 @@ async function populateMenu(menu) {
           item.description = itemDescription.value;
           // Update the menu
           await updateMenu(token, menu);
+          originalMenu = JSON.parse(JSON.stringify(menu));
         }
       });
 
@@ -746,6 +754,7 @@ async function populateMenu(menu) {
           item.price = itemPrice.value;
           // Update the menu
           await updateMenu(token, menu);
+          originalMenu = JSON.parse(JSON.stringify(menu));
         }
       });
     }
