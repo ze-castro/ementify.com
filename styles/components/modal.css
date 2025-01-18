@@ -11,7 +11,7 @@
   justify-content: center;
   gap: 1rem;
   padding: 1rem;
-  background-color: var(--transparent-background-5);
+  background-color: var(--transparent-background-3);
   z-index: 9999;
 }
 

@@ -8,9 +8,10 @@ Ementify is a project that aims to help the food businesses to elevate their cus
 1. Add and edit items
 2. Add and edit categories
 3. Change the order of categories
-4. Add and edit images to items
-5. Generate QR code for each menu
-6. Share a link to the menu
+4. Change the color of the menu
+5. Add and edit images to items
+6. Generate QR code for each menu
+7. Share a link to the menu
 
 ## Tech Stack
 1. Plain HTML
