@@ -3,6 +3,7 @@ import { getMenu, updateMenu, deleteMenu } from '/js/functions/menu.js';
 import { renderConfirm } from '/js/components/confirm.js';
 import { renderModal } from '/js/components/modal.js';
 import { renderContextMenu } from '/js/components/context-menu.js';
+import { renderPopup } from '/js/components/popup.js';
 
 // Variables
 var menu = null;
@@ -161,6 +162,11 @@ document.addEventListener('DOMContentLoaded', async function () {
   let moveCategoryBool = false;
   const moveCategoryButton = document.getElementById('move-menu-button');
   moveCategoryButton.addEventListener('click', async function () {
+    // If the menu only has one category, return a message
+    if (menu.categories.length === 1) {
+      renderPopup('You need at least 2 categories to move them.');
+      return;
+    }
     // Toggle the move category appearance
     if (moveCategoryBool) {
       moveCategoryButton.innerHTML = '<i class="fa fa-arrows"></i> Move Categories';
