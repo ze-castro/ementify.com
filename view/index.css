@@ -25,7 +25,6 @@ footer p {
 }
 
 footer p a {
-  color: var(--green);
   font-weight: var(--semi-bold);
 }
 

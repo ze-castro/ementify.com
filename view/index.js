@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', async function () {
   menu.categories.forEach((category, index) => {
     const categoryButton = document.createElement('button');
     categoryButton.className = 'category';
+    if (menu.color) {
+      categoryButton.style.backgroundColor = 'var(' + menu.color + ')';
+    }
     categoryButton.dataset.index = index;
     categoryButton.innerHTML = `${category.name} <i class="fa fa-angle-left"></i>`;
     viewList.appendChild(categoryButton);

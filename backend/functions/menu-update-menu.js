@@ -102,6 +102,7 @@ export async function handler(event, context) {
       {
         $set: {
           title: menu.title,
+          color: menu.color,
           categories: menu.categories,
         },
       }

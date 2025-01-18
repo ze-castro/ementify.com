@@ -45,8 +45,105 @@ document.addEventListener('DOMContentLoaded', async function () {
   const changeColorButton = document.getElementById('change-color-button');
   changeColorButton.addEventListener('click', async function () {
     // Render the colors modal
-    
+    await renderColors();
   });
+
+  // render colors
+  function renderColors() {
+    return new Promise((resolve) => {
+      const colorsMenuHTML = `
+      <div id="colors-menu">
+        <div id="colors-menu-box">
+          <h2>Pick a color</h2>
+          <button id="color-1" class="color-option"></button>
+          <button id="color-2" class="color-option"></button>
+          <button id="color-3" class="color-option"></button>
+          <button id="color-4" class="color-option"></button>
+          <button id="color-5" class="color-option"></button>
+          <button id="color-6" class="color-option"></button>
+          <button id="color-7" class="color-option"></button>
+          <button id="color-8" class="color-option"></button>
+          <button id="color-9" class="color-option"></button>
+          <button id="color-10" class="color-option"></button>
+          <button id="color-11" class="color-option"></button>
+          <button id="color-12" class="color-option"></button>
+        </div>
+      </div>
+      `;
+
+      // insert colors
+      document.body.insertAdjacentHTML('afterbegin', colorsMenuHTML);
+
+      // get colors element
+      const colors = document.getElementById('colors-menu');
+
+      // animate colors
+      colors.style.animation = 'fadeIn 0.3s';
+
+      // colors click on the colors except colors-box
+      colors.addEventListener('click', async (e) => {
+        const originalMenuColor = menu.color;
+        switch (e.target.id) {
+          case 'color-1':
+            menu.color = '--green';
+            break;
+          case 'color-2':
+            menu.color = '--blue';
+            break;
+          case 'color-3':
+            menu.color = '--light-blue';
+            break;
+          case 'color-4':
+            menu.color = '--yellow';
+            break;
+          case 'color-5':
+            menu.color = '--red';
+            break;
+          case 'color-6':
+            menu.color = '--orange';
+            break;
+          case 'color-7':
+            menu.color = '--pink';
+            break;
+          case 'color-8':
+            menu.color = '--purple';
+            break;
+          case 'color-9':
+            menu.color = '--black';
+            break;
+          case 'color-10':
+            menu.color = '--gray-5';
+            break;
+          case 'color-11':
+            menu.color = '--gray-4';
+            break;
+          case 'color-12':
+            menu.color = '--gray-3';
+            break;
+        }
+        if (originalMenuColor !== menu.color) {
+          await updateMenu(token, menu);
+          await populateCategorySelect();
+        }
+        resolve(unrenderColors(0));
+      });
+    });
+  }
+
+  // unrender colors
+  function unrenderColors(time) {
+    // get colors element
+    const colors = document.getElementById('colors-menu');
+
+    // wait time before removing colors
+    setTimeout(() => {
+      // animate colors
+      colors.style.animation = 'fadeOut 0.2s';
+      setTimeout(() => {
+        colors.remove();
+      }, 150);
+    }, time);
+  }
 
   // Add event listener to the QR code button
   const qrButton = document.getElementById('qr-code-button');
@@ -411,6 +508,9 @@ async function depopulateMenu() {
 // Populate the category select
 async function populateCategorySelect() {
   const menuCategorySelect = document.getElementById('menu-category-select');
+  if (menu.color !== null && menu.color !== undefined && menu.color !== '') {
+    menuCategorySelect.style.backgroundColor = 'var(' + menu.color + ')';
+  }
   const categories = menu.categories;
 
   // Delete the current options except the first 2 (default and new)

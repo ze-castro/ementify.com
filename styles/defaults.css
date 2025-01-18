@@ -15,7 +15,7 @@
   --light-green: #3dbf6d;
   --red: #be3939;
   --yellow: #f5c518;
-  --orange: #fc6e51;
+  --orange: #e46248;
   --blue: #0071e3;
   --light-blue: #00a0e3;
   --purple: #ac92ec;
@@ -176,4 +176,23 @@ ul {
 /* USEFULL CLASSES */
 .hide {
   display: none !important;
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
