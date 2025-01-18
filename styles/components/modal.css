@@ -51,11 +51,16 @@
   padding: 0.5rem 1.5rem;
   border-radius: var(--radius-2);
   background-color: var(--green);
+  box-shadow: 0 0.3rem 0.5rem var(--shadow-1);
   font-size: var(--paragraph);
   font-weight: var(--semi-bold);
   color: var(--white);
   cursor: pointer;
   transition: var(--steady);
+}
+
+#modal-buttons button:hover {
+  box-shadow: 0 0.5rem 0.5rem var(--shadow-1);
 }
 
 @media (width < 768px) {

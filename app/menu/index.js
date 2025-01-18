@@ -2,6 +2,7 @@ import { isTokenInLocalStorage } from '/js/utils/isTokenInLocalStorage.js';
 import { getMenu, updateMenu, deleteMenu } from '/js/functions/menu.js';
 import { renderConfirm } from '/js/components/confirm.js';
 import { renderModal } from '/js/components/modal.js';
+import { renderContextMenu } from '/js/components/context-menu.js';
 
 // Variables
 var menu = null;
@@ -27,10 +28,24 @@ document.addEventListener('DOMContentLoaded', async function () {
   await populateMenu(menu);
 
   //// EVENT LISTENERS ////
+  // Add event listener to the options button
+  const optionsButton = document.getElementById('options-button');
+  optionsButton.addEventListener('click', async function () {
+    // Render the context menu
+    await renderContextMenu();
+  });
+
   // Add event listener to the view button
   const viewButton = document.getElementById('view-button');
   viewButton.addEventListener('click', async function () {
     window.open('/view?id=' + menuId, '_blank', 'noopener');
+  });
+
+  // Add event listener to the change-color button
+  const changeColorButton = document.getElementById('change-color-button');
+  changeColorButton.addEventListener('click', async function () {
+    // Render the colors modal
+    
   });
 
   // Add event listener to the QR code button

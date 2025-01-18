@@ -1,0 +1,76 @@
+/* CONTEXT-MENU */
+#context-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100dvh;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 9999;
+}
+
+#context-menu-box {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: var(--white);
+  border-radius: var(--radius-3);
+  padding: 1rem;
+  box-shadow: 0 1rem 2rem var(--shadow-2);
+  transition: var(--steady);
+}
+
+#context-menu-box::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid var(--white);
+  top: -10px;
+  right: 1rem;
+}
+
+.context-menu-divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--gray-1);
+}
+
+#context-menu-box button {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-2);
+  background-color: var(--white);
+  box-shadow: 0 0.3rem 0.5rem var(--shadow-1);
+  font-weight: var(--semi-bold);
+  color: var(--black);
+  cursor: pointer;
+  transition: var(--steady);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

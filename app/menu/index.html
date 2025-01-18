@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="/styles/components/popup.css" />
     <link rel="stylesheet" href="/styles/components/confirm.css" />
     <link rel="stylesheet" href="/styles/components/modal.css" />
+    <link rel="stylesheet" href="/styles/components/context-menu.css" />
     <link rel="stylesheet" href="/app/menu/index.css" />
     <!-- scripts -->
     <script type="module" src="/app/menu/index.js"></script>
@@ -34,13 +35,28 @@
       <a href="/app">
         <i class="fa fa-home"></i>
       </a>
-      <button id="view-button">
-        <i class="fa fa-external-link"></i>
-      </button>
-      <button id="qr-code-button">
-        <i class="fa fa-qrcode"></i>
+      <button id="options-button">
+        <i class="fa fa-cog"></i>
       </button>
     </nav>
+    <div id="context-menu">
+      <div id="context-menu-box">
+        <button id="view-button">
+          <i class="fa fa-external-link"></i>
+          View Menu
+        </button>
+        <div class="context-menu-divider"></div>
+        <button id="qr-code-button">
+          <i class="fa fa-qrcode"></i>
+          QR Code
+        </button>
+        <div class="context-menu-divider"></div>
+        <button id="delete-menu-button">
+          <i class="fa fa-trash"></i>
+          Delete Menu
+        </button>
+      </div>
+    </div>
     <main>
       <section id="menu">
         <input id="menu-title" type="text" placeholder="Menu" />
@@ -51,9 +67,9 @@
               <i class="fa fa-arrows"></i>
               Move Categories
             </button>
-            <button id="delete-menu-button">
-              <i class="fa fa-trash"></i>
-              Delete Menu
+            <button id="change-color-button">
+              <i class="fa fa-paint-brush"></i>
+              Change Color
             </button>
           </div>
           <form id="menu-category-form" name="menu-category-form">
