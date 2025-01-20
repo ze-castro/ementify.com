@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="/styles/defaults.css" />
     <link rel="stylesheet" href="/styles/components/loading.css" />
     <link rel="stylesheet" href="/styles/components/popup.css" />
+    <link rel="stylesheet" href="/styles/components/context-menu.css" />
     <link rel="stylesheet" href="/app/index.css" />
     <!-- scripts -->
     <script type="module" src="/app/index.js"></script>
@@ -29,26 +30,39 @@
   </head>
   <body>
     <nav>
-      <a href="mailto:info@ementify.com?subject=Report a bug">
-        <i class="fa fa-exclamation-triangle"></i>
-      </a>
-      <a href="/app/profile">
-        <i class="fa fa-user"></i>
-      </a>
-      <a>
-        <i class="fa fa-sign-out"></i>
-      </a>
+      <button id="options-button">
+        <i class="fa fa-cog"></i>
+      </button>
     </nav>
+    <div id="context-menu">
+      <div id="context-menu-box">
+        <button id="profile-button">
+          <i class="fa fa-user"></i>
+          Profile
+        </button>
+        <div class="context-menu-divider"></div>
+        <button id="bug-button">
+          <i class="fa fa-exclamation-triangle"></i>
+          Report a bug
+        </button>
+        <div class="context-menu-divider"></div>
+        <button id="sign-out-button">
+          <i class="fa fa-sign-out"></i>
+          Sign out
+        </button>
+      </div>
+    </div>
     <main>
       <section id="app">
         <h1>My menus</h1>
         <p>Click on <i class="fa fa-plus-square-o"></i> to create a new menu or click on <i class="fa fa-bars"></i> to edit one.</p>
         <div id="menus-list">
           <form id="add-menu-form" class="menu" name="add-menu-form">
+            <input type="text" name="title" placeholder="Menu name" required />
             <button type="submit">
               <i class="fa fa-plus-square-o"></i>
+              Add Menu
             </button>
-            <input type="text" name="title" placeholder="Menu name" required />
           </form>
         </div>
       </section>
