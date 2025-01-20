@@ -131,8 +131,8 @@ nav button {
 }
 
 #add-menu-form {
-  padding: 0.5rem;
   justify-content: space-between;
+  box-shadow: none;
 }
 
 #add-menu-form input {
@@ -140,14 +140,15 @@ nav button {
 }
 
 #add-menu-form button {
-  min-width: 120px;
-  padding: 0.5rem 1rem;
+  padding: 0.7rem 1rem 0.6rem 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.7rem;
   background-color: var(--green);
+  box-shadow: 0 0.3rem 0.5rem var(--shadow-1);
   font-weight: var(--semi-bold);
+  font-size: var(--paragraph);
 }
 
 #add-menu-form button i {
