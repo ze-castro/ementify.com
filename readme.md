@@ -1,5 +1,5 @@
 # Ementify
-<img src="/assets/icon.png" alt="Ementify Logo" width="150" height="150">
+<img src="/assets/logo.webp" alt="Ementify Logo" width="150" height="150">
 
 ## Description
 Ementify is a project that aims to help the food businesses to elevate their customer experience by providing a platform to show their menu digitally.
