@@ -7,6 +7,7 @@ import { renderPopup } from '/js/components/popup.js';
 
 // Variables
 var menu = null;
+let originalMenu = null;
 
 // Get the token from the local storage
 const token = localStorage.getItem('token');
@@ -22,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   // Get menu
   menu = await getMenu(token, menuId);
-  let originalMenu = JSON.parse(JSON.stringify(menu));
+  originalMenu = JSON.parse(JSON.stringify(menu));
 
   // Render the menu
   await populateCategorySelect();
