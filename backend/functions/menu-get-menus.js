@@ -5,7 +5,7 @@ if (process.env.NODE_ENV == 'dev') {
   dotenv.config();
 }
 import rateLimiter from '../utils/rateLimiter';
-import connectToDatabase from '../utils/dbConnection';
+import connectToDatabase from '../utils/dbConnection'; 
 
 // JWT Secret from environment variables
 const jwtSecret = process.env.JWT_SECRET;
