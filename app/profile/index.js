@@ -1,5 +1,5 @@
 import { isTokenInLocalStorage } from '/js/utils/isTokenInLocalStorage.js';
-import { verifyToken, getUser, updateUser, deleteUser } from '/js/functions/user.js';
+import { getUser, updateUser, deleteUser } from '/js/functions/user.js';
 import { renderConfirm } from '/js/components/confirm.js';
 
 // Variables

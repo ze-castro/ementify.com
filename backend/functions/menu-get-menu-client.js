@@ -1,13 +1,10 @@
-import { MongoClient, ObjectId } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import dotenv from 'dotenv';
 if (process.env.NODE_ENV == 'dev') {
   dotenv.config();
 }
 import rateLimiter from '../utils/rateLimiter';
-
-// MongoDB URI and JWT Secret from environment variables
-const uri = process.env.MONGO_DB;
-const client = new MongoClient(uri);
+import connectToDatabase from '../utils/dbConnection';
 
 // Rate limiter
 const limiter = rateLimiter({
@@ -34,9 +31,8 @@ export async function handler(event, context) {
     const { menuId } = JSON.parse(event.body);
 
     // Connect to MongoDB
-    await client.connect();
-    const database = client.db('ementify');
-    const menusCollection = database.collection('menus');
+    const { db } = await connectToDatabase();
+    const menusCollection = db.collection('menus');
 
     // Transform the menuId to an ObjectId
     const menu_id = new ObjectId(menuId);
@@ -63,7 +59,5 @@ export async function handler(event, context) {
         message: '⚠️ An error occurred getting the menu.',
       }),
     };
-  } finally {
-    await client.close();
   }
 }
