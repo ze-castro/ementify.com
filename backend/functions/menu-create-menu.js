@@ -91,7 +91,7 @@ export async function handler(event, context) {
     // Return success response
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: '🍔 Menu created successfully.', id: menu.insertedId }),
+      body: JSON.stringify({ message: '✅ Menu created successfully.', id: menu.insertedId }),
     };
   } catch (error) {
     console.error('Error creating the menu:', error);

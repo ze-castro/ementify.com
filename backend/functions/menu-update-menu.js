@@ -5,10 +5,9 @@ if (process.env.NODE_ENV == 'dev') {
   dotenv.config();
 }
 import rateLimiter from '../utils/rateLimiter';
+import connectToDatabase from '../utils/dbConnection';
 
-// MongoDB URI and JWT Secret from environment variables
-const uri = process.env.MONGO_DB;
-const client = new MongoClient(uri);
+// JWT Secret from environment variables
 const jwtSecret = process.env.JWT_SECRET;
 
 // Rate limiter
@@ -36,10 +35,9 @@ export async function handler(event, context) {
     const { token, menu } = JSON.parse(event.body);
 
     // Connect to MongoDB
-    await client.connect();
-    const database = client.db('ementify');
-    const menusCollection = database.collection('menus');
-    const usersCollection = database.collection('users');
+    const { db } = await connectToDatabase();
+    const menusCollection = db.collection('menus');
+    const usersCollection = db.collection('users');
 
     // Decode the token and get the user's id
     const decodedToken = verify(token, jwtSecret);
@@ -127,7 +125,5 @@ export async function handler(event, context) {
         message: '⚠️ An error occurred while updating the menu.',
       }),
     };
-  } finally {
-    await client.close();
   }
 }

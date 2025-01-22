@@ -5,10 +5,9 @@ if (process.env.NODE_ENV == 'dev') {
   dotenv.config();
 }
 import rateLimiter from '../utils/rateLimiter';
+import connectToDatabase from '../utils/dbConnection'; 
 
-// MongoDB URI and JWT Secret from environment variables
-const uri = process.env.MONGO_DB;
-const client = new MongoClient(uri);
+// JWT Secret from environment variables
 const jwtSecret = process.env.JWT_SECRET;
 
 // Rate limiter
@@ -17,13 +16,14 @@ const limiter = rateLimiter({
   maxRequests: 10,
 });
 
+
 export async function handler(event, context) {
   // Apply rate limiting
   const ip = event.headers['x-forwarded-for'] || event.headers['client-ip'] || 'unknown';
   if (!limiter(ip)) {
     return limiter.handler();
   }
-
+  
   // Only allow POST requests
   if (event.httpMethod !== 'POST') {
     return {
@@ -31,20 +31,19 @@ export async function handler(event, context) {
       body: JSON.stringify({ message: 'Method Not Allowed 🚫' }),
     };
   }
-
+  
   try {
     const { token } = JSON.parse(event.body);
 
     // Connect to MongoDB
-    await client.connect();
-    const database = client.db('ementify');
-    const menusCollection = database.collection('menus');
-    const usersCollection = database.collection('users');
+    const { db } = await connectToDatabase();
+    const menusCollection = db.collection('menus');
+    const usersCollection = db.collection('users');
 
     // Decode the token and get the user's id
     const decodedToken = verify(token, jwtSecret);
     const email = decodedToken.email;
-    
+
     // Get the user's id
     const user = await usersCollection.findOne({ email });
     if (!user) {
@@ -53,7 +52,7 @@ export async function handler(event, context) {
         body: JSON.stringify({ message: '⚠️ Something went wrong getting the menu owner.' }),
       };
     }
-    
+
     // Find all the menus with id
     const menus = await menusCollection.find({ user: user._id }).toArray();
     if (!menus) {
@@ -76,7 +75,5 @@ export async function handler(event, context) {
         message: '⚠️ An error occurred getting the menus.',
       }),
     };
-  } finally {
-    await client.close();
   }
 }
