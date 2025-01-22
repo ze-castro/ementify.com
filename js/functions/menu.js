@@ -173,7 +173,7 @@ async function updateMenu(token, menu) {
 
     if (response.ok) {
       // Show a success message
-      renderPopup(result.message || '✅ Menu updated successfully.', 1000);
+      renderPopup(result.message || '✅ Menu updated successfully.', 600);
       return result;
     } else {
       if (response.status !== 403) {
