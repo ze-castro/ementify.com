@@ -33,6 +33,10 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Add event listener to the options button
   const optionsButton = document.getElementById('options-button');
   optionsButton.addEventListener('click', async function () {
+    // Toggle category drag off - moveCategoryButton make it click
+    if (moveCategoryBool) {
+      moveCategoryButton.click();
+    }
     // Render the context menu
     await renderContextMenu();
   });
@@ -40,12 +44,21 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Add event listener to the view button
   const viewButton = document.getElementById('view-button');
   viewButton.addEventListener('click', async function () {
+    // Toggle category drag off - moveCategoryButton make it click
+    if (moveCategoryBool) {
+      moveCategoryButton.click();
+    }
+    // Open the menu in a new tab
     window.open('/view?id=' + menuId, '_blank', 'noopener');
   });
 
   // Add event listener to the change-color button
   const changeColorButton = document.getElementById('change-color-button');
   changeColorButton.addEventListener('click', async function () {
+    // Toggle category drag off - moveCategoryButton make it click
+    if (moveCategoryBool) {
+      moveCategoryButton.click();
+    }
     // Render the colors modal
     await renderColors();
   });
@@ -84,6 +97,12 @@ document.addEventListener('DOMContentLoaded', async function () {
 
       // colors click on the colors except colors-box
       colors.addEventListener('click', async (e) => {
+        // Toggle category drag off - moveCategoryButton make it click
+        if (moveCategoryBool) {
+          moveCategoryButton.click();
+        }
+
+        // change color
         const originalMenuColor = menu.color;
         switch (e.target.id) {
           case 'color-1':
@@ -151,6 +170,10 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Add event listener to the QR code button
   const qrButton = document.getElementById('qr-code-button');
   qrButton.addEventListener('click', async function () {
+    // Toggle category drag off - moveCategoryButton make it click
+    if (moveCategoryBool) {
+      moveCategoryButton.click();
+    }
     // Get the QR code
     const qrCode =
       'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.ementify.com/view?id=' +
@@ -395,6 +418,10 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Add event listener to the delete button
   const deleteMenuButton = document.getElementById('delete-menu-button');
   deleteMenuButton.addEventListener('click', async function () {
+    // Toggle category drag off - moveCategoryButton make it click
+    if (moveCategoryBool) {
+      moveCategoryButton.click();
+    }
     // Ask for confirmation
     const confirm = await renderConfirm('This menu will be deleted permanently. Are you sure?');
     if (!confirm) {
@@ -489,6 +516,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Reset the form
     menuCategoryForm.reset();
+    menuCategoryTitleNew.classList.remove('hide');
+    menuCategoryTitleNew.classList.add('hide');
   });
 });
 
@@ -591,6 +620,10 @@ async function populateMenu(menu) {
 
     // Add event listener to the open button
     menuCategoryOpen.addEventListener('click', function () {
+      // Toggle category drag off - moveCategoryButton make it click
+      if (moveCategoryBool) {
+        moveCategoryButton.click();
+      }
       // Toggle the items
       menuCategoryItems.classList.toggle('hide');
       // Change the icon
@@ -612,6 +645,10 @@ async function populateMenu(menu) {
 
     // Add event listener to the delete button
     categoryDelete.addEventListener('click', async function () {
+      // Toggle category drag off - moveCategoryButton make it click
+      if (moveCategoryBool) {
+        moveCategoryButton.click();
+      }
       // Ask for confirmation
       const confirm = await renderConfirm(
         'You will lose all the items in this category. Are you sure?'
@@ -675,6 +712,10 @@ async function populateMenu(menu) {
 
       // Add event listener to item delete button
       itemDelete.addEventListener('click', async function () {
+        // Toggle category drag off - moveCategoryButton make it click
+        if (moveCategoryBool) {
+          moveCategoryButton.click();
+        }
         // Ask for confirmation
         const confirm = await renderConfirm('Are you sure you want to delete this item?');
         if (!confirm) {
