@@ -489,6 +489,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Reset the form
     menuCategoryForm.reset();
+    menuCategoryTitleNew.classList.remove('hide');
+    menuCategoryTitleNew.classList.add('hide');
   });
 });
 
