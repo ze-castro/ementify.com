@@ -39,6 +39,13 @@ startButton.addEventListener('click', () => {
   pricing.scrollIntoView({ behavior: 'smooth' });
 });
 
+// FEATURES
+// onclick of the demo button open in new tab
+const demoButton = document.getElementById('demo-button');
+demoButton.addEventListener('click', () => {
+  window.open('https://ementify.com/view/?id=6794d28f130bfb13400d7ec7', '_blank', 'noopener');
+});
+
 // PRICING
 // onclick of the pricing buttons
 const freeButton = document.getElementById('free-button');
