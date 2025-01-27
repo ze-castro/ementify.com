@@ -56,7 +56,6 @@ export async function handler(event, context) {
 
     // Check if user is a paid user
     if (!user.paid) {
-      console.log('User is not a paid user');
       // Count how many menus the user has
       const count = await menusCollection.countDocuments({ user: user._id });
       if (count >= 1) {

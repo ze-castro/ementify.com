@@ -58,6 +58,7 @@ export async function handler(event, context) {
       name,
       email,
       password: hashedPassword,
+      paid: false,
       createdAt: new Date(),
     };
     await usersCollection.insertOne(newUser);

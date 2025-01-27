@@ -53,42 +53,37 @@ export async function handler(event, context) {
     }
 
     // Check if user is a paid user
-    // if (!user.paid) {
-    //   return {
-    //     statusCode: 403,
-    //     body: JSON.stringify({ message: '⚠️ You need to be a paid user.' }),
-    //   };
-    // }
+    if (!user.paid) {
+      // Count the number of categories
+      const categoriesCount = menu.categories.length;
+      if (categoriesCount > 10) {
+        return {
+          statusCode: 403,
+          body: JSON.stringify({ message: '🤷‍♂️ Upgrade your plan to add more categories.' }),
+        };
+      }
 
-    // Count the number of categories
-    const categoriesCount = menu.categories.length;
-    if (categoriesCount > 10) {
-      return {
-        statusCode: 403,
-        body: JSON.stringify({ message: '🤷‍♂️ Upgrade your plan to add more categories.' }),
-      };
-    }
+      // Create an ObjectId from the menu id
+      const objectMenuId = new ObjectId(menu._id);
+      const objectUserId = new ObjectId(user._id);
 
-    // Create an ObjectId from the menu id
-    const objectMenuId = new ObjectId(menu._id);
-    const objectUserId = new ObjectId(user._id);
+      // Get menu by id and user
+      const existingMenu = await menusCollection.findOne({ _id: objectMenuId, user: objectUserId });
 
-    // Get menu by id and user
-    const existingMenu = await menusCollection.findOne({ _id: objectMenuId, user: objectUserId });
-
-    // Compare which category has different items count
-    if (existingMenu.categories.length > 0) {
-      for (const category of menu.categories) {
-        const existingCategory = existingMenu.categories.find((c) => c._id === category._id);
-        if (existingCategory.items.length !== category.items.length) {
-          const itemsCount = category.items.length;
-          if (itemsCount > 10) {
-            return {
-              statusCode: 403,
-              body: JSON.stringify({
-                message: '🤷‍♂️ Upgrade your plan to add more items.',
-              }),
-            };
+      // Compare which category has different items count
+      if (existingMenu.categories.length > 0) {
+        for (const category of menu.categories) {
+          const existingCategory = existingMenu.categories.find((c) => c._id === category._id);
+          if (existingCategory.items.length !== category.items.length) {
+            const itemsCount = category.items.length;
+            if (itemsCount > 10) {
+              return {
+                statusCode: 403,
+                body: JSON.stringify({
+                  message: '🤷‍♂️ Upgrade your plan to add more items.',
+                }),
+              };
+            }
           }
         }
       }
