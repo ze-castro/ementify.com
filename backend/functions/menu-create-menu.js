@@ -69,6 +69,7 @@ export async function handler(event, context) {
     // Create a new menu
     const newMenu = {
       title,
+      description: 'This is your menu description.',
       user: user._id,
       categories: [],
       createdAt: new Date(),

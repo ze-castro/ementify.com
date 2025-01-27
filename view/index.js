@@ -20,6 +20,11 @@ document.addEventListener('DOMContentLoaded', async function () {
   const menuName = document.getElementById('menu-name');
   menuName.innerHTML = menu.title;
 
+  // Change the menu description
+  const menuDescription = document.getElementById('menu-description');
+  console.log(menu);
+  menuDescription.innerHTML = menu.description;
+
   //// Populate the menu ////
   const viewList = document.getElementById('view-list');
 

@@ -483,6 +483,27 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
   });
 
+  // Get the menu description element
+  const menuDescription = document.getElementById('menu-description');
+  menuDescription.value = menu.description;
+
+  // Add event listener to the description input when the user leaves the input
+  menuDescription.addEventListener('blur', async function () {
+    // Check if the description is empty and set it to the previous value
+    if (menuDescription.value === '') {
+      menuDescription.value = menu.description;
+      return;
+    }
+    // Check if the description is the same as the previous value
+    if (menuDescription.value !== menu.description) {
+      // Update the menu description
+      menu.description = menuDescription.value;
+      // Update the menu
+      await updateMenu(token, menu);
+      originalMenu = JSON.parse(JSON.stringify(menu));
+    }
+  });
+
   // Add event listener to the category select
   const menuCategorySelect = document.getElementById('menu-category-select');
   const menuCategoryTitleNew = document.getElementById('menu-category-title-new');

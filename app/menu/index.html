@@ -46,6 +46,11 @@
           View Menu
         </button>
         <div class="context-menu-divider"></div>
+        <button id="add-photo-button">
+          <i class="fa fa-photo"></i>
+          Add Photo
+        </button>
+        <div class="context-menu-divider"></div>
         <button id="qr-code-button">
           <i class="fa fa-qrcode"></i>
           QR Code
@@ -60,7 +65,7 @@
     <main>
       <section id="menu">
         <input id="menu-title" type="text" placeholder="Menu" />
-        <p>Add a new category by selecting "Create a new category" and creating an item.</p>
+        <textarea id="menu-description" placeholder="This is your menu description."></textarea>
         <div id="menu-categories">
           <div id="menu-top-buttons">
             <button id="move-menu-button">

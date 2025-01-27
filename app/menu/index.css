@@ -82,8 +82,7 @@ main {
   font-weight: var(--semi-bold);
   max-width: calc(100% - 6rem);
   padding: 0.5rem 1rem 0.5rem 0 !important;
-  margin-bottom: 1rem;
-  border-radius: 0;
+  border-radius: var(--radius-4);
   border: 0;
   background-color: var(--gray-1);
 }
@@ -97,10 +96,19 @@ main {
   border: 0;
 }
 
-#menu > p {
+#menu > textarea {
+  height: 3rem;
   font-size: var(--subtitle);
   font-weight: var(--thin);
-  margin-bottom: 1rem;
+  padding: 0.5rem 1rem 0.5rem 0 !important;
+  background-color: var(--gray-1);
+  border-radius: var(--radius-4);
+  margin-bottom: 0.5rem;
+}
+
+#menu > textarea:focus {
+  background-color: var(--white);
+  resize: vertical;
 }
 
 @media (width < 768px) {
@@ -110,7 +118,6 @@ main {
   #menu > input {
     max-width: calc(100% - 5.7rem);
     margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
   }
 }
 
