@@ -221,19 +221,37 @@ document.addEventListener('DOMContentLoaded', async function () {
         category.draggable = true;
       }
 
-      // Disable all the inputs in menu-category-title
-      const itemsCategoryElements = document.getElementsByClassName('menu-category-title');
-      for (const item of itemsCategoryElements) {
-        item.disabled = true;
+      // Disable all the inputs and buttons in menu-category
+      const categoryElements = document.getElementsByClassName('menu-category');
+      for (const item of categoryElements) {
+        for (const child of item.children) {
+          child.disabled = true;
+          for (const grandchild of child.children) {
+            if (grandchild.className !== 'menu-category-move') {
+              grandchild.disabled = true;
+            }
+            for (const greatgrandchild of grandchild.children) {
+              greatgrandchild.disabled = true;
+            }
+          }
+        }
       }
 
       // Make the categories draggable
       makeDraggable();
     } else {
-      // Able all the inputs in menu-category-title
-      const itemsCategoryElements = document.getElementsByClassName('menu-category-title');
-      for (const item of itemsCategoryElements) {
-        item.disabled = false;
+      // Enable all the inputs and buttons in menu-category
+      const categoryElements = document.getElementsByClassName('menu-category');
+      for (const item of categoryElements) {
+        for (const child of item.children) {
+          child.disabled = false;
+          for (const grandchild of child.children) {
+            grandchild.disabled = false;
+            for (const greatgrandchild of grandchild.children) {
+              greatgrandchild.disabled = false;
+            }
+          }
+        }
       }
 
       // Update the menu if the order of the categories has changed
@@ -653,10 +671,6 @@ async function populateMenu(menu) {
 
     // Add event listener to the delete button
     categoryDelete.addEventListener('click', async function () {
-      // Toggle category drag off - moveCategoryButton make it click
-      if (moveCategoryBool) {
-        moveCategoryButton.click();
-      }
       // Ask for confirmation
       const confirm = await renderConfirm(
         'You will lose all the items in this category. Are you sure?'
