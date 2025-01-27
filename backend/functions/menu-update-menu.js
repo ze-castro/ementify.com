@@ -52,6 +52,10 @@ export async function handler(event, context) {
       };
     }
 
+    // Create an ObjectId from the menu id
+    const objectMenuId = new ObjectId(menu._id);
+    const objectUserId = new ObjectId(user._id);
+
     // Check if user is a paid user
     if (!user.paid) {
       // Count the number of categories
@@ -62,10 +66,6 @@ export async function handler(event, context) {
           body: JSON.stringify({ message: '🤷‍♂️ Upgrade your plan to add more categories.' }),
         };
       }
-
-      // Create an ObjectId from the menu id
-      const objectMenuId = new ObjectId(menu._id);
-      const objectUserId = new ObjectId(user._id);
 
       // Get menu by id and user
       const existingMenu = await menusCollection.findOne({ _id: objectMenuId, user: objectUserId });
@@ -90,7 +90,7 @@ export async function handler(event, context) {
     }
 
     // Update the menu
-    const menuResponse = await menusCollection.updateOne(
+    await menusCollection.updateOne(
       { _id: objectMenuId, user: objectUserId },
       {
         $set: {
@@ -100,12 +100,6 @@ export async function handler(event, context) {
         },
       }
     );
-    if (menuResponse.modifiedCount === 0) {
-      return {
-        statusCode: 404,
-        body: JSON.stringify({ message: '⚠️ Menu not found.' }),
-      };
-    }
 
     // Return success response
     return {

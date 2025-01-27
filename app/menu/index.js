@@ -514,7 +514,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const formData = new FormData(menuCategoryForm);
     const itemTitle = formData.get('item-title');
     const itemDescription = formData.get('item-description');
-    const itemPrice = formData.get('item-price');
+    const itemPrice = parseFloat(formData.get('item-price')).toFixed(2);
 
     // Create the item
     const item = {
@@ -724,7 +724,7 @@ async function populateMenu(menu) {
       const itemPrice = document.createElement('input');
       itemPrice.className = 'item-price changable-title';
       itemPrice.type = 'number';
-      itemPrice.placeholder = '0.0';
+      itemPrice.placeholder = '0.00';
       itemPrice.value = item.price;
 
       // Create the item delete button
@@ -811,7 +811,7 @@ async function populateMenu(menu) {
         // Check if the price is the same as the previous value
         if (itemPrice.value !== item.price) {
           // Update the item price
-          item.price = itemPrice.value;
+          item.price = parseFloat(itemPrice.value).toFixed(2);
           // Update the menu
           await updateMenu(token, menu);
           originalMenu = JSON.parse(JSON.stringify(menu));
