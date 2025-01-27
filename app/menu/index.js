@@ -734,10 +734,6 @@ async function populateMenu(menu) {
 
       // Add event listener to item delete button
       itemDelete.addEventListener('click', async function () {
-        // Toggle category drag off - moveCategoryButton make it click
-        if (moveCategoryBool) {
-          moveCategoryButton.click();
-        }
         // Ask for confirmation
         const confirm = await renderConfirm('Are you sure you want to delete this item?');
         if (!confirm) {
