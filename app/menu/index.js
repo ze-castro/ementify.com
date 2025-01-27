@@ -221,9 +221,21 @@ document.addEventListener('DOMContentLoaded', async function () {
         category.draggable = true;
       }
 
+      // Disable all the inputs in menu-category-title
+      const itemsCategoryElements = document.getElementsByClassName('menu-category-title');
+      for (const item of itemsCategoryElements) {
+        item.disabled = true;
+      }
+
       // Make the categories draggable
       makeDraggable();
     } else {
+      // Able all the inputs in menu-category-title
+      const itemsCategoryElements = document.getElementsByClassName('menu-category-title');
+      for (const item of itemsCategoryElements) {
+        item.disabled = false;
+      }
+
       // Update the menu if the order of the categories has changed
       if (JSON.stringify(menu) !== JSON.stringify(originalMenu)) {
         await updateMenu(token, menu);
@@ -620,10 +632,6 @@ async function populateMenu(menu) {
 
     // Add event listener to the open button
     menuCategoryOpen.addEventListener('click', function () {
-      // Toggle category drag off - moveCategoryButton make it click
-      if (moveCategoryBool) {
-        moveCategoryButton.click();
-      }
       // Toggle the items
       menuCategoryItems.classList.toggle('hide');
       // Change the icon
