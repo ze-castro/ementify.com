@@ -1,4 +1,4 @@
-import { MongoClient, ObjectId } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import { verify } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 if (process.env.NODE_ENV == 'dev') {
@@ -97,6 +97,7 @@ export async function handler(event, context) {
           title: menu.title,
           description: menu.description,
           color: menu.color,
+          image: menu.image,
           categories: menu.categories,
         },
       }

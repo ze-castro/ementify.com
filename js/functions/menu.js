@@ -198,6 +198,10 @@ async function updateMenu(token, menu) {
   }
 }
 
+async function updateMenuImage(file) {
+  console.log('File:', file); 
+}
+
 // Delete a menu
 async function deleteMenu(token, menuId) {
   // Render the loading animation
@@ -250,4 +254,4 @@ async function deleteMenu(token, menuId) {
   }
 }
 
-export { getMenus, getMenu, createMenu, updateMenu, deleteMenu };
+export { getMenus, getMenu, createMenu, updateMenu, updateMenuImage, deleteMenu };

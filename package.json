@@ -3,6 +3,7 @@
     "dotenv": "^16.4.7"
   },
   "dependencies": {
+    "@netlify/blobs": "^8.1.0",
     "bcrypt": "^5.1.1",
     "express-rate-limit": "^7.5.0",
     "jsonwebtoken": "^9.0.2",
