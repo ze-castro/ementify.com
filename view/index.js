@@ -95,12 +95,23 @@ function populateItems(container, items) {
   container.innerHTML = '';
   items.forEach((item) => {
     const itemDiv = document.createElement('div');
-    itemDiv.className = 'item';
-    itemDiv.innerHTML = `
-      <h2 class="item-name">${item.title}</h2>
-      <p class="item-description">${item.description}</p>
-      <p class="item-price">${'€ ' + item.price}</p>
-    `;
+    if (item.image) {
+      itemDiv.className = 'item item-with-image';
+      itemDiv.innerHTML = `
+        <img class="item-image" src="${item.image}" alt="${item.title}">
+        <h2 class="item-name">${item.title}</h2>
+        <p class="item-description">${item.description}</p>
+        <p class="item-price">${'€ ' + item.price}</p>
+      `;
+    } else {
+      itemDiv.className = 'item';
+      itemDiv.innerHTML = `
+        <h2 class="item-name">${item.title}</h2>
+        <p class="item-description">${item.description}</p>
+        <p class="item-price">${'€ ' + item.price}</p>
+      `;
+    }
+
     container.appendChild(itemDiv);
   });
 }

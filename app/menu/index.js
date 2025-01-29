@@ -870,7 +870,185 @@ async function populateMenu(menu) {
     for (const item of category.items) {
       // Create the item element
       const menuCategoryItem = document.createElement('div');
-      menuCategoryItem.className = 'menu-category-item';
+
+      if (item.image) {
+        menuCategoryItem.className = 'menu-category-item menu-category-item-with-image';
+
+        // Create the item image element
+        const itemImage = document.createElement('img');
+        itemImage.className = 'item-image';
+        itemImage.src = item.image;
+        itemImage.alt = 'Item Image';
+
+        // Append the image to the item element
+        menuCategoryItem.appendChild(itemImage);
+
+        // Add event listener to the item image
+        itemImage.addEventListener('click', async function () {
+          // Create the item context element
+          const contextForItemHTML = `
+          <div id="context-item">
+            <div id="context-item-box">
+              <button id="context-item-edit" class="context-item-button"><i class="fa fa-edit"></i> Change Image</button>
+              <div class="context-item-divider"></div>
+              <button id="context-item-delete" class="context-item-button"><i class="fa fa-close"></i> Delete Image</button>
+            </div>
+          </div>
+          `;
+
+          // insert context item
+          menuCategoryItem.insertAdjacentHTML('afterbegin', contextForItemHTML);
+
+          // get context item
+          const contextItem = document.getElementById('context-item');
+
+          // animate context item
+          contextItem.style.animation = 'fadeIn 0.3s';
+
+          // Add event listener to the edit button
+          const contextItemEdit = document.getElementById('context-item-edit');
+          contextItemEdit.addEventListener('click', async function () {
+            // Remove the context item
+            contextItem.style.animation = 'fadeOut 0.2s';
+            setTimeout(() => {
+              contextItem.remove();
+            }, 100);
+
+            // Create the item add image input
+            const itemAddImage = document.createElement('input');
+            itemAddImage.className = 'item-add-image';
+            itemAddImage.id = 'item-add-image';
+            itemAddImage.name = 'item-add-image';
+            itemAddImage.type = 'file';
+            itemAddImage.accept = '.jpg, .jpeg, .png';
+            itemAddImage.style.display = 'none';
+
+            // Click the item add image input
+            itemAddImage.click();
+
+            // Add event listener to the item add image input
+            itemAddImage.addEventListener('change', async function (e) {
+              // Check if the image is compressed
+              const compressedFile = await compressImage(e.target.files[0]);
+              if (!compressedFile) {
+                return renderPopup(
+                  '⚠️ Please wait for the image to compress. Try again in 5 seconds.'
+                );
+              }
+
+              // Upload the image
+              const imageUrl = await uploadImage(compressedFile);
+              if (!imageUrl) {
+                return renderPopup(
+                  '⚠️ There was an error uploading the image. Try again in 5 seconds.'
+                );
+              }
+
+              // Change the item image
+              itemImage.src = imageUrl;
+
+              // Update the item image
+              item.image = imageUrl;
+
+              // Update the menu
+              await updateMenu(token, menu);
+              originalMenu = JSON.parse(JSON.stringify(menu));
+
+            });
+          });
+
+          // Add event listener to the delete button
+          const contextItemDelete = document.getElementById('context-item-delete');
+          contextItemDelete.addEventListener('click', async function () {
+            // Remove the context item
+            contextItem.style.animation = 'fadeOut 0.2s';
+            setTimeout(() => {
+              contextItem.remove();
+            }, 100);
+
+            // Ask for confirmation
+            const confirm = await renderConfirm('Are you sure you want to delete this image?');
+            if (!confirm) {
+              return;
+            }
+
+            // Delete the item image
+            item.image = null;
+
+            // Update the menu
+            await updateMenu(token, menu);
+            originalMenu = JSON.parse(JSON.stringify(menu));
+
+            // Repopulate the menu
+            await repopulateMenu(menu);
+          });
+
+          // On click outside of the context-item-box unrender context item
+          const mainElement = document.querySelector('main');
+          mainElement.addEventListener('click', async (e) => {
+            console.log(e.target.id);
+            if (
+              e.target.id !== 'context-item-box' &&
+              e.target.id !== 'context-item-edit' &&
+              e.target.id !== 'context-item-delete' &&
+              e.target.className !== 'item-image'
+            ) {
+              // Remove the context item
+              contextItem.style.animation = 'fadeOut 0.2s';
+              setTimeout(() => {
+                contextItem.remove();
+              }, 100);
+            }
+          });
+        });
+      } else {
+        menuCategoryItem.className = 'menu-category-item';
+
+        // Create the item add image input
+        const itemAddImage = document.createElement('input');
+        itemAddImage.className = 'item-add-image';
+        itemAddImage.id = 'item-add-image';
+        itemAddImage.name = 'item-add-image';
+        itemAddImage.type = 'file';
+        itemAddImage.accept = '.jpg, .jpeg, .png';
+        itemAddImage.style.display = 'none';
+
+        // Create label for the item add image input
+        const itemAddImageLabel = document.createElement('label');
+        itemAddImageLabel.innerHTML = '<i class="fa fa-photo"></i> Add Image';
+        itemAddImageLabel.htmlFor = 'item-add-image';
+
+        // Append the label to the item element
+        menuCategoryItem.appendChild(itemAddImageLabel);
+        menuCategoryItem.appendChild(itemAddImage);
+
+        // Add event listener to the item add image input
+        itemAddImage.addEventListener('change', async function (e) {
+          // Check if the image is compressed
+          const compressedFile = await compressImage(e.target.files[0]);
+          if (!compressedFile) {
+            return renderPopup('⚠️ Please wait for the image to compress. Try again in 5 seconds.');
+          }
+
+          // Upload the image
+          const imageUrl = await uploadImage(compressedFile);
+          if (!imageUrl) {
+            return renderPopup(
+              '⚠️ There was an error uploading the image. Try again in 5 seconds.'
+            );
+          }
+
+          // Update the item image
+          item.image = imageUrl;
+
+          // Update the menu
+          await updateMenu(token, menu);
+          originalMenu = JSON.parse(JSON.stringify(menu));
+
+          // Repopulate the menu
+          await repopulateMenu(menu);
+        });
+      }
 
       // Create the item title element
       const itemTitle = document.createElement('input');
