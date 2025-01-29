@@ -22,7 +22,7 @@ async function uploadImage(file) {
     return data.data.display_url;
   } catch (error) {
     // Handle errors
-    renderPopup('⚠️ Something went wrong. Please try again later.');
+    return { error: '⚠️ Error uploading image. Please try again.' };
   } finally {
     unrenderLoading();
   }

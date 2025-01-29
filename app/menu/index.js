@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         compressedFile = await compressImage(file);
 
         // Check if the image is a valid file
-        if (compressedFile) {
+        if (!compressedFile.error) {
           const reader = new FileReader();
           reader.onload = () => {
             previewImage.src = reader.result;
@@ -242,15 +242,11 @@ document.addEventListener('DOMContentLoaded', async function () {
       const addImageToMenuForm = document.getElementById('image-modal-form');
       addImageToMenuForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        // Check if the image is compressed
-        if (!compressedFile) {
-          return renderPopup('⚠️ Please wait for the image to compress. Try again in 5 seconds.');
-        }
 
         // upload the image
         const imageUrl = await uploadImage(compressedFile);
-        if (!imageUrl) {
-          return resolve(unrenderAddImageToMenu(0));
+        if (imageUrl.error) {
+          return resolve(renderPopup(imageUrl.error, 1500), unrenderAddImageToMenu(0));
         }
 
         // update the menu image
@@ -930,22 +926,18 @@ async function populateMenu(menu) {
             itemAddImage.addEventListener('change', async function (e) {
               // Check if the image is compressed
               const compressedFile = await compressImage(e.target.files[0]);
-              if (!compressedFile) {
-                return renderPopup(
-                  '⚠️ Please wait for the image to compress. Try again in 5 seconds.'
-                );
+              if (compressedFile.error) {
+                return renderPopup(compressedFile.error, 1500);
+              } else {
+                // Upload the image
+                const imageUrl = await uploadImage(compressedFile);
+                if (imageUrl.error) {
+                  return renderPopup(imageUrl.error, 1500);
+                } else {
+                  // Update the item image
+                  item.image = imageUrl;
+                }
               }
-
-              // Upload the image
-              const imageUrl = await uploadImage(compressedFile);
-              if (!imageUrl) {
-                return renderPopup(
-                  '⚠️ There was an error uploading the image. Try again in 5 seconds.'
-                );
-              }
-
-              // Update the item image
-              item.image = imageUrl;
 
               // Update the menu
               const response = await updateMenu(token, menu);
@@ -1026,20 +1018,18 @@ async function populateMenu(menu) {
         itemAddImage.addEventListener('change', async function (e) {
           // Check if the image is compressed
           const compressedFile = await compressImage(e.target.files[0]);
-          if (!compressedFile) {
-            return renderPopup('⚠️ Please wait for the image to compress. Try again in 5 seconds.');
+          if (compressedFile.error) {
+            return renderPopup(compressedFile.error, 1500);
+          } else {
+            // Upload the image
+            const imageUrl = await uploadImage(compressedFile);
+            if (imageUrl.error) {
+              return renderPopup(imageUrl.error, 1500);
+            } else {
+              // Update the item image
+              item.image = imageUrl;
+            }
           }
-
-          // Upload the image
-          const imageUrl = await uploadImage(compressedFile);
-          if (!imageUrl) {
-            return renderPopup(
-              '⚠️ There was an error uploading the image. Try again in 5 seconds.'
-            );
-          }
-
-          // Update the item image
-          item.image = imageUrl;
 
           // Update the menu
           const response = await updateMenu(token, menu);
@@ -1104,22 +1094,18 @@ async function populateMenu(menu) {
                 itemAddImage.addEventListener('change', async function (e) {
                   // Check if the image is compressed
                   const compressedFile = await compressImage(e.target.files[0]);
-                  if (!compressedFile) {
-                    return renderPopup(
-                      '⚠️ Please wait for the image to compress. Try again in 5 seconds.'
-                    );
+                  if (compressedFile.error) {
+                    return renderPopup(compressedFile.error, 1500);
+                  } else {
+                    // Upload the image
+                    const imageUrl = await uploadImage(compressedFile);
+                    if (imageUrl.error) {
+                      return renderPopup(imageUrl.error, 1500);
+                    } else {
+                      // Update the item image
+                      item.image = imageUrl;
+                    }
                   }
-
-                  // Upload the image
-                  const imageUrl = await uploadImage(compressedFile);
-                  if (!imageUrl) {
-                    return renderPopup(
-                      '⚠️ There was an error uploading the image. Try again in 5 seconds.'
-                    );
-                  }
-
-                  // Update the item image
-                  item.image = imageUrl;
 
                   // Update the menu
                   const response = await updateMenu(token, menu);

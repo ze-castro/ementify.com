@@ -3,7 +3,7 @@ import { renderPopup } from '/js/components/popup.js';
 async function compressImage(file) {
   // check if file size is more than 5MB
   if (file.size > 5 * 1024 * 1024) {
-    return renderPopup('⚠️ 5MB only images are allowed.', 2000);
+    return { error: '⚠️ File size is too large. Maximum file size is 5MB.' };
   }
 
   const options = {
@@ -25,7 +25,7 @@ async function compressImage(file) {
 
     return compressedFile;
   } catch (error) {
-    renderPopup('⚠️ Error compressing the image. Try reloading the page.', 1500);
+    return { error: '⚠️ Error compressing image. Please try again.' };
   }
 }
 
