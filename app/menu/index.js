@@ -914,15 +914,58 @@ async function populateMenu(menu) {
               contextItem.remove();
             }, 100);
 
-            // Return because is still in development
-            return renderPopup('This feature is still in development.');
+            // Remove image
+            itemImage.remove();
 
-            // Update the menu
-            await updateMenu(token, menu);
-            originalMenu = JSON.parse(JSON.stringify(menu));
+            // Create the item add image input
+            const itemAddImage = document.createElement('input');
+            itemAddImage.className = 'item-add-image';
+            itemAddImage.id = 'item-add-image';
+            itemAddImage.name = 'item-add-image';
+            itemAddImage.type = 'file';
+            itemAddImage.accept = '.jpg, .jpeg, .png';
+            itemAddImage.style.display = 'none';
 
-            // Repopulate the menu
-            await repopulateMenu(menu);
+            // Create label for the item add image input
+            const itemAddImageLabel = document.createElement('label');
+            itemAddImageLabel.innerHTML = '<i class="fa fa-photo"></i> Add Image';
+            itemAddImageLabel.htmlFor = 'item-add-image';
+
+            // Append the label to the same item element as the itemImage
+            menuCategoryItem.appendChild(itemAddImageLabel);
+            menuCategoryItem.appendChild(itemAddImage);
+
+            // Add class to the item element
+            menuCategoryItem.className = 'menu-category-item';
+
+            // Add event listener to the item add image input
+            itemAddImage.addEventListener('change', async function (e) {
+              // Check if the image is compressed
+              const compressedFile = await compressImage(e.target.files[0]);
+              if (!compressedFile) {
+                return renderPopup(
+                  '⚠️ Please wait for the image to compress. Try again in 5 seconds.'
+                );
+              }
+
+              // Upload the image
+              const imageUrl = await uploadImage(compressedFile);
+              if (!imageUrl) {
+                return renderPopup(
+                  '⚠️ There was an error uploading the image. Try again in 5 seconds.'
+                );
+              }
+
+              // Update the item image
+              item.image = imageUrl;
+
+              // Update the menu
+              await updateMenu(token, menu);
+              originalMenu = JSON.parse(JSON.stringify(menu));
+
+              // Repopulate the menu
+              await repopulateMenu(menu);
+            });
           });
 
           // Add event listener to the delete button
@@ -953,7 +996,11 @@ async function populateMenu(menu) {
 
           // On click outside of the context-item-box unrender context item
           contextItem.addEventListener('click', async (e) => {
-            if (e.target.id !== 'context-item-box' && e.target.id !== 'context-item-edit' && e.target.id !== 'context-item-delete') {
+            if (
+              e.target.id !== 'context-item-box' &&
+              e.target.id !== 'context-item-edit' &&
+              e.target.id !== 'context-item-delete'
+            ) {
               // Remove the context item
               contextItem.style.animation = 'fadeOut 0.2s';
               setTimeout(() => {
@@ -977,17 +1024,38 @@ async function populateMenu(menu) {
         // Create label for the item add image input
         const itemAddImageLabel = document.createElement('label');
         itemAddImageLabel.innerHTML = '<i class="fa fa-photo"></i> Add Image';
-        itemAddImageLabel.className = 'item-change-image-label';
         itemAddImageLabel.htmlFor = 'item-add-image';
-
-        // Add event listener to the add image label
-        itemAddImageLabel.addEventListener('click', function () {
-          itemAddImage.click();
-        });
 
         // Append the label to the item element
         menuCategoryItem.appendChild(itemAddImageLabel);
         menuCategoryItem.appendChild(itemAddImage);
+
+        // Add event listener to the item add image input
+        itemAddImage.addEventListener('change', async function (e) {
+          // Check if the image is compressed
+          const compressedFile = await compressImage(e.target.files[0]);
+          if (!compressedFile) {
+            return renderPopup('⚠️ Please wait for the image to compress. Try again in 5 seconds.');
+          }
+
+          // Upload the image
+          const imageUrl = await uploadImage(compressedFile);
+          if (!imageUrl) {
+            return renderPopup(
+              '⚠️ There was an error uploading the image. Try again in 5 seconds.'
+            );
+          }
+
+          // Update the item image
+          item.image = imageUrl;
+
+          // Update the menu
+          await updateMenu(token, menu);
+          originalMenu = JSON.parse(JSON.stringify(menu));
+
+          // Repopulate the menu
+          await repopulateMenu(menu);
+        });
       }
 
       // Create the item title element
