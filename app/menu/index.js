@@ -39,6 +39,17 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (moveCategoryBool) {
       moveCategoryButton.click();
     }
+
+    // Check buttons
+    const divider3 = document.getElementsByClassName('context-menu-divider')[2];
+    if (menu.image === null) {
+      removeImageButton.style.display = 'none';
+      divider3.style.display = 'none';
+    } else {
+      removeImageButton.style.display = '';
+      divider3.style.display = '';
+    }
+
     // Render the context menu
     await renderContextMenu();
   });
