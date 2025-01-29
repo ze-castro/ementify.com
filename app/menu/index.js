@@ -914,9 +914,6 @@ async function populateMenu(menu) {
               contextItem.remove();
             }, 100);
 
-            // Remove image
-            itemImage.remove();
-
             // Create the item add image input
             const itemAddImage = document.createElement('input');
             itemAddImage.className = 'item-add-image';
@@ -926,17 +923,8 @@ async function populateMenu(menu) {
             itemAddImage.accept = '.jpg, .jpeg, .png';
             itemAddImage.style.display = 'none';
 
-            // Create label for the item add image input
-            const itemAddImageLabel = document.createElement('label');
-            itemAddImageLabel.innerHTML = '<i class="fa fa-photo"></i> Add Image';
-            itemAddImageLabel.htmlFor = 'item-add-image';
-
-            // Append the label to the same item element as the itemImage
-            menuCategoryItem.appendChild(itemAddImageLabel);
-            menuCategoryItem.appendChild(itemAddImage);
-
-            // Add class to the item element
-            menuCategoryItem.className = 'menu-category-item';
+            // Click the item add image input
+            itemAddImage.click();
 
             // Add event listener to the item add image input
             itemAddImage.addEventListener('change', async function (e) {
@@ -956,6 +944,9 @@ async function populateMenu(menu) {
                 );
               }
 
+              // Change the item image
+              itemImage.src = imageUrl;
+
               // Update the item image
               item.image = imageUrl;
 
@@ -963,8 +954,6 @@ async function populateMenu(menu) {
               await updateMenu(token, menu);
               originalMenu = JSON.parse(JSON.stringify(menu));
 
-              // Repopulate the menu
-              await repopulateMenu(menu);
             });
           });
 
