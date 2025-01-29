@@ -88,12 +88,32 @@ export async function handler(event, context) {
         }
       }
 
+      // Check if existing menu has color
+      if (existingMenu.color !== menu.color) {
+        return {
+          statusCode: 403,
+          body: JSON.stringify({ message: '🤷‍♂️ Upgrade your plan to change the menu color.' }),
+        };
+      }
+
       // Check if existing menu has image
       if (existingMenu.image !== menu.image) {
         return {
           statusCode: 403,
           body: JSON.stringify({ message: '🤷‍♂️ Upgrade your plan to add an image to the menu.' }),
         };
+      }
+
+      // Check if menu item has image
+      for (const category of menu.categories) {
+        for (const item of category.items) {
+          if (item.image) {
+            return {
+              statusCode: 403,
+              body: JSON.stringify({ message: '🤷‍♂️ Upgrade your plan to add an image to the item.' }),
+            };
+          }
+        }
       }
     }
 
