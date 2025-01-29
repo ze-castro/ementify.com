@@ -178,6 +178,7 @@ main {
   object-fit: cover;
   border-radius: var(--radius-4);
   background-color: var(--gray-1);
+  box-shadow: 0 0.5rem 1rem var(--shadow-1);
 }
 
 #image-modal-box form label {
@@ -216,6 +217,25 @@ main {
   background-color: var(--green);
   color: var(--white);
   font-weight: var(--semi-bold);
+}
+
+@media (width < 768px) {
+  #image-modal-box {
+    width: 95%;
+    max-height: 90%;
+  }
+
+  #image-modal-box form label {
+    padding: 2rem;
+  }
+
+  #image-modal-box form label i {
+    font-size: 2rem;
+  }
+
+  #image-modal-box form button {
+    padding: 0.5rem 2rem;
+  }
 }
 
 /* COLORS MENU */
