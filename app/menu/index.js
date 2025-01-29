@@ -984,11 +984,14 @@ async function populateMenu(menu) {
           });
 
           // On click outside of the context-item-box unrender context item
-          contextItem.addEventListener('click', async (e) => {
+          const mainElement = document.querySelector('main');
+          mainElement.addEventListener('click', async (e) => {
+            console.log(e.target.id);
             if (
               e.target.id !== 'context-item-box' &&
               e.target.id !== 'context-item-edit' &&
-              e.target.id !== 'context-item-delete'
+              e.target.id !== 'context-item-delete' &&
+              e.target.className !== 'item-image'
             ) {
               // Remove the context item
               contextItem.style.animation = 'fadeOut 0.2s';
