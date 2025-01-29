@@ -87,6 +87,14 @@ export async function handler(event, context) {
           }
         }
       }
+
+      // Check if existing menu has image
+      if (existingMenu.image !== menu.image) {
+        return {
+          statusCode: 403,
+          body: JSON.stringify({ message: '🤷‍♂️ Upgrade your plan to add an image to the menu.' }),
+        };
+      }
     }
 
     // Update the menu

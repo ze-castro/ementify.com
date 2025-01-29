@@ -238,9 +238,12 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         // upload the image
         const imageUrl = await uploadImage(compressedFile);
-        menu.image = imageUrl;
+        if (!imageUrl) {
+          return resolve(unrenderAddImageToMenu(0));
+        }
         
         // update the menu image
+        menu.image = imageUrl;
         await updateMenu(token, menu);
         resolve(unrenderAddImageToMenu(0));
       });

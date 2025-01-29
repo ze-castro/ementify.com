@@ -9,21 +9,19 @@ async function uploadImage(file) {
   try {
     // Create a body for the API request
     const body = new FormData();
-    body.append('file', file);
-    body.append('upload_preset', 'ementify');
+    body.append('image', file);
 
     // Send POST request to the Cloudinary API
-    const response = await fetch('https://api.cloudinary.com/v1_1/duoppksqw/image/upload', {
+    const response = await fetch('https://api.imgbb.com/1/upload?key=add19f6b5699e341b8a57fec5f29ba44', {
       method: 'POST',
       body,
     });
 
     // Handle the response
     const data = await response.json();
-    return data.secure_url;
+    return data.data.display_url;
   } catch (error) {
     // Handle errors
-    console.error('Error uploading menu image:', error);
     renderPopup('⚠️ Something went wrong. Please try again later.');
   } finally {
     unrenderLoading();

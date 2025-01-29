@@ -15,8 +15,8 @@ async function compressImage(file) {
 
   try {
     const compressedFile = await imageCompression(file, options);
-    console.log('Original file (KB):', file.size / 1024);
-    console.log('Compressed size (KB):', compressedFile.size / 1024);
+    // console.log('Original file (KB):', file.size / 1024);
+    // console.log('Compressed size (KB):', compressedFile.size / 1024);
 
     if (compressedFile.size > file.size) {
       console.log('Compression failed. Using the original file.');
