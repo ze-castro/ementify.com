@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (!imageUrl) {
           return resolve(unrenderAddImageToMenu(0));
         }
-        
+
         // update the menu image
         menu.image = imageUrl;
         await updateMenu(token, menu);
@@ -281,6 +281,24 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
     // Render the add image to menu modal
     await renderAddImageToMenu();
+  });
+
+  // Add event listener to the remove image button
+  const removeImageButton = document.getElementById('remove-photo-button');
+  removeImageButton.addEventListener('click', async function () {
+    // Toggle category drag off - moveCategoryButton make it click
+    if (moveCategoryBool) {
+      moveCategoryButton.click();
+    }
+    // Ask for confirmation
+    const confirm = await renderConfirm('Are you sure you want to remove the image?');
+    if (!confirm) {
+      return;
+    }
+
+    // Remove the image
+    menu.image = null;
+    await updateMenu(token, menu);
   });
 
   // Add event listener to the QR code button
