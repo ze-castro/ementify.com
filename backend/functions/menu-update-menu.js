@@ -1,4 +1,4 @@
-import { MongoClient, ObjectId } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import { verify } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 if (process.env.NODE_ENV == 'dev') {
@@ -87,6 +87,14 @@ export async function handler(event, context) {
           }
         }
       }
+
+      // Check if existing menu has image
+      if (existingMenu.image !== menu.image) {
+        return {
+          statusCode: 403,
+          body: JSON.stringify({ message: '🤷‍♂️ Upgrade your plan to add an image to the menu.' }),
+        };
+      }
     }
 
     // Update the menu
@@ -97,6 +105,7 @@ export async function handler(event, context) {
           title: menu.title,
           description: menu.description,
           color: menu.color,
+          image: menu.image,
           categories: menu.categories,
         },
       }

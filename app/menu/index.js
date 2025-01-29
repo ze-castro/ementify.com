@@ -1,4 +1,6 @@
 import { isTokenInLocalStorage } from '/js/utils/isTokenInLocalStorage.js';
+import { compressImage } from '/js/utils/compressImage.js';
+import { uploadImage } from '/js/utils/imageUpload.js';
 import { getMenu, updateMenu, deleteMenu } from '/js/functions/menu.js';
 import { renderConfirm } from '/js/components/confirm.js';
 import { renderModal } from '/js/components/modal.js';
@@ -37,6 +39,17 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (moveCategoryBool) {
       moveCategoryButton.click();
     }
+
+    // Check buttons
+    const divider3 = document.getElementsByClassName('context-menu-divider')[2];
+    if (menu.image === null) {
+      removeImageButton.style.display = 'none';
+      divider3.style.display = 'none';
+    } else {
+      removeImageButton.style.display = '';
+      divider3.style.display = '';
+    }
+
     // Render the context menu
     await renderContextMenu();
   });
@@ -166,6 +179,138 @@ document.addEventListener('DOMContentLoaded', async function () {
       }, 150);
     }, time);
   }
+
+  // Render add image to menu modal
+  function renderAddImageToMenu() {
+    return new Promise((resolve) => {
+      const addImageToMenuHTML = `
+      <div id="image-modal">
+        <div id="image-modal-box">
+          <h2>Add an image to the menu</h2>
+          <form id="image-modal-form">
+            <img id="preview-image" src="" alt="The preview of the image." />
+            <label for="image">
+              <i class="fa fa-photo"></i>
+              The image should be in .jpg, .jpeg, or .png format. We recommend a 16:9 aspect ratio. Max file size: 5MB.
+              <input type="file" name="image" id="image" accept=".jpg, .jpeg, .png" required />
+            </label>
+            <button type="submit">Add Image</button>
+          </form>
+        </div>
+      </div>
+      `;
+
+      // insert add image to menu
+      document.body.insertAdjacentHTML('afterbegin', addImageToMenuHTML);
+
+      // get add image to menu element
+      const addImageToMenu = document.getElementById('image-modal');
+
+      // animate add image to menu
+      addImageToMenu.style.animation = 'fadeIn 0.3s';
+
+      // image input change
+      const imageInput = document.getElementById('image');
+      const previewImage = document.getElementById('preview-image');
+
+      // compress the image
+      let compressedFile = null;
+
+      imageInput.addEventListener('change', async (e) => {
+        // if nothing is changed
+        if (!e.target.files.length) {
+          return;
+        }
+
+        // show the preview image
+        previewImage.style.display = 'block';
+        // compress the image
+        const file = e.target.files[0];
+        compressedFile = await compressImage(file);
+
+        // Check if the image is a valid file
+        if (compressedFile) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            previewImage.src = reader.result;
+          };
+          reader.readAsDataURL(compressedFile);
+        }
+      });
+
+      // add image to menu form
+      const addImageToMenuForm = document.getElementById('image-modal-form');
+      addImageToMenuForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        // Check if the image is compressed
+        if (!compressedFile) {
+          return renderPopup('⚠️ Please wait for the image to compress. Try again in 5 seconds.');
+        }
+
+        // upload the image
+        const imageUrl = await uploadImage(compressedFile);
+        if (!imageUrl) {
+          return resolve(unrenderAddImageToMenu(0));
+        }
+
+        // update the menu image
+        menu.image = imageUrl;
+        await updateMenu(token, menu);
+        resolve(unrenderAddImageToMenu(0));
+      });
+
+      // On click outside of the image-modal-box unrender add image to menu
+      addImageToMenu.addEventListener('click', async (e) => {
+        if (e.target.id === 'image-modal') {
+          resolve(unrenderAddImageToMenu(0));
+        }
+      });
+    });
+  }
+
+  // Unrender add image to menu
+  function unrenderAddImageToMenu(time) {
+    // get add image to menu element
+    const addImageToMenu = document.getElementById('image-modal');
+
+    // wait time before removing add image to menu
+    setTimeout(() => {
+      // animate add image to menu
+      addImageToMenu.style.animation = 'fadeOut 0.2s';
+      setTimeout(() => {
+        addImageToMenu.remove();
+      }, 150);
+    }, time);
+  }
+
+  // Add event listener to the add image button
+  const addImageButton = document.getElementById('add-photo-button');
+  addImageButton.addEventListener('click', async function () {
+    // Toggle category drag off - moveCategoryButton make it click
+    if (moveCategoryBool) {
+      moveCategoryButton.click();
+    }
+    // Render the add image to menu modal
+    await renderAddImageToMenu();
+  });
+
+  // Add event listener to the remove image button
+  const removeImageButton = document.getElementById('remove-photo-button');
+  removeImageButton.addEventListener('click', async function () {
+    // Toggle category drag off - moveCategoryButton make it click
+    if (moveCategoryBool) {
+      moveCategoryButton.click();
+    }
+    // Ask for confirmation
+    const confirm = await renderConfirm('Are you sure you want to remove the image?');
+    if (!confirm) {
+      return;
+    }
+
+    // Remove the image
+    menu.image = null;
+    await updateMenu(token, menu);
+  });
 
   // Add event listener to the QR code button
   const qrButton = document.getElementById('qr-code-button');
