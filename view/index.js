@@ -16,6 +16,13 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Get menu
   menu = await getMenuClient(menuId);
 
+  // Change the menu image
+  if (menu.image) {
+    const menuImage = document.getElementById('menu-image');
+    menuImage.src = menu.image;
+    menuImage.style.display = 'block';
+  }
+
   // Change the menu name
   const menuName = document.getElementById('menu-name');
   menuName.innerHTML = menu.title;
