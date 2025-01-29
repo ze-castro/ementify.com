@@ -1,6 +1,7 @@
 import { isTokenInLocalStorage } from '/js/utils/isTokenInLocalStorage.js';
 import { compressImage } from '/js/utils/compressImage.js';
-import { getMenu, updateMenu, updateMenuImage, deleteMenu } from '/js/functions/menu.js';
+import { uploadImage } from '/js/utils/imageUpload.js';
+import { getMenu, updateMenu, deleteMenu } from '/js/functions/menu.js';
 import { renderConfirm } from '/js/components/confirm.js';
 import { renderModal } from '/js/components/modal.js';
 import { renderContextMenu } from '/js/components/context-menu.js';
@@ -205,6 +206,12 @@ document.addEventListener('DOMContentLoaded', async function () {
       let compressedFile = null;
 
       imageInput.addEventListener('change', async (e) => {
+        // if nothing is changed
+        if (!e.target.files.length) {
+          return;
+        }
+
+        // show the preview image
         previewImage.style.display = 'block';
         // compress the image
         const file = e.target.files[0];
@@ -224,11 +231,17 @@ document.addEventListener('DOMContentLoaded', async function () {
       const addImageToMenuForm = document.getElementById('image-modal-form');
       addImageToMenuForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        // Check if the image is compressed
         if (!compressedFile) {
           return renderPopup('⚠️ Please wait for the image to compress. Try again in 5 seconds.');
         }
-        const menuResponse = await updateMenuImage(compressedFile);
-        console.log(menuResponse);
+
+        // upload the image
+        const imageUrl = await uploadImage(compressedFile);
+        menu.image = imageUrl;
+        
+        // update the menu image
+        await updateMenu(token, menu);
         resolve(unrenderAddImageToMenu(0));
       });
 

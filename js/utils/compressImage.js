@@ -1,6 +1,6 @@
 import { renderPopup } from '/js/components/popup.js';
 
-const compressImage = async (file) => {
+async function compressImage(file) {
   // check if file size is more than 5MB
   if (file.size > 5 * 1024 * 1024) {
     return renderPopup('⚠️ 5MB only images are allowed.', 2000);
@@ -27,6 +27,6 @@ const compressImage = async (file) => {
   } catch (error) {
     renderPopup('⚠️ Error compressing the image. Try reloading the page.', 1500);
   }
-};
+}
 
 export { compressImage };
