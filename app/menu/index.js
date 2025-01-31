@@ -1,7 +1,13 @@
 import { isTokenInLocalStorage } from '/js/utils/isTokenInLocalStorage.js';
 import { compressImage } from '/js/utils/compressImage.js';
 import { uploadImage } from '/js/utils/imageUpload.js';
-import { compareCategoriesOrder, getCategoriesByOrder, getDragAfterElement, updateGhostPosition, generateRandomId } from '/js/utils/menuHelper.js';
+import {
+  compareCategoriesOrder,
+  getCategoriesByOrder,
+  getDragAfterElement,
+  updateGhostPosition,
+  generateRandomId,
+} from '/js/utils/menuHelper.js';
 import { getMenu, updateMenu, deleteMenu } from '/js/functions/menu.js';
 import { renderConfirm } from '/js/components/confirm.js';
 import { renderModal } from '/js/components/modal.js';
@@ -322,16 +328,16 @@ document.addEventListener('DOMContentLoaded', async function () {
     moveCategoryBool = !moveCategoryBool;
 
     // Get all menu categories
-    const categories = document.getElementsByClassName('menu-category');
+    const categoriesElements = document.getElementsByClassName('menu-category');
 
     if (moveCategoryBool) {
       // Remove menu-category-open
-      for (const category of categories) {
+      for (const category of categoriesElements) {
         const menuCategoryOpen = category.getElementsByClassName('menu-category-open')[0];
         if (menuCategoryOpen.innerHTML === '<i class="fa fa-angle-down"></i>') {
           menuCategoryOpen.click();
         }
-        menuCategoryOpen.innerHTML = '<i class="fa fa-arrows"></i>'
+        menuCategoryOpen.innerHTML = '<i class="fa fa-arrows"></i>';
         menuCategoryOpen.className = 'menu-category-move';
         category.draggable = true;
       }
@@ -341,31 +347,113 @@ document.addEventListener('DOMContentLoaded', async function () {
       for (const item of categoryElements) {
         for (const child of item.children) {
           child.disabled = true;
-          for (const grandchild of child.children) {
-            if (grandchild.className !== 'menu-category-move') {
-              grandchild.disabled = true;
-            }
-            for (const greatgrandchild of grandchild.children) {
-              greatgrandchild.disabled = true;
-            }
-          }
         }
       }
 
-      // Make the categories draggable
-      makeDraggable();
+      // Make the categories logically draggable
+      let draggedElement = null;
+      let initialY = 0;
+      let ghostElement = null;
+      const categories = document.querySelectorAll('.menu-category');
+      const container = document.getElementById('menu-categories');
+      categories.forEach((category) => {
+        // Start dragging
+        category.addEventListener('dragstart', () => {
+          draggedElement = category;
+          category.classList.add('dragging');
+        });
+
+        // End dragging
+        category.addEventListener('dragend', async () => {
+          draggedElement = null;
+          category.classList.remove('dragging');
+
+          // Update the menu structure
+          menu.categories = await getCategoriesByOrder(originalMenu.categories);
+        });
+
+        // Handle touch start
+        category.addEventListener('touchstart', (e) => {
+          const touch = e.touches[0];
+          draggedElement = category;
+          initialY = touch.clientY;
+
+          // Create a ghost element
+          ghostElement = category.cloneNode(true);
+          ghostElement.classList.add('ghost');
+          ghostElement.style.width = `${category.offsetWidth}px`;
+
+          // Position ghost at the initial touch location
+          document.body.appendChild(ghostElement);
+          updateGhostPosition(ghostElement, touch.clientX, touch.clientY);
+
+          category.classList.add('dragging');
+        });
+
+        // Handle touch move
+        category.addEventListener('touchmove', (e) => {
+          if (!draggedElement) return;
+
+          const touch = e.touches[0];
+          const currentY = touch.clientY;
+
+          // Update ghost element position
+          updateGhostPosition(ghostElement, touch.clientX, currentY);
+
+          const afterElement = getDragAfterElement(container, currentY);
+          if (afterElement) {
+            container.insertBefore(draggedElement, afterElement);
+          } else {
+            container.appendChild(draggedElement);
+          }
+
+          initialY = currentY;
+        });
+
+        // Handle touch end
+        category.addEventListener('touchend', async () => {
+          if (!draggedElement) return;
+
+          draggedElement.classList.remove('dragging');
+          draggedElement = null;
+
+          // Remove the ghost element
+          if (ghostElement) {
+            ghostElement.remove();
+            ghostElement = null;
+          }
+
+          // Update the menu structure
+          menu.categories = await getCategoriesByOrder(originalMenu.categories);
+        });
+      });
+
+      // Handle dragging over the container
+      container.addEventListener('dragover', (e) => {
+        e.preventDefault();
+
+        if (!draggedElement) return;
+
+        const afterElement = getDragAfterElement(container, e.clientY);
+        if (afterElement) {
+          container.insertBefore(draggedElement, afterElement);
+        } else {
+          container.appendChild(draggedElement);
+        }
+      });
+
+      // Prevent scrolling while dragging
+      container.addEventListener('touchmove', (e) => {
+        if (draggedElement) {
+          e.preventDefault();
+        }
+      });
     } else {
       // Enable all the inputs and buttons in menu-category
       const categoryElements = document.getElementsByClassName('menu-category');
       for (const item of categoryElements) {
         for (const child of item.children) {
           child.disabled = false;
-          for (const grandchild of child.children) {
-            grandchild.disabled = false;
-            for (const greatgrandchild of grandchild.children) {
-              greatgrandchild.disabled = false;
-            }
-          }
         }
       }
 
@@ -378,107 +466,6 @@ document.addEventListener('DOMContentLoaded', async function () {
       await repopulateMenu(menu);
     }
   });
-
-  // Make the categories draggable
-  function makeDraggable() {
-    let draggedElement = null;
-    let initialY = 0;
-    let ghostElement = null;
-    const categories = document.querySelectorAll('.menu-category');
-    const container = document.getElementById('menu-categories');
-    categories.forEach((category) => {
-      // Start dragging
-      category.addEventListener('dragstart', () => {
-        draggedElement = category;
-        category.classList.add('dragging');
-      });
-
-      // End dragging
-      category.addEventListener('dragend', async () => {
-        draggedElement = null;
-        category.classList.remove('dragging');
-
-        // Update the menu structure
-        menu.categories = await getCategoriesByOrder(originalMenu.categories);
-      });
-
-      // Handle touch start
-      category.addEventListener('touchstart', (e) => {
-        const touch = e.touches[0];
-        draggedElement = category;
-        initialY = touch.clientY;
-
-        // Create a ghost element
-        ghostElement = category.cloneNode(true);
-        ghostElement.classList.add('ghost');
-        ghostElement.style.width = `${category.offsetWidth}px`;
-
-        // Position ghost at the initial touch location
-        document.body.appendChild(ghostElement);
-        updateGhostPosition(ghostElement, touch.clientX, touch.clientY);
-
-        category.classList.add('dragging');
-      });
-
-      // Handle touch move
-      category.addEventListener('touchmove', (e) => {
-        if (!draggedElement) return;
-
-        const touch = e.touches[0];
-        const currentY = touch.clientY;
-
-        // Update ghost element position
-        updateGhostPosition(ghostElement, touch.clientX, currentY);
-
-        const afterElement = getDragAfterElement(container, currentY);
-        if (afterElement) {
-          container.insertBefore(draggedElement, afterElement);
-        } else {
-          container.appendChild(draggedElement);
-        }
-
-        initialY = currentY;
-      });
-
-      // Handle touch end
-      category.addEventListener('touchend', async () => {
-        if (!draggedElement) return;
-
-        draggedElement.classList.remove('dragging');
-        draggedElement = null;
-
-        // Remove the ghost element
-        if (ghostElement) {
-          ghostElement.remove();
-          ghostElement = null;
-        }
-
-        // Update the menu structure
-        menu.categories = await getCategoriesByOrder(originalMenu.categories);
-      });
-    });
-
-    // Handle dragging over the container
-    container.addEventListener('dragover', (e) => {
-      e.preventDefault();
-
-      if (!draggedElement) return;
-
-      const afterElement = getDragAfterElement(container, e.clientY);
-      if (afterElement) {
-        container.insertBefore(draggedElement, afterElement);
-      } else {
-        container.appendChild(draggedElement);
-      }
-    });
-
-    // Prevent scrolling while dragging
-    container.addEventListener('touchmove', (e) => {
-      if (draggedElement) {
-        e.preventDefault();
-      }
-    });
-  }
 
   // Add event listener to the delete button
   const deleteMenuButton = document.getElementById('delete-menu-button');
