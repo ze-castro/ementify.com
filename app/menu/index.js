@@ -1,6 +1,7 @@
 import { isTokenInLocalStorage } from '/js/utils/isTokenInLocalStorage.js';
 import { compressImage } from '/js/utils/compressImage.js';
 import { uploadImage } from '/js/utils/imageUpload.js';
+import { compareCategoriesOrder, processDraggedCategories, generateRandomId } from '/js/utils/menuHelper.js';
 import { getMenu, updateMenu, deleteMenu } from '/js/functions/menu.js';
 import { renderConfirm } from '/js/components/confirm.js';
 import { renderModal } from '/js/components/modal.js';
@@ -57,10 +58,6 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Add event listener to the view button
   const viewButton = document.getElementById('view-button');
   viewButton.addEventListener('click', async function () {
-    // Toggle category drag off - moveCategoryButton make it click
-    if (moveCategoryBool) {
-      moveCategoryButton.click();
-    }
     // Open the menu in a new tab
     window.open('/view?id=' + menuId, '_blank', 'noopener');
   });
@@ -110,11 +107,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
       // colors click on the colors except colors-box
       colors.addEventListener('click', async (e) => {
-        // Toggle category drag off - moveCategoryButton make it click
-        if (moveCategoryBool) {
-          moveCategoryButton.click();
-        }
-
         // change color
         const originalMenuColor = menu.color;
         switch (e.target.id) {
@@ -282,10 +274,6 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Add event listener to the add image button
   const addImageButton = document.getElementById('add-photo-button');
   addImageButton.addEventListener('click', async function () {
-    // Toggle category drag off - moveCategoryButton make it click
-    if (moveCategoryBool) {
-      moveCategoryButton.click();
-    }
     // Render the add image to menu modal
     await renderAddImageToMenu();
   });
@@ -293,10 +281,6 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Add event listener to the remove image button
   const removeImageButton = document.getElementById('remove-photo-button');
   removeImageButton.addEventListener('click', async function () {
-    // Toggle category drag off - moveCategoryButton make it click
-    if (moveCategoryBool) {
-      moveCategoryButton.click();
-    }
     // Ask for confirmation
     const confirm = await renderConfirm('Are you sure you want to remove the image?');
     if (!confirm) {
@@ -311,10 +295,6 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Add event listener to the QR code button
   const qrButton = document.getElementById('qr-code-button');
   qrButton.addEventListener('click', async function () {
-    // Toggle category drag off - moveCategoryButton make it click
-    if (moveCategoryBool) {
-      moveCategoryButton.click();
-    }
     // Get the QR code
     const qrCode =
       'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.ementify.com/view?id=' +
@@ -329,8 +309,8 @@ document.addEventListener('DOMContentLoaded', async function () {
   const moveCategoryButton = document.getElementById('move-menu-button');
   moveCategoryButton.addEventListener('click', async function () {
     // If the menu only has one category, return a message
-    if (menu.categories.length === 1) {
-      renderPopup('You need at least 2 categories to move them.');
+    if (menu.categories.length <= 1) {
+      renderPopup('⚠️ You need at least 2 categories to be able to move them.');
       return;
     }
     // Toggle the move category appearance
@@ -348,17 +328,11 @@ document.addEventListener('DOMContentLoaded', async function () {
       // Remove menu-category-open
       for (const category of categories) {
         const menuCategoryOpen = category.getElementsByClassName('menu-category-open')[0];
-        menuCategoryOpen.remove();
-      }
-
-      // Add move category buttons
-      for (const category of categories) {
-        // Create the move category button
-        const moveCategoryButton = document.createElement('button');
-        moveCategoryButton.className = 'menu-category-move';
-        moveCategoryButton.innerHTML = '<i class="fa fa-arrows"></i>';
-        const menuCategoryTitleBox = category.getElementsByClassName('menu-category-title-box')[0];
-        menuCategoryTitleBox.appendChild(moveCategoryButton);
+        if (menuCategoryOpen.innerHTML === '<i class="fa fa-angle-down"></i>') {
+          menuCategoryOpen.click();
+        }
+        menuCategoryOpen.innerHTML = '<i class="fa fa-arrows"></i>'
+        menuCategoryOpen.className = 'menu-category-move';
         category.draggable = true;
       }
 
@@ -396,7 +370,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       }
 
       // Update the menu if the order of the categories has changed
-      if (JSON.stringify(menu) !== JSON.stringify(originalMenu)) {
+      if (await compareCategoriesOrder(menu.categories, originalMenu.categories)) {
         await updateMenu(token, menu);
         originalMenu = JSON.parse(JSON.stringify(menu));
       }
@@ -414,40 +388,18 @@ document.addEventListener('DOMContentLoaded', async function () {
     const container = document.getElementById('menu-categories');
     categories.forEach((category) => {
       // Start dragging
-      category.addEventListener('dragstart', (e) => {
+      category.addEventListener('dragstart', () => {
         draggedElement = category;
         category.classList.add('dragging');
       });
 
       // End dragging
-      category.addEventListener('dragend', () => {
-        category.classList.remove('dragging');
+      category.addEventListener('dragend', async () => {
         draggedElement = null;
+        category.classList.remove('dragging');
 
-        // Update the menu
-        const newCategories = [];
-        const menuCategories = document.getElementsByClassName('menu-category');
-        for (const category of menuCategories) {
-          const categoryName = category.getElementsByClassName('menu-category-title')[0].value;
-          const categoryItems = category.getElementsByClassName('menu-category-item');
-          const items = [];
-          for (const item of categoryItems) {
-            const itemTitle = item.getElementsByClassName('item-title')[0].value;
-            const itemDescription = item.getElementsByClassName('item-description')[0].value;
-            const itemPrice = item.getElementsByClassName('item-price')[0].value;
-            items.push({
-              title: itemTitle,
-              description: itemDescription,
-              price: itemPrice,
-            });
-          }
-          newCategories.push({
-            name: categoryName,
-            items: items,
-          });
-        }
-
-        menu.categories = newCategories;
+        // Update the menu structure
+        menu.categories = await processDraggedCategories(originalMenu.categories);
       });
 
       // Handle touch start
@@ -506,29 +458,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         // Update the menu structure
-        const newCategories = [];
-        const menuCategories = document.getElementsByClassName('menu-category');
-        for (const category of menuCategories) {
-          const categoryName = category.getElementsByClassName('menu-category-title')[0].value;
-          const categoryItems = category.getElementsByClassName('menu-category-item');
-          const items = [];
-          for (const item of categoryItems) {
-            const itemTitle = item.getElementsByClassName('item-title')[0].value;
-            const itemDescription = item.getElementsByClassName('item-description')[0].value;
-            const itemPrice = item.getElementsByClassName('item-price')[0].value;
-            items.push({
-              title: itemTitle,
-              description: itemDescription,
-              price: itemPrice,
-            });
-          }
-          newCategories.push({
-            name: categoryName,
-            items: items,
-          });
-        }
-
-        menu.categories = newCategories;
+        menu.categories = processDraggedCategories(originalMenu.categories);
+        console.log(menu.categories);
       });
     });
 
@@ -589,10 +520,6 @@ document.addEventListener('DOMContentLoaded', async function () {
   // Add event listener to the delete button
   const deleteMenuButton = document.getElementById('delete-menu-button');
   deleteMenuButton.addEventListener('click', async function () {
-    // Toggle category drag off - moveCategoryButton make it click
-    if (moveCategoryBool) {
-      moveCategoryButton.click();
-    }
     // Ask for confirmation
     const confirm = await renderConfirm('This menu will be deleted permanently. Are you sure?');
     if (!confirm) {
@@ -680,7 +607,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Create the item
     const item = {
-      id: Math.random().toString(36).substr(2, 9),
+      id: generateRandomId(menu.categories),
       title: itemTitle,
       description: itemDescription,
       price: itemPrice,
@@ -690,7 +617,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (!category) {
       // Create a new category
       const newCategory = {
-        id: Math.random().toString(36).substr(2, 9),
+        id: generateRandomId(menu.categories),
         name: categoryName,
         items: [item],
       };
