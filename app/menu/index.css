@@ -482,12 +482,21 @@ main {
   gap: 1.5rem;
 }
 
-.menu-category-item {
+.menu-category-item:not(#menu-category-form .menu-category-item) {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr fit-content(200px);
   grid-template-rows: 35px 35px 35px;
   grid-template-areas: 'title input' 'description input' 'price delete';
+  gap: 1rem;
+}
+
+#menu-category-form .menu-category-item {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr fit-content(200px);
+  grid-template-rows: 35px 35px 35px;
+  grid-template-areas: 'title title' 'description description' 'price add';
   gap: 1rem;
 }
 

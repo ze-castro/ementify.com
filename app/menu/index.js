@@ -680,6 +680,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Create the item
     const item = {
+      id: Math.random().toString(36).substr(2, 9),
       title: itemTitle,
       description: itemDescription,
       price: itemPrice,
@@ -689,6 +690,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (!category) {
       // Create a new category
       const newCategory = {
+        id: Math.random().toString(36).substr(2, 9),
         name: categoryName,
         items: [item],
       };
@@ -913,8 +915,6 @@ async function populateMenu(menu) {
             // Create the item add image input
             const itemAddImage = document.createElement('input');
             itemAddImage.className = 'item-add-image';
-            itemAddImage.id = 'item-add-image';
-            itemAddImage.name = 'item-add-image';
             itemAddImage.type = 'file';
             itemAddImage.accept = '.jpg, .jpeg, .png';
             itemAddImage.style.display = 'none';
@@ -969,7 +969,7 @@ async function populateMenu(menu) {
             item.image = null;
 
             // Update the menu
-            await updateMenu(token, menu);
+            const response = await updateMenu(token, menu);
             originalMenu = JSON.parse(JSON.stringify(menu));
 
             // Repopulate the menu
@@ -999,8 +999,7 @@ async function populateMenu(menu) {
         // Create the item add image input
         const itemAddImage = document.createElement('input');
         itemAddImage.className = 'item-add-image';
-        itemAddImage.id = 'item-add-image';
-        itemAddImage.name = 'item-add-image';
+        itemAddImage.id = 'item-add-image' + item.id;
         itemAddImage.type = 'file';
         itemAddImage.accept = '.jpg, .jpeg, .png';
         itemAddImage.style.display = 'none';
@@ -1008,7 +1007,7 @@ async function populateMenu(menu) {
         // Create label for the item add image input
         const itemAddImageLabel = document.createElement('label');
         itemAddImageLabel.innerHTML = '<i class="fa fa-photo"></i> Add Image';
-        itemAddImageLabel.htmlFor = 'item-add-image';
+        itemAddImageLabel.htmlFor = 'item-add-image' + item.id;
 
         // Append the label to the item element
         menuCategoryItem.appendChild(itemAddImageLabel);
@@ -1047,6 +1046,12 @@ async function populateMenu(menu) {
             itemImage.src = item.image;
             itemImage.alt = 'Item Image';
 
+            // Append the image to the item element
+            menuCategoryItem.appendChild(itemImage);
+
+            // Change the item class
+            menuCategoryItem.className = 'menu-category-item menu-category-item-with-image';
+
             // Add event listener to the item image
             itemImage.addEventListener('click', async function () {
               // Create the item context element
@@ -1081,8 +1086,6 @@ async function populateMenu(menu) {
                 // Create the item add image input
                 const itemAddImage = document.createElement('input');
                 itemAddImage.className = 'item-add-image';
-                itemAddImage.id = 'item-add-image';
-                itemAddImage.name = 'item-add-image';
                 itemAddImage.type = 'file';
                 itemAddImage.accept = '.jpg, .jpeg, .png';
                 itemAddImage.style.display = 'none';
@@ -1161,12 +1164,6 @@ async function populateMenu(menu) {
                 }
               });
             });
-
-            // Append the image to the item element
-            menuCategoryItem.appendChild(itemImage);
-
-            // Change the item class
-            menuCategoryItem.className = 'menu-category-item menu-category-item-with-image';
           }
         });
       }
