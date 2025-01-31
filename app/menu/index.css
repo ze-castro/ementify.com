@@ -531,7 +531,7 @@ main {
 
 .menu-category-item-with-image img {
   grid-area: image;
-  width: 100%;
+  width: 140px;
   height: 100%;
   object-fit: cover;
   border-radius: var(--radius-4);
@@ -540,9 +540,10 @@ main {
 }
 
 .menu-category-item button {
-  width: fit-content;
+  width: 140px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.7rem;
   padding: 0.5rem 1rem;
   border-radius: var(--radius-1);
