@@ -24,6 +24,39 @@ function generateRandomId(menu, length = 32) {
 }
 
 //// CATEGORY DRAG AND DROP ////
+// Get the closest element
+function getDragAfterElement(container, y) {
+  const draggableElements = [...container.querySelectorAll('.menu-category:not(.dragging)')];
+
+  return (
+    draggableElements.reduce(
+      (closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) {
+          return { offset, element: child };
+        } else {
+          return closest;
+        }
+      },
+      { offset: Number.NEGATIVE_INFINITY }
+    ).element || null
+  );
+}
+
+// Helper function to update ghost element position
+function updateGhostPosition(ghostElement, x, y) {
+  if (ghostElement) {
+    const rect = ghostElement.getBoundingClientRect();
+    const offsetX = rect.width / 2; // Half the width of the ghost element
+    const offsetY = rect.height / 2; // Half the height of the ghost element
+
+    ghostElement.style.left = `${x - offsetX}px`; // Center horizontally
+    ghostElement.style.top = `${y - offsetY}px`; // Center vertically
+  }
+}
+
+// Helper function to check if the categories order has changed
 async function compareCategoriesOrder(newCategories, oldCategories) {
   // If the length of the categories is different, the order has changed
   if (newCategories.length !== oldCategories.length) {
@@ -39,7 +72,9 @@ async function compareCategoriesOrder(newCategories, oldCategories) {
 
   return false;
 }
-async function processDraggedCategories(categories) {
+
+// Helper function to get the categories in the order they appear on the page
+async function getCategoriesByOrder(categories) {
   // Create an array to store the categories in the order they appear on the page
   const categoriesArray = [];
   const categoriesElements = document.getElementsByClassName('menu-category');
@@ -64,4 +99,4 @@ async function processDraggedCategories(categories) {
   return categoriesArray;
 }
 
-export { compareCategoriesOrder, processDraggedCategories, generateRandomId };
+export { compareCategoriesOrder, getCategoriesByOrder, getDragAfterElement, updateGhostPosition, generateRandomId };

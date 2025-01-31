@@ -1,7 +1,7 @@
 import { isTokenInLocalStorage } from '/js/utils/isTokenInLocalStorage.js';
 import { compressImage } from '/js/utils/compressImage.js';
 import { uploadImage } from '/js/utils/imageUpload.js';
-import { compareCategoriesOrder, processDraggedCategories, generateRandomId } from '/js/utils/menuHelper.js';
+import { compareCategoriesOrder, getCategoriesByOrder, getDragAfterElement, updateGhostPosition, generateRandomId } from '/js/utils/menuHelper.js';
 import { getMenu, updateMenu, deleteMenu } from '/js/functions/menu.js';
 import { renderConfirm } from '/js/components/confirm.js';
 import { renderModal } from '/js/components/modal.js';
@@ -399,7 +399,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         category.classList.remove('dragging');
 
         // Update the menu structure
-        menu.categories = await await processDraggedCategories(originalMenu.categories);
+        menu.categories = await getCategoriesByOrder(originalMenu.categories);
       });
 
       // Handle touch start
@@ -411,10 +411,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         // Create a ghost element
         ghostElement = category.cloneNode(true);
         ghostElement.classList.add('ghost');
-        ghostElement.style.position = 'absolute';
-        ghostElement.style.pointerEvents = 'none';
-        ghostElement.style.opacity = '0.8';
-        ghostElement.style.zIndex = '1000';
         ghostElement.style.width = `${category.offsetWidth}px`;
 
         // Position ghost at the initial touch location
@@ -458,8 +454,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         // Update the menu structure
-        menu.categories = await processDraggedCategories(originalMenu.categories);
-        console.log(menu.categories);
+        menu.categories = await getCategoriesByOrder(originalMenu.categories);
       });
     });
 
@@ -483,38 +478,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         e.preventDefault();
       }
     });
-  }
-
-  // Get the closest element
-  function getDragAfterElement(container, y) {
-    const draggableElements = [...container.querySelectorAll('.menu-category:not(.dragging)')];
-
-    return (
-      draggableElements.reduce(
-        (closest, child) => {
-          const box = child.getBoundingClientRect();
-          const offset = y - box.top - box.height / 2;
-          if (offset < 0 && offset > closest.offset) {
-            return { offset, element: child };
-          } else {
-            return closest;
-          }
-        },
-        { offset: Number.NEGATIVE_INFINITY }
-      ).element || null
-    );
-  }
-
-  // Helper function to update ghost element position
-  function updateGhostPosition(ghostElement, x, y) {
-    if (ghostElement) {
-      const rect = ghostElement.getBoundingClientRect();
-      const offsetX = rect.width / 2; // Half the width of the ghost element
-      const offsetY = rect.height / 2; // Half the height of the ghost element
-
-      ghostElement.style.left = `${x - offsetX}px`; // Center horizontally
-      ghostElement.style.top = `${y - offsetY}px`; // Center vertically
-    }
   }
 
   // Add event listener to the delete button

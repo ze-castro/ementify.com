@@ -402,6 +402,13 @@ main {
   opacity: 0.5;
 }
 
+.menu-category.ghost {
+  position: absolute;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 999;
+}
+
 #menu-category-select {
   position: relative;
   width: 100%;
