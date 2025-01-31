@@ -2,6 +2,9 @@ import { isTokenInLocalStorage } from '/js/utils/isTokenInLocalStorage.js';
 import { compressImage } from '/js/utils/compressImage.js';
 import { uploadImage } from '/js/utils/imageUpload.js';
 import {
+  renderColors,
+  renderAddImageToMenu,
+  checkCategoryDrag,
   compareCategoriesOrder,
   getCategoriesByOrder,
   getDragAfterElement,
@@ -39,17 +42,57 @@ document.addEventListener('DOMContentLoaded', async function () {
   await populateMenu(menu);
 
   //// EVENT LISTENERS ////
+  // Get the menu title element
+  const menuTitle = document.getElementById('menu-title');
+  menuTitle.value = menu.title;
+
+  // Add event listener to the title input when the user leaves the input
+  menuTitle.addEventListener('blur', async function () {
+    // Check if the title is empty and set it to the previous value
+    if (menuTitle.value === '') {
+      menuTitle.value = menu.title;
+      return;
+    }
+    // Check if the title is the same as the previous value
+    if (menuTitle.value !== menu.title) {
+      // Update the menu title
+      menu.title = menuTitle.value;
+      // Update the menu
+      await updateMenu(token, menu);
+      originalMenu = JSON.parse(JSON.stringify(menu));
+    }
+  });
+
+  // Get the menu description element
+  const menuDescription = document.getElementById('menu-description');
+  menuDescription.value = menu.description;
+
+  // Add event listener to the description input when the user leaves the input
+  menuDescription.addEventListener('blur', async function () {
+    // Check if the description is empty and set it to the previous value
+    if (menuDescription.value === '') {
+      menuDescription.value = menu.description;
+      return;
+    }
+    // Check if the description is the same as the previous value
+    if (menuDescription.value !== menu.description) {
+      // Update the menu description
+      menu.description = menuDescription.value;
+      // Update the menu
+      await updateMenu(token, menu);
+      originalMenu = JSON.parse(JSON.stringify(menu));
+    }
+  });
+
+  //// CONTEXT MENU ////
   // Add event listener to the options button
   const optionsButton = document.getElementById('options-button');
   optionsButton.addEventListener('click', async function () {
-    // Toggle category drag off - moveCategoryButton make it click
-    if (moveCategoryBool) {
-      moveCategoryButton.click();
-    }
-
+    // Move categories button control
+    checkCategoryDrag(moveCategoryBool);
     // Check buttons
     const divider3 = document.getElementsByClassName('context-menu-divider')[2];
-    if (menu.image === null) {
+    if (!menu.image) {
       removeImageButton.style.display = 'none';
       divider3.style.display = 'none';
     } else {
@@ -68,220 +111,42 @@ document.addEventListener('DOMContentLoaded', async function () {
     window.open('/view?id=' + menuId, '_blank', 'noopener');
   });
 
-  // Add event listener to the change-color button
-  const changeColorButton = document.getElementById('change-color-button');
-  changeColorButton.addEventListener('click', async function () {
-    // Toggle category drag off - moveCategoryButton make it click
-    if (moveCategoryBool) {
-      moveCategoryButton.click();
-    }
-    // Render the colors modal
-    await renderColors();
+  // Add event listener to the QR code button
+  const qrButton = document.getElementById('qr-code-button');
+  qrButton.addEventListener('click', async function () {
+    // Get the QR code
+    const qrCode =
+      'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.ementify.com/view?id=' +
+      menuId;
+
+    // Render the modal
+    await renderModal('Scan the QR code to view the menu or download it.', 'Download', qrCode);
   });
 
-  // render colors
-  function renderColors() {
-    return new Promise((resolve) => {
-      const colorsMenuHTML = `
-      <div id="colors-menu">
-        <div id="colors-menu-box">
-          <h2>Pick a color</h2>
-          <button id="color-1" class="color-option"></button>
-          <button id="color-2" class="color-option"></button>
-          <button id="color-3" class="color-option"></button>
-          <button id="color-4" class="color-option"></button>
-          <button id="color-5" class="color-option"></button>
-          <button id="color-6" class="color-option"></button>
-          <button id="color-7" class="color-option"></button>
-          <button id="color-8" class="color-option"></button>
-          <button id="color-9" class="color-option"></button>
-          <button id="color-10" class="color-option"></button>
-          <button id="color-11" class="color-option"></button>
-          <button id="color-12" class="color-option"></button>
-        </div>
-      </div>
-      `;
+  // Add event listener to the delete button
+  const deleteMenuButton = document.getElementById('delete-menu-button');
+  deleteMenuButton.addEventListener('click', async function () {
+    // Ask for confirmation
+    const confirm = await renderConfirm('This menu will be deleted permanently. Are you sure?');
+    if (!confirm) {
+      return;
+    }
 
-      // insert colors
-      document.body.insertAdjacentHTML('afterbegin', colorsMenuHTML);
-
-      // get colors element
-      const colors = document.getElementById('colors-menu');
-
-      // animate colors
-      colors.style.animation = 'fadeIn 0.3s';
-
-      // colors click on the colors except colors-box
-      colors.addEventListener('click', async (e) => {
-        // change color
-        const originalMenuColor = menu.color;
-        switch (e.target.id) {
-          case 'color-1':
-            menu.color = '--green';
-            break;
-          case 'color-2':
-            menu.color = '--blue';
-            break;
-          case 'color-3':
-            menu.color = '--light-blue';
-            break;
-          case 'color-4':
-            menu.color = '--yellow';
-            break;
-          case 'color-5':
-            menu.color = '--red';
-            break;
-          case 'color-6':
-            menu.color = '--orange';
-            break;
-          case 'color-7':
-            menu.color = '--pink';
-            break;
-          case 'color-8':
-            menu.color = '--purple';
-            break;
-          case 'color-9':
-            menu.color = '--black';
-            break;
-          case 'color-10':
-            menu.color = '--gray-5';
-            break;
-          case 'color-11':
-            menu.color = '--gray-4';
-            break;
-          case 'color-12':
-            menu.color = '--gray-3';
-            break;
-        }
-        if (originalMenuColor !== menu.color) {
-          await updateMenu(token, menu);
-          originalMenu = JSON.parse(JSON.stringify(menu));
-          await populateCategorySelect();
-        }
-        resolve(unrenderColors(0));
-      });
-    });
-  }
-
-  // unrender colors
-  function unrenderColors(time) {
-    // get colors element
-    const colors = document.getElementById('colors-menu');
-
-    // wait time before removing colors
-    setTimeout(() => {
-      // animate colors
-      colors.style.animation = 'fadeOut 0.2s';
-      setTimeout(() => {
-        colors.remove();
-      }, 150);
-    }, time);
-  }
-
-  // Render add image to menu modal
-  function renderAddImageToMenu() {
-    return new Promise((resolve) => {
-      const addImageToMenuHTML = `
-      <div id="image-modal">
-        <div id="image-modal-box">
-          <h2>Add an image to the menu</h2>
-          <form id="image-modal-form">
-            <img id="preview-image" src="" alt="The preview of the image." />
-            <label for="image">
-              <i class="fa fa-photo"></i>
-              The image should be in .jpg, .jpeg, or .png format. We recommend a 16:9 aspect ratio. Max file size: 5MB.
-              <input type="file" name="image" id="image" accept=".jpg, .jpeg, .png" required />
-            </label>
-            <button type="submit">Add Image</button>
-          </form>
-        </div>
-      </div>
-      `;
-
-      // insert add image to menu
-      document.body.insertAdjacentHTML('afterbegin', addImageToMenuHTML);
-
-      // get add image to menu element
-      const addImageToMenu = document.getElementById('image-modal');
-
-      // animate add image to menu
-      addImageToMenu.style.animation = 'fadeIn 0.3s';
-
-      // image input change
-      const imageInput = document.getElementById('image');
-      const previewImage = document.getElementById('preview-image');
-
-      // compress the image
-      let compressedFile = null;
-
-      imageInput.addEventListener('change', async (e) => {
-        // if nothing is changed
-        if (!e.target.files.length) {
-          return;
-        }
-
-        // show the preview image
-        previewImage.style.display = 'block';
-        // compress the image
-        const file = e.target.files[0];
-        compressedFile = await compressImage(file);
-
-        // Check if the image is a valid file
-        if (!compressedFile.error) {
-          const reader = new FileReader();
-          reader.onload = () => {
-            previewImage.src = reader.result;
-          };
-          reader.readAsDataURL(compressedFile);
-        }
-      });
-
-      // add image to menu form
-      const addImageToMenuForm = document.getElementById('image-modal-form');
-      addImageToMenuForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        // upload the image
-        const imageUrl = await uploadImage(compressedFile);
-        if (imageUrl.error) {
-          return resolve(renderPopup(imageUrl.error, 1500), unrenderAddImageToMenu(0));
-        }
-
-        // update the menu image
-        menu.image = imageUrl;
-        await updateMenu(token, menu);
-        resolve(unrenderAddImageToMenu(0));
-      });
-
-      // On click outside of the image-modal-box unrender add image to menu
-      addImageToMenu.addEventListener('click', async (e) => {
-        if (e.target.id === 'image-modal') {
-          resolve(unrenderAddImageToMenu(0));
-        }
-      });
-    });
-  }
-
-  // Unrender add image to menu
-  function unrenderAddImageToMenu(time) {
-    // get add image to menu element
-    const addImageToMenu = document.getElementById('image-modal');
-
-    // wait time before removing add image to menu
-    setTimeout(() => {
-      // animate add image to menu
-      addImageToMenu.style.animation = 'fadeOut 0.2s';
-      setTimeout(() => {
-        addImageToMenu.remove();
-      }, 150);
-    }, time);
-  }
+    // Delete the menu
+    await deleteMenu(token, menuId);
+  });
 
   // Add event listener to the add image button
   const addImageButton = document.getElementById('add-photo-button');
   addImageButton.addEventListener('click', async function () {
-    // Render the add image to menu modal
-    await renderAddImageToMenu();
+    // update the menu image
+    const imageUrl = await renderAddImageToMenu();
+    if (imageUrl) {
+      menu.image = imageUrl;
+      await updateMenu(token, menu);
+    } else {
+      renderPopup('⚠️ Error uploading image to the server.');
+    }
   });
 
   // Add event listener to the remove image button
@@ -298,18 +163,24 @@ document.addEventListener('DOMContentLoaded', async function () {
     await updateMenu(token, menu);
   });
 
-  // Add event listener to the QR code button
-  const qrButton = document.getElementById('qr-code-button');
-  qrButton.addEventListener('click', async function () {
-    // Get the QR code
-    const qrCode =
-      'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.ementify.com/view?id=' +
-      menuId;
+  //// COLOR CHANGING ////
+  // Add event listener to the change-color button
+  const changeColorButton = document.getElementById('change-color-button');
+  changeColorButton.addEventListener('click', async function () {
+    // Move categories button control
+    checkCategoryDrag(moveCategoryBool);
 
-    // Render the modal
-    await renderModal('Scan the QR code to view the menu or download it.', 'Download', qrCode);
+    // Render the colors modal
+    const originalMenuColor = menu.color;
+    menu.color = await renderColors();
+    if (originalMenuColor !== menu.color) {
+      await updateMenu(token, menu);
+      originalMenu = JSON.parse(JSON.stringify(menu));
+      await populateCategorySelect();
+    }
   });
 
+  //// MOVE CATEGORY ////
   // Add event listener to the move category button
   let moveCategoryBool = false;
   const moveCategoryButton = document.getElementById('move-menu-button');
@@ -467,61 +338,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
   });
 
-  // Add event listener to the delete button
-  const deleteMenuButton = document.getElementById('delete-menu-button');
-  deleteMenuButton.addEventListener('click', async function () {
-    // Ask for confirmation
-    const confirm = await renderConfirm('This menu will be deleted permanently. Are you sure?');
-    if (!confirm) {
-      return;
-    }
-
-    // Delete the menu
-    await deleteMenu(token, menuId);
-  });
-
-  // Get the menu title element
-  const menuTitle = document.getElementById('menu-title');
-  menuTitle.value = menu.title;
-
-  // Add event listener to the title input when the user leaves the input
-  menuTitle.addEventListener('blur', async function () {
-    // Check if the title is empty and set it to the previous value
-    if (menuTitle.value === '') {
-      menuTitle.value = menu.title;
-      return;
-    }
-    // Check if the title is the same as the previous value
-    if (menuTitle.value !== menu.title) {
-      // Update the menu title
-      menu.title = menuTitle.value;
-      // Update the menu
-      await updateMenu(token, menu);
-      originalMenu = JSON.parse(JSON.stringify(menu));
-    }
-  });
-
-  // Get the menu description element
-  const menuDescription = document.getElementById('menu-description');
-  menuDescription.value = menu.description;
-
-  // Add event listener to the description input when the user leaves the input
-  menuDescription.addEventListener('blur', async function () {
-    // Check if the description is empty and set it to the previous value
-    if (menuDescription.value === '') {
-      menuDescription.value = menu.description;
-      return;
-    }
-    // Check if the description is the same as the previous value
-    if (menuDescription.value !== menu.description) {
-      // Update the menu description
-      menu.description = menuDescription.value;
-      // Update the menu
-      await updateMenu(token, menu);
-      originalMenu = JSON.parse(JSON.stringify(menu));
-    }
-  });
-
+  //// ITEM FORM ////
   // Add event listener to the category select
   const menuCategorySelect = document.getElementById('menu-category-select');
   const menuCategoryTitleNew = document.getElementById('menu-category-title-new');
