@@ -1,3 +1,6 @@
+//// MENU HELPER FUNCTIONS ////
+
+//// CATEGORY AND ITEM ID GENERATION ////
 function generateRandomId(menu, length = 32) {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let id = '';
@@ -20,22 +23,22 @@ function generateRandomId(menu, length = 32) {
   return id;
 }
 
+//// CATEGORY DRAG AND DROP ////
 async function compareCategoriesOrder(newCategories, oldCategories) {
   // If the length of the categories is different, the order has changed
   if (newCategories.length !== oldCategories.length) {
-    return false;
+    return true;
   }
 
   // If the id of the categories is different, the order has changed
   for (let i = 0; i < newCategories.length; i++) {
     if (newCategories[i].id !== oldCategories[i].id) {
-      return false;
+      return true;
     }
   }
 
-  return true;
+  return false;
 }
-
 async function processDraggedCategories(categories) {
   // Create an array to store the categories in the order they appear on the page
   const categoriesArray = [];

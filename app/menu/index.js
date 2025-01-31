@@ -399,7 +399,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         category.classList.remove('dragging');
 
         // Update the menu structure
-        menu.categories = await processDraggedCategories(originalMenu.categories);
+        menu.categories = await await processDraggedCategories(originalMenu.categories);
       });
 
       // Handle touch start
@@ -445,7 +445,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       });
 
       // Handle touch end
-      category.addEventListener('touchend', () => {
+      category.addEventListener('touchend', async () => {
         if (!draggedElement) return;
 
         draggedElement.classList.remove('dragging');
@@ -458,7 +458,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         // Update the menu structure
-        menu.categories = processDraggedCategories(originalMenu.categories);
+        menu.categories = await processDraggedCategories(originalMenu.categories);
         console.log(menu.categories);
       });
     });
