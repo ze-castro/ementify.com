@@ -145,7 +145,7 @@ footer p a {
 
 .item-with-image {
   display: grid;
-  grid-template-columns: 30% 70%;
+  grid-template-columns: 20% 80%;
   grid-template-rows: 1fr 1fr 1fr;
   grid-template-areas: 
     "image title"
@@ -185,7 +185,6 @@ footer p a {
 
 @media (width < 768px) {
   .item-with-image {
-    grid-template-columns: 40% 60%;
+    grid-template-columns: 35% 65%;
   }
-  
 }
