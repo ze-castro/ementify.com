@@ -490,6 +490,7 @@ main {
 }
 
 .menu-category-item:not(#menu-category-form .menu-category-item) {
+  position: relative;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr fit-content(200px);
@@ -593,8 +594,8 @@ main {
 
 #context-item-box {
   position: absolute;
-  top: 38%;
-  right: 80px;
+  top: 30%;
+  right: 75px;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
