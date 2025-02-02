@@ -588,6 +588,12 @@ async function populateMenu(menu) {
           </div>
           `;
 
+          // get previous context item
+          const prevContextItem = document.getElementById('context-item');
+          if (prevContextItem) {
+            prevContextItem.remove();
+          }
+
           // insert context item
           menuCategoryItem.insertAdjacentHTML('afterbegin', contextForItemHTML);
 
