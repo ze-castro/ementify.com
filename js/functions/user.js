@@ -123,13 +123,13 @@ async function deleteUser(token) {
         window.location.href = '/';
       }, 2300);
     } else {
-      renderPopup("😢 We're sorry to see you go. Your account has been deleted.");
+      renderPopup("😢 We're sorry to see you go. Your account has been deleted.", 3000);
       // Delete the token
       localStorage.removeItem('token');
       // Redirect to home page
       setTimeout(() => {
         window.location.href = '/';
-      }, 2300);
+      }, 3300);
     }
   } catch (error) {
     // Handle any network errors

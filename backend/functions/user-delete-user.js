@@ -55,13 +55,7 @@ export async function handler(event, context) {
     }
 
     // Delete the user menus
-    const resultMenus = await menusCollection.deleteMany({ user: user._id });
-    if (resultMenus.deletedCount === 0) {
-      return {
-        statusCode: 404,
-        body: JSON.stringify({ message: '⚠️ Menus not found.' }),
-      };
-    }
+    await menusCollection.deleteMany({ user: user._id });
 
     // Delete the user
     const result = await usersCollection.deleteOne({ _id: user._id });
