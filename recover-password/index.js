@@ -4,6 +4,7 @@ import { renderPopup } from '/js/components/popup.js';
 document.addEventListener('DOMContentLoaded', function () {
   // Search for email in local storage
   const email = localStorage.getItem('email');
+  localStorage.removeItem('email');
   if (email) {
     // Fill the email input with the email from local storage
     document.getElementById('recover-email').value = email;

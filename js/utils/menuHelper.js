@@ -105,7 +105,7 @@ function renderAddImageToMenu() {
       <div id="image-modal">
         <div id="image-modal-box">
           <h2>Add an image to the menu</h2>
-          <form id="image-modal-form">
+          <form id="image-modal-form" autocomplete="new-password">
             <img id="preview-image" src="" alt="The preview of the image." />
             <label for="image">
               <i class="fa fa-photo"></i>
@@ -160,14 +160,12 @@ function renderAddImageToMenu() {
     const addImageToMenuForm = document.getElementById('image-modal-form');
     addImageToMenuForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      // unrender add image to menu
+      unrenderAddImageToMenu();
 
       // upload the image
       const imageUrl = await uploadImage(compressedFile);
-      if (imageUrl.error) {
-        resolve(imageUrl.error, unrenderAddImageToMenu());
-      }
-
-      resolve(imageUrl, unrenderAddImageToMenu());
+      resolve(imageUrl);
     });
 
     // On click outside of the image-modal-box unrender add image to menu

@@ -36,25 +36,49 @@
     <main>
       <section id="profile">
         <h1>Profile</h1>
-        <p>
-          To change your name, just type the new information. It will be saved automatically.
-        </p>
-        <div class="profile-info">
-          <div class="profile-info-item">
-            <h2>Name</h2>
-            <input id="name" placeholder="Name" />
+        <p>To change your name, just type the new information. It will be saved automatically.</p>
+        <div id="profile-box">
+          <div class="profile-info">
+            <h1><i class="fa fa-user"></i> Account Information</h1>
+            <div class="info-item" id="user-name">
+              <h2>Name</h2>
+              <input id="name" placeholder="Name" />
+            </div>
+            <div class="info-item" id="user-email">
+              <h2>Email</h2>
+              <p id="email">youremail@gmail.com</p>
+            </div>
+            <div class="info-item" id="user-password">
+              <h2>Lost password?</h2>
+              <button id="change-password-button">Get a new one</button>
+            </div>
+            <div class="info-item" id="user-delete">
+              <h2>No more menus?</h2>
+              <button id="delete-button">Delete Account</button>
+            </div>
           </div>
-          <div class="profile-info-item">
-            <h2>Email</h2>
-            <p id="email">youremail@gmail.com</p>
-          </div>
-          <div class="profile-info-item">
-            <h2>Password</h2>
-            <button id="change-password-button">Change Password</button>
-          </div>
-          <div class="profile-info-item">
-            <h2>Delete Account</h2>
-            <button id="delete-button">Delete</button>
+          <div class="subscription-info">
+            <h1><i class="fa fa-credit-card"></i> Subscription</h1>
+            <div class="subscription-item" id="subscription-plan">
+              <h2>Current Plan</h2>
+              <p id="plan">Pro</p>
+            </div>
+            <div class="subscription-item" id="active-subscription">
+              <h2>Active</h2>
+              <p id="active">Yes</p>
+            </div>
+            <div class="subscription-item" id="renewal-date">
+              <h2 id="renew-text">Renews On</h2>
+              <p id="renew">01/01/2024</p>
+            </div>
+            <div class="subscription-item" id="cancel-subscription">
+              <h2>Paying to much?</h2>
+              <button id="subscription-button">Cancel Subscription</button>
+            </div>
+            <div class="subscription-item" id="add-subscription">
+              <h2>Join the Pro's</h2>
+              <button id="add-subscription-button">Upgrade Now</button>
+            </div>
           </div>
         </div>
       </section>

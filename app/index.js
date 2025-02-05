@@ -1,5 +1,7 @@
 import { isTokenInLocalStorage } from '/js/utils/isTokenInLocalStorage.js';
 import { getMenus, createMenu } from '/js/functions/menu.js';
+import { getSubscription, updateSubscriptionFromToken } from '/js/functions/stripe.js';
+import { renderPopup } from '/js/components/popup.js';
 import { renderContextMenu } from '/js/components/context-menu.js';
 
 // Variables
@@ -12,6 +14,20 @@ const token = localStorage.getItem('token');
 document.addEventListener('DOMContentLoaded', async function () {
   // Check if the token is stored in the local storage
   await isTokenInLocalStorage(token);
+
+  // Get the customer ID from the session storage
+  const customerId = sessionStorage.getItem('customerId');
+  if (customerId) {
+    console.log('customerId:', customerId);
+    // Remove the session ID from the session storage
+    sessionStorage.removeItem('customerId');
+    // Get subscription data from Stripe
+    const subscription = await getSubscription(customerId);
+    renderPopup(subscription.message);
+  }
+
+  // Update the subscription
+  await updateSubscriptionFromToken(token);
 
   // Get menus
   menus = await getMenus(token);

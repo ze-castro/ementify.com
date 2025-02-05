@@ -1,14 +1,12 @@
-import { MongoClient, ObjectId } from 'mongodb';
 import { verify } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 if (process.env.NODE_ENV == 'dev') {
   dotenv.config();
 }
 import rateLimiter from '../utils/rateLimiter';
+import connectToDatabase from '../utils/dbConnection';
 
-// MongoDB URI and JWT Secret from environment variables
-const uri = process.env.MONGO_DB;
-const client = new MongoClient(uri);
+// JWT Secret from environment variables
 const jwtSecret = process.env.JWT_SECRET;
 
 // Rate limiter
@@ -36,9 +34,8 @@ export async function handler(event, context) {
     const { token } = JSON.parse(event.body);
 
     // Connect to MongoDB
-    await client.connect();
-    const database = client.db('ementify');
-    const usersCollection = database.collection('users');
+    const { db } = await connectToDatabase();
+    const usersCollection = db.collection('users');
 
     // Decode the token and get the user's id
     const decodedToken = verify(token, jwtSecret);
@@ -57,13 +54,12 @@ export async function handler(event, context) {
     delete user._id;
     delete user.password;
     delete user.passwordResetToken;
-    
+
     // Return the user
     return {
       statusCode: 200,
       body: JSON.stringify(user),
     };
-
   } catch (error) {
     console.error('Error getting the user:', error);
     return {
@@ -72,7 +68,5 @@ export async function handler(event, context) {
         message: '⚠️ An error occurred getting the user.',
       }),
     };
-  } finally {
-    await client.close();
   }
 }

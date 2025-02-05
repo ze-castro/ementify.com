@@ -39,11 +39,18 @@ startButton.addEventListener('click', () => {
   pricing.scrollIntoView({ behavior: 'smooth' });
 });
 
+// learn-more-link click redirects to pricing
+const learnMoreLink = document.getElementById('learn-more-link');
+learnMoreLink.addEventListener('click', () => {
+  const pricing = document.getElementById('pricing');
+  pricing.scrollIntoView({ behavior: 'smooth' });
+});
+
 // FEATURES
 // onclick of the demo button open in new tab
 const demoButton = document.getElementById('demo-button');
 demoButton.addEventListener('click', () => {
-  window.open('https://ementify.com/view/?id=6794d28f130bfb13400d7ec7', '_blank', 'noopener');
+  window.open('https://ementify.com/demo', '_blank', 'noopener');
 });
 
 // PRICING
@@ -54,11 +61,13 @@ const proButton = document.getElementById('pro-button');
 // redirect to sign up page
 freeButton.addEventListener('click', () => {
   window.location.href = '/sign-up';
+  sessionStorage.setItem('paid', false);
 });
 
-// redirect to subscribe page
+// redirect to sign up page
 proButton.addEventListener('click', () => {
-  window.location.href = '/subscribe';
+  window.location.href = '/sign-up';
+  sessionStorage.setItem('paid', true);
 });
 
 // FAQ

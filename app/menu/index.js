@@ -144,8 +144,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (imageUrl) {
       menu.image = imageUrl;
       await updateMenu(token, menu);
-    } else {
-      renderPopup('⚠️ Error uploading image to the server.');
     }
   });
 
@@ -174,7 +172,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     const originalMenuColor = menu.color;
     menu.color = await renderColors();
     if (originalMenuColor !== menu.color) {
-      await updateMenu(token, menu);
+      const updateSuccess = await updateMenu(token, menu);
+      if (!updateSuccess) {
+        menu.color = originalMenuColor;
+      }
       originalMenu = JSON.parse(JSON.stringify(menu));
       await populateCategorySelect();
     }

@@ -20,7 +20,7 @@ function renderLoading() {
 function unrenderLoading() {
   // get loading element
   const loading = document.getElementById('loading');
-
+  
   // animate loading
   loading.style.animation = 'fadeOut 0.3s';
   setTimeout(() => {

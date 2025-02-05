@@ -1,5 +1,4 @@
 import { renderLoading, unrenderLoading } from '/js/components/loading.js';
-import { renderPopup } from '/js/components/popup.js';
 
 async function uploadImage(file) {
   // Render the loading animation

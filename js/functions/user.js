@@ -81,7 +81,7 @@ async function updateUser(token, userData) {
         window.location.href = '/';
       }, 2300);
     } else {
-      renderPopup(result.message || '✅ Your profile was updated successfully.');
+      renderPopup(result.message || '✅ Your profile was updated successfully.', 1000);
     }
   } catch (error) {
     // Handle any network errors

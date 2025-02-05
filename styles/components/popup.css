@@ -9,7 +9,7 @@
   place-items: center;
   padding: 1rem;
   background-color: var(--transparent-background-5);
-  z-index: 9999;
+  z-index: 99999;
 }
 
 #popup p {

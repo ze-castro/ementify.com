@@ -1,5 +1,3 @@
-import { renderPopup } from '/js/components/popup.js';
-
 async function compressImage(file) {
   // check if file size is more than 5MB
   if (file.size > 5 * 1024 * 1024) {
@@ -19,7 +17,7 @@ async function compressImage(file) {
     // console.log('Compressed size (KB):', compressedFile.size / 1024);
 
     if (compressedFile.size > file.size) {
-      console.log('Compression failed. Using the original file.');
+      // console.log('Compression failed. Using the original file.');
       return file;
     }
 

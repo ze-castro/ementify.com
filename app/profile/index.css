@@ -46,7 +46,7 @@ nav a {
   padding: 0 2rem;
 }
 
-#profile h1 {
+#profile > h1 {
   font-size: var(--title);
   font-weight: var(--semi-bold);
   margin-bottom: 1rem;
@@ -56,6 +56,20 @@ nav a {
   font-size: var(--subtitle);
   font-weight: var(--thin);
   margin-bottom: 1rem;
+}
+
+#profile-box {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+@media (width < 1000px) {
+  #profile-box {
+    flex-direction: column;
+  }
 }
 
 @media (width < 768px) {
@@ -72,46 +86,81 @@ nav a {
 
 .profile-info {
   width: fit-content;
-  flex-direction: column;
-  display: flex;
-  gap: 2rem;
-  padding: 2rem;
-  margin-bottom: 4rem;
+  display: grid;
+  grid-template-columns: 1fr fit-content(200px);
+  grid-template-rows: fit-content(100px) 1fr 1fr;
+  grid-template-areas: 'title title' 'name password' 'email delete';
+  row-gap: 1rem;
+  column-gap: 1rem;
+  border: 1px solid var(--shadow-1);
   border-radius: var(--radius-3);
-  box-shadow: 0 0.5rem 1.5rem var(--shadow-1);
+  padding: 1rem;
+  background-color: var(--gray-1);
 }
 
-.profile-info-item {
+.profile-info h1 {
+  font-size: var(--subtitle);
+  font-weight: var(--semi-bold);
+  grid-area: title;
+  margin-bottom: 0.5rem;
+}
+
+.info-item {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.profile-info-item h2 {
-  font-size: var(--subtitle);
+.info-item h2 {
+  font-size: var(--paragraph);
   font-weight: var(--semi-bold);
 }
 
-.profile-info-item p {
+.info-item p {
   font-size: var(--paragraph);
   font-weight: var(--thin);
 }
 
-.profile-info-item input {
-  width: 300px;
+.info-item input {
+  width: 250px;
+  padding: 0;
+  border-radius: 0;
+  background-color: transparent;
+  font-weight: var(--thin);
 }
 
-.profile-info-item button {
-  width: 100%;
-  padding: 0.8rem;
+.info-item input:focus-within {
+  padding: 0.5rem 0;
+  background-color: var(--white);
+}
+
+.info-item button {
+  width: 200px;
+  padding: 0.5rem;
   box-shadow: 0 0.5rem 1.5rem var(--shadow-2);
   color: var(--white);
   font-weight: var(--semi-bold);
-  font-size: var(--paragraph);
+  font-size: var(--microcopy);
 }
 
-.profile-info-item button:hover {
+.info-item button:hover {
   box-shadow: 0 1rem 2rem var(--shadow-2);
+}
+
+#user-name {
+  grid-area: name;
+}
+
+#user-email {
+  grid-area: email;
+}
+
+#user-password {
+  grid-area: password;
+}
+
+#user-delete {
+  grid-area: delete;
 }
 
 #change-password-button {
@@ -121,10 +170,107 @@ nav a {
 @media (width < 768px) {
   .profile-info {
     width: 100%;
-    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
-  .profile-info-item input {
+  .info-item button {
+    width: 100%;
+    padding: 0.7rem;
+    font-size: 0.9rem;
+  }
+
+  .info-item input {
+    width: 100%;
+  }
+}
+
+.subscription-info {
+  width: fit-content;
+  display: grid;
+  grid-template-columns: 1fr fit-content(200px);
+  grid-template-rows: fit-content(100px) 1fr 1fr;
+  grid-template-areas: 'title title' 'plan active' 'renewal cancel';
+  row-gap: 1rem;
+  column-gap: 3rem;
+  border: 1px solid var(--shadow-1);
+  border-radius: var(--radius-3);
+  padding: 1rem;
+  background-color: var(--gray-1);
+}
+
+.subscription-info h1 {
+  font-size: var(--subtitle);
+  font-weight: var(--semi-bold);
+  grid-area: title;
+  margin-bottom: 0.5rem;
+}
+
+.subscription-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.subscription-item h2 {
+  font-size: var(--paragraph);
+  font-weight: var(--semi-bold);
+}
+
+.subscription-item p {
+  font-size: var(--paragraph);
+  font-weight: var(--thin);
+}
+
+.subscription-item button {
+  width: 200px;
+  padding: 0.5rem;
+  box-shadow: 0 0.5rem 1.5rem var(--shadow-2);
+  color: var(--white);
+  font-weight: var(--semi-bold);
+  font-size: var(--microcopy);
+}
+
+.subscription-item button:hover {
+  box-shadow: 0 1rem 2rem var(--shadow-2);
+}
+
+#renewal-date {
+  grid-area: renewal;
+}
+
+#subscription-plan {
+  grid-area: plan;
+}
+
+#cancel-subscription, #add-subscription {
+  grid-area: cancel;
+}
+
+#active-subscription {
+  grid-area: active;
+}
+
+#add-subscription-button {
+  background-color: var(--green) !important;
+}
+
+@media (width < 768px) {
+  .subscription-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .subscription-item button {
+    width: 100%;
+    padding: 0.7rem;
+    font-size: 0.9rem;
+  }
+
+  .subscription-item input {
     width: 100%;
   }
 }

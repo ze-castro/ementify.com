@@ -33,6 +33,7 @@ export async function handler(event, context) {
     // Connect to MongoDB
     const { db } = await connectToDatabase();
     const menusCollection = db.collection('menus');
+    const usersCollection = db.collection('users');
 
     // Transform the menuId to an ObjectId
     const menu_id = new ObjectId(menuId);
@@ -43,6 +44,23 @@ export async function handler(event, context) {
       return {
         statusCode: 404,
         body: JSON.stringify({ message: '⚠️ Something went wrong getting the menu.' }),
+      };
+    }
+
+    // Check if the owner is a paid user
+    const user = await usersCollection.findOne({ _id: menu.user });
+    if (!user || !user.paid) {
+      // Clear all images from menu's object
+      delete menu.image;
+      menu.categories.forEach((category) => {
+        category.items.forEach((item) => {
+          delete item.image;
+        });
+      });
+
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ menu }),
       };
     }
 

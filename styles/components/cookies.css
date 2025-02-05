@@ -14,7 +14,7 @@
   bottom: -6rem;
   left: 50%;
   transform: translate(-50%, 0);
-  z-index: 99;
+  z-index: 999;
   font-family: var(--font-1);
   font-size: var(--paragraph);
   transition: var(--slow);

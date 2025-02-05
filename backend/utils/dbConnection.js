@@ -14,7 +14,7 @@ async function connectToDatabase() {
 
   const client = await MongoClient.connect(process.env.MONGO_DB, {
     maxPoolSize: 10,
-    maxIdleTimeMS: 300000,
+    maxIdleTimeMS: 120000,
   });
 
   const db = client.db('ementify');

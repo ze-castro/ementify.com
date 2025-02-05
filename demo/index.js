@@ -1,20 +1,87 @@
-import { getMenuClient } from '/js/functions/clientMenu.js';
-
 // Variables
-var menu = null;
+var menu = {
+  title: 'The Rustic Spoon',
+  description: 'WIFI: TheRustic123 | Opening hours: 10:00 - 22:00',
+  image: 'https://i.ibb.co/kVxrmCBH/menu.jpg',
+  color: '--green',
+  categories: [
+    {
+      name: 'Breakfast',
+      items: [
+        {
+          title: 'Classic Pancakes',
+          description: 'Fluffy pancakes served with maple syrup and butter.',
+          price: 8,
+          image: 'https://i.ibb.co/dwWDjB23/1.jpg',
+        },
+        {
+          title: 'Avocado Toast',
+          description:
+            'Sourdough toast topped with fresh avocado, cherry tomatoes, and feta cheese.',
+          price: 10,
+          image: 'https://i.ibb.co/HMrKQ0p/2.jpg',
+        },
+      ],
+    },
+    {
+      name: 'Lunch & Dinner',
+      items: [
+        {
+          title: 'Grilled Chicken Salad',
+          description: 'Mixed greens, grilled chicken, cherry tomatoes, and a light vinaigrette.',
+          price: 12,
+          image: 'https://i.ibb.co/b5bjYsjn/3.jpg',
+        },
+        {
+          title: 'Rustic Burger',
+          description: 'Juicy beef patty, lettuce, tomato, cheddar cheese, and special sauce.',
+          price: 15,
+          image: 'https://i.ibb.co/gLPLNs0L/4.jpg',
+        },
+      ],
+    },
+    {
+      name: 'Desserts',
+      items: [
+        {
+          title: 'Homemade Apple Pie',
+          description: 'Classic apple pie with a flaky crust and a scoop of vanilla ice cream.',
+          price: 7,
+          image: 'https://i.ibb.co/VcVBk6NT/5.jpg',
+        },
+        {
+          title: 'Chocolate Brownie',
+          description: 'Rich and fudgy brownie served with a drizzle of chocolate sauce.',
+          price: 6,
+          image: 'https://i.ibb.co/xKTw9yBb/6.jpg',
+        },
+      ],
+    },
+    {
+      name: 'Beverages',
+      items: [
+        {
+          title: 'Fresh Lemonade',
+          description: 'Refreshing homemade lemonade with a hint of mint.',
+          price: 5,
+          image: 'https://i.ibb.co/gZzVc3m2/7.jpg',
+        },
+        {
+          title: 'Cappuccino',
+          description: 'Freshly brewed espresso with steamed milk and frothy foam.',
+          price: 4,
+          image: 'https://i.ibb.co/C5C6sZJR/8.jpg',
+        },
+      ],
+    },
+  ],
+};
 
 // On load
 document.addEventListener('DOMContentLoaded', async function () {
   // Update the footer
   const footer = document.getElementsByTagName('footer')[0];
   footer.innerHTML = `<p>Created at <a href="https://www.ementify.com" target="_blank">Ementify.com</a></p>`;
-
-  // Get the menu ID from the URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const menuId = urlParams.get('id');
-
-  // Get menu
-  menu = await getMenuClient(menuId);
 
   // Change the menu image
   if (menu.image) {

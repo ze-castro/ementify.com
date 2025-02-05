@@ -34,7 +34,7 @@ export async function handler(event, context) {
   }
 
   try {
-    const { name, email, password } = JSON.parse(event.body);
+    const { name, email, password, paid } = JSON.parse(event.body);
 
     // Connect to MongoDB
     await client.connect();
@@ -46,7 +46,7 @@ export async function handler(event, context) {
     if (existingUser) {
       return {
         statusCode: 409,
-        body: JSON.stringify({ message: 'Try using a different email!' }),
+        body: JSON.stringify({ message: '⚠️ You already have an account. Please log in.' }),
       };
     }
 
@@ -58,7 +58,7 @@ export async function handler(event, context) {
       name,
       email,
       password: hashedPassword,
-      paid: false,
+      paid: paid === 'true' ? true : false,
       createdAt: new Date(),
     };
     await usersCollection.insertOne(newUser);
