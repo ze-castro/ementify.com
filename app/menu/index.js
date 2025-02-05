@@ -142,9 +142,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     // update the menu image
     const imageUrl = await renderAddImageToMenu();
     if (imageUrl) {
+      menu.image = imageUrl;
       const imageSuccess = await updateMenu(token, menu);
-      if (imageSuccess) {
-        menu.image = imageUrl;
+      if (!imageSuccess) {
+        menu.image = null;
       }
     }
   });
