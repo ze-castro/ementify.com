@@ -11,6 +11,8 @@ import connectToDatabase from '../utils/dbConnection';
 const jwtSecret = process.env.JWT_SECRET;
 const stripe = new Stripe(process.env.STRIPE);
 
+console.log('STRIPE', process.env.STRIPE);
+
 // Rate limiter
 const limiter = rateLimiter({
   windowMs: 1 * 60 * 1000,
@@ -35,10 +37,14 @@ export async function handler(event) {
   // Get the data from the request body
   const { token } = JSON.parse(event.body);
 
+  console.log('TOKEN', token);
+
   try {
     // Connect to MongoDB
     const { db } = await connectToDatabase();
     const usersCollection = db.collection('users');
+
+    console.log('USERS', usersCollection);
 
     // Decode the token and get the user's email
     const decodedToken = verify(token, jwtSecret);
