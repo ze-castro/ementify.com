@@ -142,8 +142,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     // update the menu image
     const imageUrl = await renderAddImageToMenu();
     if (imageUrl) {
-      menu.image = imageUrl;
-      await updateMenu(token, menu);
+      const imageSuccess = await updateMenu(token, menu);
+      if (imageSuccess) {
+        menu.image = imageUrl;
+      }
     }
   });
 
@@ -157,8 +159,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     // Remove the image
-    menu.image = null;
-    await updateMenu(token, menu);
+    const removeSuccess = await updateMenu(token, menu);
+    if (removeSuccess) {
+      menu.image = null;
+    }
   });
 
   //// COLOR CHANGING ////
@@ -169,7 +173,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     checkCategoryDrag(moveCategoryBool);
 
     // Render the colors modal
-    const originalMenuColor = menu.color;
+    const originalMenuColor = originalMenu.color;
     menu.color = await renderColors();
     if (originalMenuColor !== menu.color) {
       const updateSuccess = await updateMenu(token, menu);
