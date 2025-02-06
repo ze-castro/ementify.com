@@ -36,8 +36,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     sessionStorage.removeItem('customerId');
     // Get subscription data from Stripe
     const subscription = await getSubscription(customerId);
-    user = subscription.user;
-    renderPopup(subscription.message);
+    if (subscription.user) {
+      user = subscription.user;
+    }
   }
 
   // Set the user info
@@ -53,15 +54,15 @@ document.addEventListener('DOMContentLoaded', async function () {
     );
     if (user.subscription.cancel_at) {
       document.getElementById('renew-text').innerText = 'Cancels On';
-      document.getElementById('cancel-subscription').remove();
+      document.getElementById('add-subscription').style.display = 'block';
     } else {
-      document.getElementById('add-subscription').remove();
+      document.getElementById('cancel-subscription').style.display = 'block';
     }
   } else {
     document.getElementById('plan').innerText = 'Free';
     document.getElementById('active').innerText = 'N/A';
     document.getElementById('renew').innerText = 'N/A';
-    document.getElementById('cancel-subscription').remove();
+    document.getElementById('add-subscription').style.display = 'block';
   }
 });
 
@@ -113,6 +114,7 @@ document.getElementById('delete-button').addEventListener('click', async functio
 // Manage subscription
 document.getElementById('subscription-button').addEventListener('click', async function () {
   // Redirect to the billing portal page in a new tab
+  sessionStorage.setItem('customerId', user.stripeId);
   window.open(
     'https://billing.stripe.com/p/login/test_8wM6rDcj000u6D6bII?prefilled_email=' + user.email,
     '_blank',

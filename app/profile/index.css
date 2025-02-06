@@ -246,6 +246,7 @@ nav a {
 
 #cancel-subscription, #add-subscription {
   grid-area: cancel;
+  display: none;
 }
 
 #active-subscription {

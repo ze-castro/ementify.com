@@ -52,6 +52,7 @@ export async function handler(event) {
       customer: customerId,
     });
 
+    console.log('Customer:', customerId);
     const subscriptionData = subscription.data[0];
     if (!subscriptionData) {
       return {

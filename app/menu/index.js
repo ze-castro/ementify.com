@@ -160,9 +160,13 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     // Remove the image
+    const originalMenuImage = menu.image;
+    menu.image = null;
     const removeSuccess = await updateMenu(token, menu);
     if (removeSuccess) {
       menu.image = null;
+    } else {
+      menu.image = originalMenuImage;
     }
   });
 
