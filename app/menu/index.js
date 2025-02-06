@@ -743,7 +743,11 @@ async function populateMenu(menu) {
 
           // Update the menu
           const response = await updateMenu(token, menu);
-          originalMenu = JSON.parse(JSON.stringify(menu));
+          if (response) {
+            originalMenu = JSON.parse(JSON.stringify(menu));
+          } else {
+            item.image = null;
+          }
 
           // if response positive change the item image
           if (response) {
