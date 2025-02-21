@@ -1,0 +1,18 @@
+User-agent: *
+Disallow: /backend/
+Disallow: /node_modules/
+Disallow: /change-password/
+Disallow: /recover-password/
+Disallow: /sign-up/
+Disallow: /login/
+Disallow: /demo/
+Disallow: /functions/
+Disallow: /utils/
+
+Allow: /app/
+Allow: /menu/
+Allow: /styles/
+Allow: /terms-and-conditions/
+Allow: /view/
+
+Sitemap: https://ementify.com/sitemap.xml
