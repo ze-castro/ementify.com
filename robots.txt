@@ -4,7 +4,6 @@ Disallow: /change-password/
 Disallow: /recover-password/
 Disallow: /sign-up/
 Disallow: /login/
-Disallow: /demo/
 Disallow: /functions/
 Disallow: /utils/
 Disallow: /app/
@@ -13,5 +12,6 @@ Disallow: /menu/
 Allow: /styles/
 Allow: /terms-and-conditions/
 Allow: /view/
+Allow: /demo/
 
 Sitemap: https://ementify.com/sitemap.xml
