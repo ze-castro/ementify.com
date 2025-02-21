@@ -1,6 +1,5 @@
 User-agent: *
 Disallow: /backend/
-Disallow: /node_modules/
 Disallow: /change-password/
 Disallow: /recover-password/
 Disallow: /sign-up/
