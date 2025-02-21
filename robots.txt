@@ -8,9 +8,9 @@ Disallow: /login/
 Disallow: /demo/
 Disallow: /functions/
 Disallow: /utils/
+Disallow: /app/
+Disallow: /menu/
 
-Allow: /app/
-Allow: /menu/
 Allow: /styles/
 Allow: /terms-and-conditions/
 Allow: /view/
