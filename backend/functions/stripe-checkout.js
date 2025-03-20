@@ -85,7 +85,7 @@ export async function handler(event) {
         mode: 'subscription',
         line_items: [
           {
-            price: 'price_1QoXuDL5Ad6XODbG0nfyDFh9',
+            price: 'price_1R4mJcL5Ad6XODbGZaDQxIse',
             quantity: 1,
           },
         ],
