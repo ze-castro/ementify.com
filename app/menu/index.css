@@ -11,14 +11,23 @@
   }
 }
 
+/* GLOBAL */
+body {
+  display: flex;
+  justify-content: center;
+  background-color: var(--gray-1);
+}
+
 /* MAIN */
 main {
+  max-width: 1000px;
   min-height: 100dvh;
 }
 
 /* NAV */
 nav {
   position: absolute;
+  max-width: calc(1000px - 4rem);
   width: 100%;
   display: flex;
   justify-content: flex-end;
