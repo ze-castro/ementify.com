@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Render the colors modal
     const originalMenuColor = originalMenu.color;
-    menu.color = await renderColors();
+    menu.color = await renderColors(originalMenuColor);
     if (originalMenuColor !== menu.color) {
       const updateSuccess = await updateMenu(token, menu);
       if (!updateSuccess) {

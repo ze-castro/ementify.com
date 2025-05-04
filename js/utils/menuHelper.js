@@ -4,7 +4,7 @@ import { uploadImage } from '/js/utils/imageUpload.js';
 //// MENU HELPER FUNCTIONS ////
 //// COLOR CHANGING ////
 // render colors
-function renderColors() {
+function renderColors(originalColor) {
   return new Promise((resolve) => {
     const colorsMenuHTML = `
       <div id="colors-menu">
@@ -75,6 +75,9 @@ function renderColors() {
           break;
         case 'color-12':
           color = '--gray-3';
+          break;
+        default:
+          color = originalColor;
           break;
       }
       resolve(color, unrenderColors(0));
