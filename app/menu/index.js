@@ -435,7 +435,7 @@ async function depopulateMenu() {
   let child = menuCategories.firstChild;
   while (child) {
     const nextSibling = child.nextSibling;
-    if (child.id !== 'menu-category-form' && child.id !== 'menu-top-buttons') {
+    if (child.id !== 'menu-category-form' && child.id !== 'menu-top-buttons' && child.className !== 'divider') {
       menuCategories.removeChild(child);
     }
     child = nextSibling;
@@ -560,13 +560,6 @@ async function populateMenu(menu) {
       // Repopulate the menu
       await repopulateMenu(menu);
     });
-
-    // Create a divider element
-    const divider = document.createElement('div');
-    divider.className = 'divider';
-
-    // Append the divider to the categories element
-    menuCategories.appendChild(divider);
 
     // Loop through the items
     for (const item of category.items) {
@@ -936,13 +929,6 @@ async function populateMenu(menu) {
 
       // Append the item element to the items element
       menuCategoryItems.appendChild(menuCategoryItem);
-
-      // Create a divider element
-      const divider = document.createElement('div');
-      divider.className = 'divider-dark';
-
-      // Append the divider after the categories items element
-      menuCategoryItems.appendChild(divider);
 
       // Add event listener to the title input
       itemTitle.addEventListener('blur', async function () {
