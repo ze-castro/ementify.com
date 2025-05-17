@@ -11,6 +11,7 @@ import {
   updateGhostPosition,
   generateRandomId,
 } from '/js/utils/menuHelper.js';
+import { generateQR } from '/js/utils/qrCode.js';
 import { getMenu, updateMenu, deleteMenu } from '/js/functions/menu.js';
 import { renderConfirm } from '/js/components/confirm.js';
 import { renderModal } from '/js/components/modal.js';
@@ -117,9 +118,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   const qrButton = document.getElementById('qr-code-button');
   qrButton.addEventListener('click', async function () {
     // Get the QR code
-    const qrCode =
-      'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.ementify.com/view?id=' +
-      menuId;
+    const qrCode = await generateQR('https://www.ementify.com/view?id=' + menuId);
 
     // Render the modal
     await renderModal('Scan the QR code to view the menu or download it.', 'Download', qrCode);

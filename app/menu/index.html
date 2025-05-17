@@ -29,7 +29,11 @@
     <link rel="stylesheet" href="/styles/components/context-menu.css" />
     <link rel="stylesheet" href="/app/menu/index.css" />
     <!-- scripts -->
-    <script defer src="https://cdn.jsdelivr.net/npm/browser-image-compression/dist/browser-image-compression.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/browser-image-compression/dist/browser-image-compression.js"
+    ></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <script type="module" src="/app/menu/index.js"></script>
     <!-- analytics -->
     <script defer src="/js/analytics.js"></script>
@@ -91,10 +95,22 @@
               <option value="" selected>Select a category</option>
               <option value="new">Create a new category</option>
             </select>
-            <input type="text" id="menu-category-title-new" class="changable-title hide" placeholder="Category" />
+            <input
+              type="text"
+              id="menu-category-title-new"
+              class="changable-title hide"
+              placeholder="Category"
+            />
             <div class="menu-category-items">
               <div class="menu-category-item">
-                <input id="item-title" name="item-title" class="changable-title" type="text" placeholder="Item" required />
+                <input
+                  id="item-title"
+                  name="item-title"
+                  class="changable-title"
+                  type="text"
+                  placeholder="Item"
+                  required
+                />
                 <input
                   id="item-description"
                   name="item-description"
