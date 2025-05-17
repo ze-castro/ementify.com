@@ -285,34 +285,6 @@ nav a {
   color: var(--gray);
 }
 
-.card-prices {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 2rem;
-}
-
-.card-prices h5 {
-  font-size: var(--subtitle);
-  font-weight: var(--thin);
-  color: var(--gray-5);
-}
-
-.card-prices h5 b {
-  font-weight: var(--semi-bold);
-  color: var(--green);
-}
-
-.card-prices h6 {
-  text-decoration: line-through;
-  font-size: var(--paragraph);
-  font-weight: var(--thin);
-  color: var(--gray-2);
-}
-
-.card-prices h6 b {
-  font-weight: var(--semi-bold);
-}
-
 .card button {
   width: 100%;
   height: 40px;

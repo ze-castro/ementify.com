@@ -1,6 +1,5 @@
 import { renderLoading, unrenderLoading } from '/js/components/loading.js';
 import { renderPopup } from '/js/components/popup.js';
-import { createSubscription } from '/js/functions/stripe.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   // Get the signup form elements
@@ -23,25 +22,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const email = formData.get('email');
     const password = formData.get('password');
 
-    // Get paid from session storage
-    const paid = sessionStorage.getItem('paid');
-    // Remove paid from session storage
-    sessionStorage.removeItem('paid');
-
     // Create a payload for the API request
     const payload = {
       name,
       email,
       password,
-      paid,
     };
 
     try {
-      // If paid is true, show stripe payment form
-      if (paid === 'true') {
-        return await createSubscription(payload);
-      }
-
       // Send POST request to the signup serverless function
       const response = await fetch('/.netlify/functions/signup', {
         method: 'POST',

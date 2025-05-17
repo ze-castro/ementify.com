@@ -47,23 +47,6 @@ export async function handler(event, context) {
       };
     }
 
-    // Check if the owner is a paid user
-    const user = await usersCollection.findOne({ _id: menu.user });
-    if (!user || !user.paid) {
-      // Clear all images from menu's object
-      delete menu.image;
-      menu.categories.forEach((category) => {
-        category.items.forEach((item) => {
-          delete item.image;
-        });
-      });
-
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ menu }),
-      };
-    }
-
     // Return the menu
     return {
       statusCode: 200,

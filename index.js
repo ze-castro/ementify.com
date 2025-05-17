@@ -56,18 +56,10 @@ demoButton.addEventListener('click', () => {
 // PRICING
 // onclick of the pricing buttons
 const freeButton = document.getElementById('free-button');
-const proButton = document.getElementById('pro-button');
 
 // redirect to sign up page
 freeButton.addEventListener('click', () => {
   window.location.href = '/sign-up';
-  sessionStorage.setItem('paid', false);
-});
-
-// redirect to sign up page
-proButton.addEventListener('click', () => {
-  window.location.href = '/sign-up';
-  sessionStorage.setItem('paid', true);
 });
 
 // FAQ

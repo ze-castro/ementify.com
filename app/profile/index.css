@@ -223,19 +223,6 @@ nav a {
   font-weight: var(--thin);
 }
 
-.subscription-item button {
-  width: 200px;
-  padding: 0.5rem;
-  box-shadow: 0 0.5rem 1.5rem var(--shadow-2);
-  color: var(--white);
-  font-weight: var(--semi-bold);
-  font-size: var(--microcopy);
-}
-
-.subscription-item button:hover {
-  box-shadow: 0 1rem 2rem var(--shadow-2);
-}
-
 #renewal-date {
   grid-area: renewal;
 }
@@ -244,17 +231,8 @@ nav a {
   grid-area: plan;
 }
 
-#cancel-subscription, #add-subscription {
-  grid-area: cancel;
-  display: none;
-}
-
 #active-subscription {
   grid-area: active;
-}
-
-#add-subscription-button {
-  background-color: var(--green) !important;
 }
 
 @media (width < 768px) {
@@ -263,12 +241,6 @@ nav a {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
-
-  .subscription-item button {
-    width: 100%;
-    padding: 0.7rem;
-    font-size: 0.9rem;
   }
 
   .subscription-item input {

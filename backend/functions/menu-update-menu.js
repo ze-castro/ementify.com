@@ -56,67 +56,6 @@ export async function handler(event, context) {
     const objectMenuId = new ObjectId(menu._id);
     const objectUserId = new ObjectId(user._id);
 
-    // Check if user is a paid user
-    if (!user.paid) {
-      // Count the number of categories
-      const categoriesCount = menu.categories.length;
-      if (categoriesCount > 10) {
-        return {
-          statusCode: 403,
-          body: JSON.stringify({ message: '🤷‍♂️ Upgrade your plan to add more categories.' }),
-        };
-      }
-
-      // Get menu by id and user
-      const existingMenu = await menusCollection.findOne({ _id: objectMenuId, user: objectUserId });
-
-      // Compare which category has different items count
-      if (existingMenu.categories.length > 0) {
-        for (const category of menu.categories) {
-          const existingCategory = existingMenu.categories.find((c) => c._id === category._id);
-          if (existingCategory.items.length !== category.items.length) {
-            const itemsCount = category.items.length;
-            if (itemsCount > 10) {
-              return {
-                statusCode: 403,
-                body: JSON.stringify({
-                  message: '🤷‍♂️ Upgrade your plan to add more items.',
-                }),
-              };
-            }
-          }
-        }
-      }
-
-      // Check if existing menu has image
-      if (existingMenu.image !== menu.image) {
-        return {
-          statusCode: 403,
-          body: JSON.stringify({ message: '🤷‍♂️ Upgrade your plan to add an image to the menu.' }),
-        };
-      }
-
-      // Check if existing menu has color
-      if (existingMenu.color !== menu.color) {
-        return {
-          statusCode: 403,
-          body: JSON.stringify({ message: '🤷‍♂️ Upgrade your plan to change the menu color.' }),
-        };
-      }
-
-      // Check if menu item has image
-      for (const category of menu.categories) {
-        for (const item of category.items) {
-          if (item.image) {
-            return {
-              statusCode: 403,
-              body: JSON.stringify({ message: '🤷‍♂️ Upgrade your plan to add an image to the item.' }),
-            };
-          }
-        }
-      }
-    }
-
     // Update the menu
     await menusCollection.updateOne(
       { _id: objectMenuId, user: objectUserId },

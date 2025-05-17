@@ -34,7 +34,7 @@ export async function handler(event, context) {
   }
 
   try {
-    const { name, email, password, paid } = JSON.parse(event.body);
+    const { name, email, password } = JSON.parse(event.body);
 
     // Connect to MongoDB
     await client.connect();
@@ -58,7 +58,6 @@ export async function handler(event, context) {
       name,
       email,
       password: hashedPassword,
-      paid: paid === 'true' ? true : false,
       createdAt: new Date(),
     };
     await usersCollection.insertOne(newUser);

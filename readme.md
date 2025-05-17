@@ -4,7 +4,7 @@
 
 ## Description
 
-Ementify is a project that aims to help the food businesses to elevate their customer experience by providing a platform to show their menu digitally.
+Ementify is a project that aims to help the food businesses to elevate their customer experience by providing a 100% Free platform to show their menu digitally.
 
 ## Features
 
@@ -24,13 +24,11 @@ Ementify is a project that aims to help the food businesses to elevate their cus
 4. Serverless Functions
 5. Imgbb Public Buckets
 6. MongoDB
-7. Stripe
 
 ## Can I use it?
 
-Yes, you can use it for free. However, the paid features are not available for free users.
-This project is online at [ementify.com](https://ementify.com).
+Yes, you can use it for free. This project is online at [ementify.com](https://ementify.com).
 
 ## License
 
-This project cannot be used for commercial purposes.
+This project cannot be used for commercial purposes, meaning that you cannot sell this solution as a paid software.

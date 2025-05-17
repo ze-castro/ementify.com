@@ -54,18 +54,6 @@ export async function handler(event, context) {
       };
     }
 
-    // Check if user is a paid user
-    if (!user.paid) {
-      // Count how many menus the user has
-      const count = await menusCollection.countDocuments({ user: user._id });
-      if (count >= 1) {
-        return {
-          statusCode: 403,
-          body: JSON.stringify({ message: '🤷‍♂️ Upgrade your plan to create more menus.' }),
-        };
-      }
-    }
-
     // Create a new menu
     const newMenu = {
       title,
