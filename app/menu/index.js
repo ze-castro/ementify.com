@@ -100,7 +100,9 @@ document.addEventListener('DOMContentLoaded', async function () {
       divider3.style.display = '';
     }
 
-    // Render the context menu
+    // Position and Render the context menu
+    const contextMenuBox = document.getElementById('context-menu-box');
+    contextMenuBox.style.left = optionsButton.getBoundingClientRect().right - 163 + 'px';
     await renderContextMenu();
   });
 
@@ -435,7 +437,11 @@ async function depopulateMenu() {
   let child = menuCategories.firstChild;
   while (child) {
     const nextSibling = child.nextSibling;
-    if (child.id !== 'menu-category-form' && child.id !== 'menu-top-buttons' && child.className !== 'divider') {
+    if (
+      child.id !== 'menu-category-form' &&
+      child.id !== 'menu-top-buttons' &&
+      child.className !== 'divider'
+    ) {
       menuCategories.removeChild(child);
     }
     child = nextSibling;
